@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--EXTERNAL_PROPERTIES: BUILD_NUMBER-->
+<Project DefaultTargets="UnitTest" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  
+  <PropertyGroup>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">$(MSBuildProjectDirectory)</SolutionDir>
+    <NugetPath Condition="'$(NugetPath)' == ''">$(SolutionDir)\.nuget</NugetPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
+    <Platform Condition="'$(Platform)' == ''">Any CPU</Platform>
+    <ProjectPlatform Condition="'$(Platform)' == 'Any CPU'">AnyCPU</ProjectPlatform>
+    <OutputPath Condition="'$(OutputPath)' == ''">bin\Debug</OutputPath>
+  </PropertyGroup>
+
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="$(CoreCompileDependsOn) == ''"/>
+  
+  <Import Project="$(MSBuildProjectDirectory)\Lib\MSBuild.Community.Tasks.Targets" Condition="  '$(MSBuildCommunityTasksLib)' == '' "/>
+  <Import Project="$(NugetPath)\NuGet.targets" Condition="  '$(RestorePackages)' == '' "/>
+
+  <!-- Projects to Build -->
+  <ItemGroup>
+    <Solution Include="$(SolutionDir)\*.sln"/>
+    <ProjectFiles Include="**/*.csproj"/>
+    <ProjectFiles Include="**/*.wixproj"/>
+  </ItemGroup>
+
+  <Target Name="Clean">
+    <MSBuild Projects="@(Solution)" Properties="Configuration=$(Configuration);Platform=$(Platform)" Targets="Clean" />
+  </Target>
+
+  <Target Name="Build">
+    <MSBuild Projects="@(Solution)" Properties="Configuration=$(Configuration);Platform=$(Platform)" Targets="Build" />
+  </Target>
+
+  <!-- Unit Test -->
+  <PropertyGroup>
+    <TestAssembly>$(SolutionDir)\**\bin\**\*.Tests.dll</TestAssembly>
+  </PropertyGroup>
+
+  <Target Name="UnitTest">
+    <CallTarget Targets="Test"/>
+  </Target>
+
+  <PropertyGroup>
+    <NUnitToolDir>Temp.NUnitRunners</NUnitToolDir>
+  </PropertyGroup>
+
+ <Target Name="CopyNUnitRunners" DependsOnTargets="RestorePackages">
+    <ItemGroup>
+      <ManagedNUnitRunners Include="$(SolutionDir)\packages\NUnit.Runners.*\tools\*.*;$(SolutionDir)\packages\NUnit.Runners.*\tools\lib\*.*"/>
+    </ItemGroup>
+    <MakeDir Directories="$(NUnitToolDir)" Condition="!Exists('$(NUnitToolDir)')"/>
+    <Copy SourceFiles="@(ManagedNUnitRunners)" DestinationFolder="$(NUnitToolDir)" />
+  </Target>
+
+  <!--Define the test assembly. Defaults to the project target file. -->
+  <PropertyGroup>
+    <TestAssembly Condition="'$(TestAssembly)' == ''">$(OutputPath)$(TargetFileName)</TestAssembly>
+  </PropertyGroup>
+
+  <!--Run NUnit from the fixed location where we copied the executables. -->
+  <Target Name="RunNUnitTests" DependsOnTargets="Build;CopyNUnitRunners">
+    <Message Text="*** NUnit tests beginning..." />
+    <ItemGroup>
+      <TestAssemblyFiles Include="$(TestAssembly)"/>
+    </ItemGroup>
+    <NUnit Assemblies="@(TestAssemblyFiles)" ToolPath="$(NUnitToolDir)" IncludeCategory="$(IncludeCategories)" ExcludeCategory="$(ExcludeCategories)"/>
+    <Message Text="*** NUnit tests ended." />
+  </Target>
+
+  <Target Name="CleanUpNUnitRunners">
+    <RemoveDir Directories="$(NUnitToolDir)" ContinueOnError="true"/>
+  </Target>
+
+  <Target Name="Test" DependsOnTargets="RunNUnitTests;CleanUpNUnitRunners"/>
+
+</Project>
