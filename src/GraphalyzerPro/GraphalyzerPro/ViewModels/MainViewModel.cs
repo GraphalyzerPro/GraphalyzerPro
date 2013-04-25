@@ -1,5 +1,4 @@
-﻿<!--
-/*
+﻿/*
  * Copyright (c) 2006-2009 by Christoph Menzel, Daniel Birkmaier, 
  * Carl-Clemens Ebinger, Maximilian Madeja, Farruch Kouliev, Stefan Zoettlein
  *
@@ -19,14 +18,13 @@
  * License along with this program. If not, see
  * <http://www.gnu.org/licenses/>.
  */
--->
-    
-<Application x:Class="GraphalyzerPro.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:GraphalyzerPro="clr-namespace:GraphalyzerPro"
-             StartupUri="MainWindow.xaml">
-    <Application.Resources>
-        <GraphalyzerPro:ViewModelLocator x:Key="ViewModelLocator"/>
-    </Application.Resources>
-</Application>
+
+using ReactiveUI;
+
+namespace GraphalyzerPro.ViewModels
+{
+    public class MainViewModel : ReactiveObject, IMainViewModel
+    {
+        public string Title { get { return "GraphalyzerPro"; } }
+    }
+}
