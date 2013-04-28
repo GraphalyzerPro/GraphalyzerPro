@@ -43,7 +43,7 @@ namespace GraphalyzerPro
             return unityContainer.Resolve<T>(name);
         }
 
-        public IMainViewModel MainViewModel
+        public static IMainViewModel MainViewModel
         {
             get { return unityContainer.Resolve<IMainViewModel>(); }
         }

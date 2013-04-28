@@ -9,7 +9,7 @@ namespace GraphalyzerPro.Tests
     [TestFixture]
     public class ViewModelLocatorTest
     {
-        private readonly ViewModelLocator ViewModelLocator = new ViewModelLocator();
+        private readonly ViewModelLocator _viewModelLocator = new ViewModelLocator();
 
         [Test]
         public void Resolve_CorrectInterface_ReturnsInstanceOfTheGivenInterface()
