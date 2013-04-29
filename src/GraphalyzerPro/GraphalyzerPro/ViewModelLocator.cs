@@ -26,26 +26,26 @@ namespace GraphalyzerPro
 {
     public class ViewModelLocator
     {
-        private readonly static UnityContainer unityContainer = new UnityContainer();
+        private readonly static UnityContainer UnityContainer = new UnityContainer();
 
         public ViewModelLocator()
         {
-            unityContainer.RegisterType<IMainViewModel, MainViewModel>();
+            UnityContainer.RegisterType<IMainViewModel, MainViewModel>();
         }
 
         public static T Resolve<T>() where T : class
         {
-            return unityContainer.Resolve<T>();
+            return UnityContainer.Resolve<T>();
         }
 
         public static T Resolve<T>(string name) where T : class
         {
-            return unityContainer.Resolve<T>(name);
+            return UnityContainer.Resolve<T>(name);
         }
 
         public static IMainViewModel MainViewModel
         {
-            get { return unityContainer.Resolve<IMainViewModel>(); }
+            get { return UnityContainer.Resolve<IMainViewModel>(); }
         }
     }
 }
