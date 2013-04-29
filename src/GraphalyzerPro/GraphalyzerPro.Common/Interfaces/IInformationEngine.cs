@@ -2,7 +2,7 @@
  * Copyright (c) 2006-2009 by Christoph Menzel, Daniel Birkmaier, 
  * Carl-Clemens Ebinger, Maximilian Madeja, Farruch Kouliev, Stefan Zoettlein
  *
- * This file is part of the GraphalyzerPro rating application.
+ * This file is part of the GraphalyzerPro application.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,33 +19,19 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using GraphalyzerPro.ViewModels;
-using Microsoft.Practices.Unity;
-
-namespace GraphalyzerPro
+namespace GraphalyzerPro.Common.Interfaces
 {
-    public class ViewModelLocator
+    /// <summary>
+    /// Provides a common interface for the information engine.
+    /// </summary>
+    public interface IInformationEngine
     {
-        private readonly static UnityContainer UnityContainer = new UnityContainer();
-
-        public ViewModelLocator()
-        {
-            UnityContainer.RegisterType<IMainViewModel, MainViewModel>();
-        }
-
-        public static T Resolve<T>() where T : class
-        {
-            return UnityContainer.Resolve<T>();
-        }
-
-        public static T Resolve<T>(string name) where T : class
-        {
-            return UnityContainer.Resolve<T>(name);
-        }
-
-        public static IMainViewModel MainViewModel
-        {
-            get { return UnityContainer.Resolve<IMainViewModel>(); }
-        }
+        /// <summary>
+        /// Processes a new <see cref="IDiagnoseOutputEntry"/>.
+        /// </summary>
+        /// <param name="diagnoseOutputEntry">
+        /// An <see cref="IDiagnoseOutputEntry"/> which should be processed by the <see cref="IInformationEngine"/>.
+        /// </param>
+        void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry diagnoseOutputEntry);
     }
 }

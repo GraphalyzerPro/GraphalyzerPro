@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{D43CCC
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphalyzerPro.Common", "GraphalyzerPro.Common\GraphalyzerPro.Common.csproj", "{799A3384-B77E-4A62-ABA0-D938EEAE60DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,8 @@ Global
 		{D7F17E07-133F-48A7-A15A-19D032CD5E62}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7F17E07-133F-48A7-A15A-19D032CD5E62}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7F17E07-133F-48A7-A15A-19D032CD5E62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{799A3384-B77E-4A62-ABA0-D938EEAE60DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{799A3384-B77E-4A62-ABA0-D938EEAE60DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
