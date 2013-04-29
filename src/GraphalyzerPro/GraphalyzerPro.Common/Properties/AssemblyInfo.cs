@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("GraphalyzerPro.Tests")]
+[assembly: AssemblyTitle("GraphalyzerPro.Common")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("GraphalyzerPro.Tests")]
+[assembly: AssemblyProduct("GraphalyzerPro.Common")]
 [assembly: AssemblyCopyright("Copyright ©  2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("c107bcac-749f-415b-b49d-8ae38c695b17")]
+[assembly: Guid("20c6ade7-df3f-4df4-bd0f-66248b8597c2")]
 
 // Version information for an assembly consists of the following four values:
 //
