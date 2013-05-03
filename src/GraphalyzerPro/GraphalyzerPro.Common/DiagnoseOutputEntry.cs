@@ -29,51 +29,58 @@ namespace GraphalyzerPro.Common
     /// </summary>
     public class DiagnoseOutputEntry : IDiagnoseOutputEntry
     {
-		private DateTime m_timeStamp;
-		private long m_gap;
-		private long m_duration;
-		private int m_processId;
-		private int m_threadNumber;
-		private char m_type;
-		private string m_domain;
-		private string m_application;
-		private string m_component;
-		private string m_module;
-		private string m_code;
-		private string m_text;
-		private string m_metaInformation;
+		private DateTime _timeStamp;
+		private long _gap;
+		private long _duration;
+		private int _processId;
+		private int _threadNumber;
+		private char _type;
+		private string _domain;
+		private string _application;
+		private string _component;
+		private string _module;
+		private string _code;
+		private string _text;
+		private string _metaInformation;
 
 		/// <summary>
 		/// Creates a standard DiagnoseOutputEntry
 		/// </summary>
-		/// <param name="timeStamp"></param>
-		/// <param name="gap"></param>
-		/// <param name="duration"></param>
-		/// <param name="processId"></param>
-		/// <param name="threadNumber"></param>
-		/// <param name="type"></param>
-		/// <param name="domain"></param>
-		/// <param name="application"></param>
-		/// <param name="component"></param>
-		/// <param name="module"></param>
-		/// <param name="code"></param>
-		/// <param name="text"></param>
-		/// <param name="metaInformation"></param>
+		/// <param name="timeStamp">The timestamp</param>
+		/// <param name="gap">The gap</param>
+		/// <param name="duration">The duration</param>
+		/// <param name="processId">The process id</param>
+		/// <param name="threadNumber">The thread number</param>
+		/// <param name="type">The type</param>
+		/// <param name="domain">The domain</param>
+		/// <param name="application">The application</param>
+		/// <param name="component">The component</param>
+		/// <param name="module">The module</param>
+		/// <param name="code">The code</param>
+		/// <param name="text">The text</param>
+		/// <param name="metaInformation">The meta information</param>
 		public DiagnoseOutputEntry(DateTime timeStamp, long gap, long duration, int processId, int threadNumber, char type, string domain, string application, string component, string module, string code, string text, string metaInformation)
 		{
-			m_timeStamp=timeStamp;
-			m_gap=gap;
-			m_duration=duration;
-			m_processId=processId;
-			m_threadNumber=threadNumber;
-			m_type=type;
-			m_domain=domain;
-			m_application=application;
-			m_component=component;
-			m_module=module;
-			m_code=code;
-			m_text=text;
-			m_metaInformation=metaInformation;
+			if((type=='(')||(type=='E')||(type=='·')||(type==')'))
+			{
+				_timeStamp=timeStamp;
+				_gap=gap;
+				_duration=duration;
+				_processId=processId;
+				_threadNumber=threadNumber;
+				_type=type;
+				_domain=domain;
+				_application=application;
+				_component=component;
+				_module=module;
+				_code=code;
+				_text=text;
+				_metaInformation=metaInformation;
+			}
+			else
+			{
+				throw new FormatException();
+			}
 		}
 
         /// <summary>
@@ -83,7 +90,7 @@ namespace GraphalyzerPro.Common
 		{
 			get
 			{
-				return m_timeStamp;
+				return _timeStamp;
 			}
 		}
 
@@ -94,7 +101,7 @@ namespace GraphalyzerPro.Common
 		{
 			get
 			{
-				return m_gap;
+				return _gap;
 			}
 		}
 
@@ -105,7 +112,7 @@ namespace GraphalyzerPro.Common
 		{
 			get
 			{
-				return m_duration;
+				return _duration;
 			}
 		}
 
@@ -116,7 +123,7 @@ namespace GraphalyzerPro.Common
 		{
 			get
 			{
-				return m_processId;
+				return _processId;
 			}
 		}
 
@@ -127,7 +134,7 @@ namespace GraphalyzerPro.Common
 		{
 			get
 			{
-				return m_threadNumber;
+				return _threadNumber;
 			}
 		}
 
@@ -138,7 +145,7 @@ namespace GraphalyzerPro.Common
 		{
 			get
 			{
-				return m_type;
+				return _type;
 			}
 		}
 
@@ -149,7 +156,7 @@ namespace GraphalyzerPro.Common
 		{
 			get
 			{
-				return m_domain;
+				return _domain;
 			}
 		}
 
@@ -160,7 +167,7 @@ namespace GraphalyzerPro.Common
 		{
 			get
 			{
-				return m_application;
+				return _application;
 			}
 		}
 
@@ -171,7 +178,7 @@ namespace GraphalyzerPro.Common
 		{
 			get
 			{
-				return m_component;
+				return _component;
 			}
 		}
         
@@ -182,7 +189,7 @@ namespace GraphalyzerPro.Common
 		{
 			get
 			{
-				return m_module;
+				return _module;
 			}
 		}
 
@@ -193,7 +200,7 @@ namespace GraphalyzerPro.Common
 		{
 			get
 			{
-				return m_code;
+				return _code;
 			}
 		}
         
@@ -204,7 +211,7 @@ namespace GraphalyzerPro.Common
 		{
 			get
 			{
-				return m_text;
+				return _text;
 			}
 		}
 
@@ -215,7 +222,7 @@ namespace GraphalyzerPro.Common
 		{
 			get
 			{
-				return m_metaInformation;
+				return _metaInformation;
 			}
 		}
     }

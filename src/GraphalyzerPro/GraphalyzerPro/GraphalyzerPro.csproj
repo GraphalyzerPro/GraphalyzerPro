@@ -86,7 +86,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="CSVReceiver.cs" />
     <Compile Include="ViewModelLocator.cs" />
     <Compile Include="ViewModels\IMainViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

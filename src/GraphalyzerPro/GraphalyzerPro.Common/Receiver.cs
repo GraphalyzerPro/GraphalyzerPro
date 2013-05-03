@@ -29,51 +29,55 @@ namespace GraphalyzerPro.Common
 	public abstract class Receiver : IReceiver
 	{
 		/// <summary>
-		/// The name
+		/// The name.
 		/// </summary>
-		private string m_name;
+		private string _name;
 		/// <summary>
-		/// The <see cref="IInformationEngine"/>
+		/// The <see cref="IInformationEngine"/>.
 		/// </summary>
-		private IInformationEngine m_informationEngine;
+		private IInformationEngine _informationEngine;
 
 		public Receiver(string name)
 		{
-			m_name=name;
-			m_informationEngine=null;
+			_name=name;
+			_informationEngine=null;
 		}
 
 		/// <summary>
-		/// The name of the <see cref="IReceiver"/>
+		/// The name of the <see cref="IReceiver"/>.
 		/// </summary>
 		public string Name
 		{
 			get
 			{
-				return m_name;
+				return _name;
+			}
+			set
+			{
+				_name=value;
 			}
 		}
 
 		/// <summary>
-		/// The <see cref="IInformationEngine"/> transferred by the <see cref="Initialize"/>-method
+		/// The <see cref="IInformationEngine"/> transferred by the <see cref="Initialize"/>-method.
 		/// </summary>
 		public IInformationEngine InformationEngine
 		{
 			get
 			{
-				return m_informationEngine;
+				return _informationEngine;
 			}
 		}
 
 		/// <summary>
-		/// Initializes the <see cref="IReceiver"/>
+		/// Initializes the <see cref="IReceiver"/>.
 		/// </summary>
 		/// <param name="informationEngine">
 		/// The <see cref="IInformationEngine"/> which handels the requests of the <see cref="IReceiver"/>.
 		/// </param>
 		public virtual void Initialize(IInformationEngine informationEngine)
 		{
-			m_informationEngine=informationEngine;
+			_informationEngine=informationEngine;
 		}
 
 		/// <summary>
