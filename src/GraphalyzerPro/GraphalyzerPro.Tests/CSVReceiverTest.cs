@@ -21,28 +21,30 @@
 
 using System;
 using NUnit.Framework;
+using NSubstitute;
+using NSubstitute.Core;
 using FluentAssertions;
-using Microsoft.Practices.Unity;
 using GraphalyzerPro.Common;
 using GraphalyzerPro.Receivers;
 using GraphalyzerPro.Common.Interfaces;
 using System.IO;
 using System.Text;
+using Microsoft.Win32;
 
 namespace GraphalyzerPro.Tests
 {
-    [TestFixture]
-    public class CSVReceiverTest
-    {
-		private CSVReceiver _receiver=new CSVReceiver("name");
-		private	InformationEngine _informationEngine=new InformationEngine();
-		private ASCIIEncoding _encoder=new ASCIIEncoding();
+	[TestFixture]
+	public class CSVReceiverTest
+	{
+		private readonly CSVReceiver _receiver=new CSVReceiver("name");
+		private readonly InformationEngine _informationEngine=new InformationEngine();
+		private readonly ASCIIEncoding _encoder=new ASCIIEncoding();
 
-        [Test]
-        public void Name_Get_ReturnsName()
-        {
-            _receiver.Name.Should().Be("name");
-        }
+		[Test]
+		public void Name_Get_ReturnsName()
+		{
+			_receiver.Name.Should().Be("name");
+		}
 
 		[Test]
 		public void ReadLine_CorrectLine()
@@ -136,5 +138,14 @@ namespace GraphalyzerPro.Tests
 		{
 			_receiver.ReadFile(new StreamReader(new MemoryStream(_encoder.GetBytes("Timestamp;Gap;Duration;PID;Thread;Type;Domain;Application;Component;Module;Code;Text;Meta-Informationen\n01.02.2003 03:04:05;6;7;8;9;(;Domain;Application;Component;Module;Code;Text;Meta-Informationen\n01.02.2003 03:04:05;6;7;8;9;(;Domain;Application;Component;Module;Code;Text;Meta-Informationen")))).Count.Should().Be(2);
 		}
-    }
+
+		[Test]
+		[ExpectedException(typeof(OperationCanceledException))]
+		public void Initialize_Canceled_OpenFileDialogReturnsFalse()
+		{
+			CSVReceiver substitute=Substitute.For<CSVReceiver>("name");
+			substitute.OpenFileDialogShow(Arg.Any<OpenFileDialog>()).Returns(false);
+			substitute.Initialize(_informationEngine);
+		}
+	}
 }

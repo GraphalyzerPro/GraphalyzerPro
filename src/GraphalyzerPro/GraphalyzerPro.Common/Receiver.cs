@@ -19,6 +19,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+
 using GraphalyzerPro.Common.Interfaces;
 
 namespace GraphalyzerPro.Common
@@ -37,7 +38,7 @@ namespace GraphalyzerPro.Common
 		/// </summary>
 		private IInformationEngine _informationEngine;
 
-		public Receiver(string name)
+		protected Receiver(string name)
 		{
 			_name=name;
 			_informationEngine=null;

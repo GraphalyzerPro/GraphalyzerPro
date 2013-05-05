@@ -22,7 +22,7 @@
 using System.Windows;
 
 namespace GraphalyzerPro
-{
+{ 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>

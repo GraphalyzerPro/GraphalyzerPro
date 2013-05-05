@@ -140,7 +140,7 @@ namespace GraphalyzerPro.Receivers
 		/// <summary>
 		/// Reads the file selected in the <see cref="OpenFileDialog"/> and returns the corresponding <see cref="List<IDiagnoseOutputEntry>"/>.
 		/// </summary>
-		/// <param name="reader">The <see cref="StreamReader"/> to read from.</param>
+		/// <param name="dialog">The <see cref="OpenFileDialog"/> containing the selected file.</param>
 		/// <returns>The created IDiagnoseOutputEntry.</returns>
 		/// <exception cref="InvalidOperationException">No files were selected in the dialog.</exception>
 		internal List<IDiagnoseOutputEntry> OpenFile(OpenFileDialog dialog)
@@ -155,9 +155,22 @@ namespace GraphalyzerPro.Receivers
 			catch
 			{
 				entries=null;
-				MessageBox.Show("Leider konnte die angegebene Datei '"+dialog.FileName+"' aufgrund eines fehlerhaften Formats nicht geöffnet werden.", "Fehlerhaftes Format", MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBoxShow("Leider konnte die angegebene Datei '"+dialog.FileName+"' aufgrund eines fehlerhaften Formats nicht geöffnet werden.", "Fehlerhaftes Format", MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 			return entries;
+		}
+
+		/// <summary>
+		/// Creates the <see cref="IDiagnoseOutputEntry"/>-objects in the file specified in the passed dialog.
+		/// </summary>
+		/// <param name="dialog">The <see cref="OpenFileDialog"></param>
+		internal void CreateDiagnoseOutputEntries(OpenFileDialog dialog)
+		{
+			List<IDiagnoseOutputEntry> entries=OpenFile(dialog);
+			foreach(IDiagnoseOutputEntry entry in entries)
+			{
+				InformationEngine.ProcessNewDiagnoseOutputEntry(entry);
+			}
 		}
 
 		/// <summary>
@@ -169,25 +182,20 @@ namespace GraphalyzerPro.Receivers
 		public override void Initialize(IInformationEngine informationEngine)
 		{
 			base.Initialize(informationEngine);
-			List<IDiagnoseOutputEntry> entries=null;
 			OpenFileDialog dialog=new OpenFileDialog();
 			dialog.Title="Öffnen";
 			dialog.Filter="CSV-Dateien (*.csv)|*.csv|Alle Dateien (*.*)|*.*";
 			bool? result;
 			bool notcanceled;
-			while((notcanceled=((result=dialog.ShowDialog()).HasValue)&&(result.Value))&&(entries==null))
+			while((notcanceled=((result=OpenFileDialogShow(dialog)).HasValue))&&(notcanceled=result.Value))
 			{
 				try
 				{
-					entries=OpenFile(dialog);
-					foreach(IDiagnoseOutputEntry entry in entries)
-					{
-						InformationEngine.ProcessNewDiagnoseOutputEntry(entry);
-					}
+					CreateDiagnoseOutputEntries(dialog);
 				}
 				catch
 				{
-					MessageBox.Show("Leider konnte die angegebene Datei '"+dialog.FileName+"' aufgrund eines E/A-Fehlers nicht geöffnet werden.", "E/A-Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
+					MessageBoxShow("Leider konnte die angegebene Datei '"+dialog.FileName+"' aufgrund eines E/A-Fehlers nicht geöffnet werden.", "E/A-Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
 				}
 			}
 			if(!notcanceled)
@@ -201,6 +209,28 @@ namespace GraphalyzerPro.Receivers
 		/// </summary>
 		public override void Deactivate()
 		{
+		}
+
+		/// <summary>
+		/// Shows a <see cref="MessageBox"/>-object and can be used for mocking
+		/// </summary>
+		/// <param name="messageBox">The text of the <see cref="MessageBox"/></param>
+		/// <param name="caption">The caption of the <see cref="MessageBox"/></param>
+		/// <param name="button">The <see cref="MessageBoxButton"/> of the <see cref="MessageBox"/></param>
+		/// <param name="icon">The <see cref="MessageBoxImage"/> of the <see cref="MessageBox"/></param>
+		internal void MessageBoxShow(string messageBox, string caption, MessageBoxButton button, MessageBoxImage icon)
+		{
+			MessageBox.Show(messageBox, caption, button, icon);
+		}
+
+		/// <summary>
+		/// Shows the passed <see cref="OpenFileDialog"/> and can be used for mocking
+		/// </summary>
+		/// <param name="dialog">The <see cref="OpenFileDialog"/> to be shown</param>
+		/// <returns>The success of the dialog showing</returns>
+		internal bool? OpenFileDialogShow(OpenFileDialog dialog)
+		{
+			return dialog.ShowDialog();
 		}
 	}
 }

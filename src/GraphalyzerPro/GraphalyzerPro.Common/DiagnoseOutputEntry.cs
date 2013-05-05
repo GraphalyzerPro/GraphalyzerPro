@@ -29,19 +29,19 @@ namespace GraphalyzerPro.Common
     /// </summary>
     public class DiagnoseOutputEntry : IDiagnoseOutputEntry
     {
-		private DateTime _timeStamp;
-		private long _gap;
-		private long _duration;
-		private int _processId;
-		private int _threadNumber;
-		private char _type;
-		private string _domain;
-		private string _application;
-		private string _component;
-		private string _module;
-		private string _code;
-		private string _text;
-		private string _metaInformation;
+		private readonly DateTime _timeStamp;
+		private readonly long _gap;
+		private readonly long _duration;
+		private readonly int _processId;
+		private readonly int _threadNumber;
+		private readonly char _type;
+		private readonly string _domain;
+		private readonly string _application;
+		private readonly string _component;
+		private readonly string _module;
+		private readonly string _code;
+		private readonly string _text;
+		private readonly string _metaInformation;
 
 		/// <summary>
 		/// Creates a standard DiagnoseOutputEntry

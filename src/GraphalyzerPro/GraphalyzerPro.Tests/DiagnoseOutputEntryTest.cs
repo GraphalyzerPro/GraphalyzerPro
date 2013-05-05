@@ -22,11 +22,7 @@
 using System;
 using NUnit.Framework;
 using FluentAssertions;
-using Microsoft.Practices.Unity;
 using GraphalyzerPro.Common;
-using GraphalyzerPro.Common.Interfaces;
-using System.IO;
-using System.Text;
 
 namespace GraphalyzerPro.Tests
 {
@@ -51,7 +47,6 @@ namespace GraphalyzerPro.Tests
 			entry.Text.Should().Be("Text");
 			entry.MetaInformation.Should().Be("Meta-Informationen");
 		}
-
 		
         [Test]
 		[ExpectedException(typeof(FormatException))]
