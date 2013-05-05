@@ -1,9 +1,8 @@
-﻿<!--
-/*
+﻿/*
  * Copyright (c) 2006-2009 by Christoph Menzel, Daniel Birkmaier, 
  * Carl-Clemens Ebinger, Maximilian Madeja, Farruch Kouliev, Stefan Zoettlein
  *
- * This file is part of the GraphalyzerPro rating application.
+ * This file is part of the GraphalyzerPro application.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,14 +18,25 @@
  * License along with this program. If not, see
  * <http://www.gnu.org/licenses/>.
  */
--->
 
-<Application x:Class="GraphalyzerPro.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:GraphalyzerPro="clr-namespace:GraphalyzerPro"
-             StartupUri="MainWindow.xaml">
-    <Application.Resources>
-        <GraphalyzerPro:ViewModelLocator x:Key="ViewModelLocator"/>
-    </Application.Resources>
-</Application>
+using System;
+using System.Windows;
+using System.Windows.Controls;
+using GraphalyzerPro.Common.Interfaces;
+
+namespace GraphalyzerPro
+{
+	/// <summary>
+	/// Interaction logic for ReceiverActivationDialog.xaml
+	/// </summary>
+	public partial class ReceiverActivationDialog : Window
+	{
+		/// <summary>
+		/// The <see cref="ReceiverActivationDialog"/> constructor
+		/// </summary>
+		public ReceiverActivationDialog()
+		{
+			InitializeComponent();
+		}
+	}
+}

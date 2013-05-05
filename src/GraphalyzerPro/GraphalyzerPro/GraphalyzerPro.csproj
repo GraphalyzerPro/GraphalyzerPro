@@ -86,9 +86,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ReceiverActivationDialog.xaml.cs">
+      <DependentUpon>ReceiverActivationDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModelLocator.cs" />
     <Compile Include="ViewModels\IMainViewModel.cs" />
+    <Compile Include="ViewModels\IReceiverActivationDialogViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\ReceiverActivationDialogViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -101,6 +106,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ReceiverActivationDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -134,6 +143,10 @@
     <ProjectReference Include="..\GraphalyzerPro.Common\GraphalyzerPro.Common.csproj">
       <Project>{799a3384-b77e-4a62-aba0-d938eeae60dd}</Project>
       <Name>GraphalyzerPro.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GraphalyzerPro.Receivers.CSVReceiver\GraphalyzerPro.Receivers.CSVReceiver.csproj">
+      <Project>{52a91581-83dd-4769-9acf-87249c7dfa36}</Project>
+      <Name>GraphalyzerPro.Receivers.CSVReceiver</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

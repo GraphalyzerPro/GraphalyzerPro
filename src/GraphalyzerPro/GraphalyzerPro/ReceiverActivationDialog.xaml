@@ -1,9 +1,8 @@
 ﻿<!--
-/*
  * Copyright (c) 2006-2009 by Christoph Menzel, Daniel Birkmaier, 
  * Carl-Clemens Ebinger, Maximilian Madeja, Farruch Kouliev, Stefan Zoettlein
  *
- * This file is part of the GraphalyzerPro rating application.
+ * This file is part of the GraphalyzerPro application.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -21,12 +20,13 @@
  */
 -->
 
-<Application x:Class="GraphalyzerPro.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:GraphalyzerPro="clr-namespace:GraphalyzerPro"
-             StartupUri="MainWindow.xaml">
-    <Application.Resources>
-        <GraphalyzerPro:ViewModelLocator x:Key="ViewModelLocator"/>
-    </Application.Resources>
-</Application>
+<Window x:Class="GraphalyzerPro.ReceiverActivationDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        DataContext="{Binding Path=ReceiverActivationDialogViewModel, Source={StaticResource ViewModelLocator}}"
+        Title="Empfänger aktivieren" Height="330" Width="660" ShowInTaskbar="False">
+    <Grid>
+        <ListBox x:Name="lbReceiverTypes" Margin="10" ItemsSource="{Binding ReceiverTypes}" SelectedItem="{Binding ReceiverType}"/>
+
+    </Grid>
+</Window>

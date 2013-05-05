@@ -20,11 +20,55 @@
  */
 
 using ReactiveUI;
+using System.Windows.Input;
+using System.Windows;
 
 namespace GraphalyzerPro.ViewModels
 {
     public class MainViewModel : ReactiveObject, IMainViewModel
     {
-        public string Title { get { return "GraphalyzerPro"; } }
+		public string Title
+		{
+			get
+			{
+				return "GraphalyzerPro";
+			}
+		}
+
+	    public MainViewModel()
+	    {
+		    if(((App)(Application.Current)).ReceiverTypes.Length>0)
+		    {
+				ReceiverActivationDialog dialog=new ReceiverActivationDialog();
+			    dialog.DataContext=new ReceiverActivationDialogViewModel();
+			    bool? result;
+			    if(((result=dialog.ShowDialog()).HasValue)&&(result.Value))
+			    {
+
+			    }
+			    else
+			    {
+				    Application.Current.Shutdown();
+			    }
+		    }
+		    else
+		    {
+				MessageBoxShow("Leider konnte kein einziger Empfänger geladen werden. Deshalb wird GraphalyzerPro beendet.", "Keine Empfänger geladen", MessageBoxButton.OK, MessageBoxImage.Error);
+		    }
+	    }
+
+		/// <summary>
+		/// Shows a <see cref="MessageBox"/>-object and can be used for mocking
+		/// </summary>
+		/// <param name="messageBox">The text of the <see cref="MessageBox"/></param>
+		/// <param name="caption">The caption of the <see cref="MessageBox"/></param>
+		/// <param name="button">The <see cref="MessageBoxButton"/> of the <see cref="MessageBox"/></param>
+		/// <param name="icon">The <see cref="MessageBoxImage"/> of the <see cref="MessageBox"/></param>
+		internal void MessageBoxShow(string messageBox, string caption, MessageBoxButton button, MessageBoxImage icon)
+		{
+			MessageBox.Show(messageBox, caption, button, icon);
+		}
+
+
     }
 }

@@ -22,6 +22,11 @@
 using ReactiveUI;
 using System.Globalization;
 using System.Windows;
+using GraphalyzerPro.Properties;
+using System.Reflection;
+using System;
+using System.Collections.Generic;
+using GraphalyzerPro.Common.Interfaces;
 
 namespace GraphalyzerPro
 {
@@ -29,7 +34,31 @@ namespace GraphalyzerPro
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application
-    {
+	{
+		/// <summary>
+		/// The available <see cref="IReceiver"/>-types.
+		/// </summary>
+		private List<Type> _receiverTypes;
+
+		/// <summary>
+		/// The constructor
+		/// </summary>
+		public App() : base()
+		{
+			_receiverTypes=new List<Type>();
+		}
+
+		/// <summary>
+		/// The available <see cref="IReceiver"/>-types
+		/// </summary>
+		public Type[] ReceiverTypes
+		{
+			get
+			{
+				return _receiverTypes.ToArray();
+			}
+		}
+
         private static void InitializeRxBackingFieldNameConventions()
         {
             RxApp.GetFieldNameForPropertyNameFunc = delegate(string name)
@@ -40,10 +69,45 @@ namespace GraphalyzerPro
             };
         }
 
-        protected override void OnStartup(StartupEventArgs e)
+		/// <summary>
+		/// Initializes _receiverTypes with the receiver types
+		/// </summary>
+		private void InitializeReceivers()
+		{
+			Settings settings=new Settings();
+			foreach(string path in settings.ReceiverAssemblies)
+			{
+				try
+				{
+					LoadReceivers(path);
+				}
+				catch
+				{
+					MessageBox.Show("Die Empfänger-Programmbibliothek \""+path+"\" konnte nicht geladen werden.");
+				}
+			}
+		}
+
+		/// <summary>
+		/// Loads each type which implements the <see cref="IReceiver"/>-interface from the assembly which is saved at the specified path.
+		/// </summary>
+		/// <param name="path">The path of the assembly file</param>
+	    internal void LoadReceivers(string path)
+	    {
+			foreach(Type type in Assembly.LoadFrom(path).GetExportedTypes())
+			{
+				if((type.IsClass)&&(type.FindInterfaces(TypeFilter.Equals, typeof(IReceiver)).Length>0))
+				{
+					_receiverTypes.Add(type);
+				}
+			}
+	    }
+
+	    protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
             InitializeRxBackingFieldNameConventions();
+			InitializeReceivers();
         }
     }
 }
