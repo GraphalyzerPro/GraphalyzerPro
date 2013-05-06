@@ -19,6 +19,8 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using System;
+using Microsoft.Expression.Interactivity.Core;
 using ReactiveUI;
 using System.Windows.Input;
 using System.Windows;
@@ -34,30 +36,43 @@ namespace GraphalyzerPro.ViewModels
 				return "GraphalyzerPro";
 			}
 		}
-
-	    public MainViewModel()
+		
+		/// <summary>
+		/// The <see cref="ICommand"/> to be executed if the corresponding <see cref="MainWindow"/> is shown for the first time
+		/// </summary>
+		/// <returns>The <see cref="ICommand"/></returns>
+	    public ICommand LoadedCommand
 	    {
-		    if(((App)(Application.Current)).ReceiverTypes.Length>0)
+		    get
 		    {
-				ReceiverActivationDialog dialog=new ReceiverActivationDialog();
-			    dialog.DataContext=new ReceiverActivationDialogViewModel();
-			    bool? result;
-			    if(((result=dialog.ShowDialog()).HasValue)&&(result.Value))
-			    {
-
-			    }
-			    else
-			    {
-				    Application.Current.Shutdown();
-			    }
-		    }
-		    else
-		    {
-				MessageBoxShow("Leider konnte kein einziger Empfänger geladen werden. Deshalb wird GraphalyzerPro beendet.", "Keine Empfänger geladen", MessageBoxButton.OK, MessageBoxImage.Error);
+			    return new ActionCommand(OnLoadedCommand);
 		    }
 	    }
 
 		/// <summary>
+		/// The handler for the <see cref="LoadedCommand"/>
+		/// </summary>
+	    public void OnLoadedCommand()
+	    {
+		    App app=(App)(Application.Current);
+			if(app.ReceiverTypes.Length>0)
+			{
+				if(ReceiverActivationDialogShow())
+				{
+					
+				}
+				else
+				{
+					app.Shutdown();
+				}
+			}
+			else
+			{
+				MessageBoxShow("Leider konnte kein einziger Empfänger geladen werden. Deshalb wird GraphalyzerPro beendet.", "Keine Empfänger geladen", MessageBoxButton.OK, MessageBoxImage.Error);
+			}
+	    }
+
+	    /// <summary>
 		/// Shows a <see cref="MessageBox"/>-object and can be used for mocking
 		/// </summary>
 		/// <param name="messageBox">The text of the <see cref="MessageBox"/></param>
@@ -69,6 +84,16 @@ namespace GraphalyzerPro.ViewModels
 			MessageBox.Show(messageBox, caption, button, icon);
 		}
 
-
+		/// <summary>
+		/// Shows a <see cref="ReceiverActivationDialog"/>-object and can be used for mocking
+		/// </summary>
+		/// <returns>The result of the shown dialog</returns>
+	    internal bool ReceiverActivationDialogShow()
+	    {
+			ReceiverActivationDialog dialog=new ReceiverActivationDialog();
+			dialog.DataContext=new ReceiverActivationDialogViewModel();
+		    bool? result=dialog.ShowDialog();
+			return ((result.HasValue)&&(result.Value));
+	    }
     }
 }

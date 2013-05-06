@@ -26,7 +26,6 @@
         DataContext="{Binding Path=ReceiverActivationDialogViewModel, Source={StaticResource ViewModelLocator}}"
         Title="Empfänger aktivieren" Height="330" Width="660" ShowInTaskbar="False">
     <Grid>
-        <ListBox x:Name="lbReceiverTypes" Margin="10" ItemsSource="{Binding ReceiverTypes}" SelectedItem="{Binding ReceiverType}"/>
-
+        <ListBox x:Name="lbReceiverTypes" Margin="10" ItemsSource="{Binding ReceiverTypes}" SelectedItem="{Binding SelectedReceiverType}"/>
     </Grid>
 </Window>

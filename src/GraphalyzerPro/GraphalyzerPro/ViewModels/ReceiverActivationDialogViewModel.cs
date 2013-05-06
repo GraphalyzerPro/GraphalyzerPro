@@ -19,6 +19,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using GraphalyzerPro.Common.Interfaces;
 using ReactiveUI;
 using System;
 using System.Windows;
@@ -27,8 +28,14 @@ namespace GraphalyzerPro.ViewModels
 {
 	public class ReceiverActivationDialogViewModel : ReactiveObject, IReceiverActivationDialogViewModel
 	{
-		private Type _receiver=null;
+		/// <summary>
+		/// The selected receiver type implementing <see cref="IReceiver"/>
+		/// </summary>
+		private Type _selectedReceiverType=null;
 
+		/// <summary>
+		/// All selectable receiver types implementing <see cref="IReceiver"/>
+		/// </summary>
 		public Type[] ReceiverTypes
 		{
 			get
@@ -37,15 +44,18 @@ namespace GraphalyzerPro.ViewModels
 			}
 		}
 
-		public Type Receiver
+		/// <summary>
+		/// The selected receiver type implementing <see cref="IReceiver"/>
+		/// </summary>
+		public Type SelectedReceiverType
 		{
 			get
 			{
-				return _receiver;
+				return _selectedReceiverType;
 			}
 			set
 			{
-				_receiver=value;
+				_selectedReceiverType=value;
 			}
 		}
 	}

@@ -36,6 +36,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GalaSoft.MvvmLight.Extras.WPF45">
+      <HintPath>..\packages\MvvmLightLibs.4.1.27.0\lib\net45\GalaSoft.MvvmLight.Extras.WPF45.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.WPF45">
+      <HintPath>..\packages\MvvmLightLibs.4.1.27.0\lib\net45\GalaSoft.MvvmLight.WPF45.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Expression.Prototyping.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Practices.ServiceLocation">
       <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
@@ -68,6 +76,9 @@
     </Reference>
     <Reference Include="System.Reactive.PlatformServices">
       <HintPath>..\packages\Rx-PlatformServices.2.1.30214.0\lib\Net45\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.4.1.27.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />

@@ -19,6 +19,8 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using System.IO;
+using System.Runtime.CompilerServices;
 using ReactiveUI;
 using System.Globalization;
 using System.Windows;
@@ -27,6 +29,8 @@ using System.Reflection;
 using System;
 using System.Collections.Generic;
 using GraphalyzerPro.Common.Interfaces;
+
+[assembly: InternalsVisibleTo("GraphalyzerPro.Tests")]
 
 namespace GraphalyzerPro
 {
@@ -72,42 +76,64 @@ namespace GraphalyzerPro
 		/// <summary>
 		/// Initializes _receiverTypes with the receiver types
 		/// </summary>
-		private void InitializeReceivers()
+		private void InitializeReceiverTypes()
 		{
 			Settings settings=new Settings();
 			foreach(string path in settings.ReceiverAssemblies)
 			{
 				try
 				{
-					LoadReceivers(path);
+					_receiverTypes.AddRange(LoadReceiverTypes(path));
 				}
-				catch
+				catch(FileLoadException)
 				{
-					MessageBox.Show("Die Empfänger-Programmbibliothek \""+path+"\" konnte nicht geladen werden.");
+					MessageBoxShow("Die Empfänger-Programmbibliothek \""+path+"\" konnte nicht geladen werden.", "GraphalyzerPro", MessageBoxButton.OK, MessageBoxImage.Error);
 				}
 			}
 		}
 
 		/// <summary>
-		/// Loads each type which implements the <see cref="IReceiver"/>-interface from the assembly which is saved at the specified path.
+		/// Loads each type which implements the <see cref="IReceiver"/>-interface from the assembly which is saved at the specified path and then returns all.
 		/// </summary>
 		/// <param name="path">The path of the assembly file</param>
-	    internal void LoadReceivers(string path)
-	    {
-			foreach(Type type in Assembly.LoadFrom(path).GetExportedTypes())
+		/// <returns>The loaded <see cref="IReceiver"/>-types.</returns>
+		internal List<Type> LoadReceiverTypes(string path)
+		{
+			List<Type> result=new List<Type>();
+			try
 			{
-				if((type.IsClass)&&(type.FindInterfaces(TypeFilter.Equals, typeof(IReceiver)).Length>0))
+				foreach(Type type in Assembly.LoadFrom(path).GetExportedTypes())
 				{
-					_receiverTypes.Add(type);
+					if((type.IsClass)&&(type.FindInterfaces(TypeFilter.Equals, typeof(IReceiver)).Length>0))
+					{
+						result.Add(type);
+					}
 				}
 			}
-	    }
+			catch
+			{
+				throw new FileLoadException();
+			}
+			return result;
+		}
 
 	    protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
             InitializeRxBackingFieldNameConventions();
-			InitializeReceivers();
+			InitializeReceiverTypes();
         }
+
+		/// <summary>
+		/// Shows a <see cref="MessageBox"/>-object and can be used for mocking
+		/// </summary>
+		/// <param name="messageBox">The text of the <see cref="MessageBox"/></param>
+		/// <param name="caption">The caption of the <see cref="MessageBox"/></param>
+		/// <param name="button">The <see cref="MessageBoxButton"/> of the <see cref="MessageBox"/></param>
+		/// <param name="icon">The <see cref="MessageBoxImage"/> of the <see cref="MessageBox"/></param>
+		internal void MessageBoxShow(string messageBox, string caption, MessageBoxButton button, MessageBoxImage icon)
+		{
+			MessageBox.Show(messageBox, caption, button, icon);
+		}
     }
 }

@@ -30,5 +30,10 @@ namespace GraphalyzerPro.ViewModels
 		{
 			get;
 		}
-    }
+
+	    Type SelectedReceiverType
+	    {
+		    get;
+	    }
+	}
 }

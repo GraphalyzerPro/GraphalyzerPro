@@ -103,6 +103,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="AppTest.cs" />
     <Compile Include="CSVReceiverTest.cs" />
     <Compile Include="DiagnoseOutputEntryTest.cs" />
     <Compile Include="ViewModelLocatorTest.cs" />
