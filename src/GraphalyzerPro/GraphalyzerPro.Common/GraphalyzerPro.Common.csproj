@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DiagnoseOutputEntry.cs" />
     <Compile Include="Interfaces\IDiagnoseOutputEntry.cs" />
     <Compile Include="Interfaces\IInformationEngine.cs" />
     <Compile Include="Interfaces\IReceiver.cs" />
