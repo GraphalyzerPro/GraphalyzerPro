@@ -15,6 +15,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{D43CCC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphalyzerPro.Common", "GraphalyzerPro.Common\GraphalyzerPro.Common.csproj", "{799A3384-B77E-4A62-ABA0-D938EEAE60DD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphalyzerPro.CsvReceiver", "GraphalyzerPro.CSVReceiver\GraphalyzerPro.CsvReceiver.csproj", "{25F93852-2250-444B-B0B3-C72E03901E0F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphalyzerPro.CsvReceiver.Tests", "GraphalyzerPro.CSVReceiver.Tests\GraphalyzerPro.CsvReceiver.Tests.csproj", "{6B90874D-86CD-4687-A301-045639D6BF20}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +35,10 @@ Global
 		{D7F17E07-133F-48A7-A15A-19D032CD5E62}.Release|Any CPU.Build.0 = Release|Any CPU
 		{799A3384-B77E-4A62-ABA0-D938EEAE60DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{799A3384-B77E-4A62-ABA0-D938EEAE60DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25F93852-2250-444B-B0B3-C72E03901E0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25F93852-2250-444B-B0B3-C72E03901E0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B90874D-86CD-4687-A301-045639D6BF20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B90874D-86CD-4687-A301-045639D6BF20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

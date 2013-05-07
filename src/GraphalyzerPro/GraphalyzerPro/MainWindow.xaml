@@ -26,7 +26,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         DataContext="{Binding Path=MainViewModel, Source={StaticResource ViewModelLocator}}"
         Title="{Binding Title}" Height="350" Width="525">
-    <Grid>
-        
-    </Grid>
+    <DockPanel>
+        <ListBox ItemsSource="{Binding AllReceiver}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Label Content="{Binding Name}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </DockPanel>
 </Window>
