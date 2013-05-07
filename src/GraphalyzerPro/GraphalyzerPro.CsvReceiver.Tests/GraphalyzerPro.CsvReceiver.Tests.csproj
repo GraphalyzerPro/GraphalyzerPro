@@ -4,13 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{799A3384-B77E-4A62-ABA0-D938EEAE60DD}</ProjectGuid>
+    <ProjectGuid>{6B90874D-86CD-4687-A301-045639D6BF20}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GraphalyzerPro.Common</RootNamespace>
-    <AssemblyName>GraphalyzerPro.Common</AssemblyName>
+    <RootNamespace>GraphalyzerPro.CsvReceiver.Tests</RootNamespace>
+    <AssemblyName>GraphalyzerPro.CsvReceiver.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,6 +32,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentAssertions">
+      <HintPath>..\packages\FluentAssertions.2.0.1\lib\net45\FluentAssertions.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -39,13 +50,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DiagnoseOutputEntry.cs" />
-    <Compile Include="Interfaces\IDiagnoseOutputEntry.cs" />
-    <Compile Include="Interfaces\IInformationEngine.cs" />
-    <Compile Include="Interfaces\IReceiver.cs" />
+    <Compile Include="CsvReceiverTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GraphalyzerPro.Common\GraphalyzerPro.Common.csproj">
+      <Project>{799A3384-B77E-4A62-ABA0-D938EEAE60DD}</Project>
+      <Name>GraphalyzerPro.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GraphalyzerPro.CsvReceiver\GraphalyzerPro.CsvReceiver.csproj">
+      <Project>{25f93852-2250-444b-b0b3-c72e03901e0f}</Project>
+      <Name>GraphalyzerPro.CsvReceiver</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="TestData\TestData.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

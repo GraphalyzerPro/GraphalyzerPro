@@ -19,12 +19,71 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Configuration;
+using System.Linq;
+using System.Reflection;
+using GraphalyzerPro.Common.Interfaces;
 using ReactiveUI;
 
 namespace GraphalyzerPro.ViewModels
 {
     public class MainViewModel : ReactiveObject, IMainViewModel
     {
-        public string Title { get { return "GraphalyzerPro"; } }
+        private ReactiveCollection<IReceiver> _allReceiver;
+
+        public MainViewModel()
+        {
+            AllReceiver = new ReactiveCollection<IReceiver>();
+
+            CreateInstanceOfReceiverImplementations(GetAllReceiverAssemblyFileNames());
+        }
+
+        public string Title
+        {
+            get { return "GraphalyzerPro"; }
+        }
+
+        public ReactiveCollection<IReceiver> AllReceiver
+        {
+            get { return _allReceiver; }
+            private set { this.RaiseAndSetIfChanged(value); }
+        }
+
+        private void CreateInstanceOfReceiverImplementations(IEnumerable<string> allReceiverAssemblyFileNames)
+        {
+            foreach (var receiverAssembly in allReceiverAssemblyFileNames)
+            {
+                var assembly = Assembly.LoadFrom(receiverAssembly);
+
+                var allIReceiverTypesOfTheAssembly =
+                    assembly.GetTypes().Where(x => typeof (IReceiver).IsAssignableFrom(x)).ToList();
+
+                foreach (var type in allIReceiverTypesOfTheAssembly)
+                {
+                    AllReceiver.Add(Activator.CreateInstance(type) as IReceiver);
+                }
+            }
+        }
+
+        private static IEnumerable<string> GetAllReceiverAssemblyFileNames()
+        {
+            var returnValue = new Collection<string>();
+
+            var connectionManagerDatabaseServers = ConfigurationManager.GetSection("Receivers") as NameValueCollection;
+
+            if (connectionManagerDatabaseServers != null)
+            {
+                foreach (var serverKey in connectionManagerDatabaseServers.AllKeys)
+                {
+                    returnValue.Add(connectionManagerDatabaseServers.GetValues(serverKey).FirstOrDefault());
+                }
+            }
+
+            return returnValue;
+        }
     }
 }

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{799A3384-B77E-4A62-ABA0-D938EEAE60DD}</ProjectGuid>
+    <ProjectGuid>{25F93852-2250-444B-B0B3-C72E03901E0F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GraphalyzerPro.Common</RootNamespace>
-    <AssemblyName>GraphalyzerPro.Common</AssemblyName>
+    <RootNamespace>GraphalyzerPro.CsvReceiver</RootNamespace>
+    <AssemblyName>GraphalyzerPro.CsvReceiver</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,6 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -39,11 +40,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DiagnoseOutputEntry.cs" />
-    <Compile Include="Interfaces\IDiagnoseOutputEntry.cs" />
-    <Compile Include="Interfaces\IInformationEngine.cs" />
-    <Compile Include="Interfaces\IReceiver.cs" />
+    <Compile Include="CsvReceiver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GraphalyzerPro.Common\GraphalyzerPro.Common.csproj">
+      <Project>{799a3384-b77e-4a62-aba0-d938eeae60dd}</Project>
+      <Name>GraphalyzerPro.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
