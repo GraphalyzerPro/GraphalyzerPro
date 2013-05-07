@@ -19,10 +19,15 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using GraphalyzerPro.Common.Interfaces;
+using ReactiveUI;
+
 namespace GraphalyzerPro.ViewModels
 {
     public interface IMainViewModel
     {
         string Title {get;}
+
+        ReactiveCollection<IReceiver> AllReceiver { get; }
     }
 }
