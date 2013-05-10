@@ -19,17 +19,21 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using NUnit.Framework;
+using System.Globalization;
+using ReactiveUI;
 
-namespace GraphalyzerPro.Tests
+namespace GraphalyzerPro
 {
-    [SetUpFixture]
-    public class TestsSetup
+    internal static class Bootstrapper
     {
-        [SetUp]
-        public void Setup()
+        internal static void InitializeRxBackingFieldNameConventions()
         {
-            Bootstrapper.InitializeRxBackingFieldNameConventions();
+            RxApp.GetFieldNameForPropertyNameFunc = delegate(string name)
+            {
+                var nameAsArray = name.ToCharArray();
+                nameAsArray[0] = char.ToLower(nameAsArray[0], CultureInfo.InvariantCulture);
+                return '_' + new string(nameAsArray);
+            };
         }
     }
 }
