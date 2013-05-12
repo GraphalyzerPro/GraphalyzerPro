@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (c) 2006-2009 by Christoph Menzel, Daniel Birkmaier, 
  * Maximilian Madeja, Farruch Kouliev, Stefan Zoettlein
  *
@@ -19,39 +19,18 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System;
-using GraphalyzerPro.Views;
-using ReactiveUI;
-using ReactiveUI.Xaml;
+using System.Windows;
 
-namespace GraphalyzerPro.ViewModels
+namespace GraphalyzerPro.Views
 {
-	public class MainViewModel : ReactiveObject, IMainViewModel
-	{
-		public MainViewModel()
-		{
-			ActivateReceiverCommand=new ReactiveCommand();
-			ActivateReceiverCommand.Subscribe(ActivateReceiver);
-		}
-
-		public string Title
-		{
-			get
-			{
-				return "GraphalyzerPro";
-			}
-		}
-
-		public IReactiveCommand ActivateReceiverCommand
-		{
-			get;
-			private set;
-		}
-
-		private void ActivateReceiver(object o)
-		{
-			var dialog=new ReceiverActivationDialog();
-			dialog.ShowDialog();
-		}
-	}
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+        public MainWindow()
+        {
+            InitializeComponent();
+        }
+    }
 }

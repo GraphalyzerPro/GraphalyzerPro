@@ -19,39 +19,18 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System;
-using GraphalyzerPro.Views;
-using ReactiveUI;
-using ReactiveUI.Xaml;
+using System.Windows;
 
-namespace GraphalyzerPro.ViewModels
+namespace GraphalyzerPro.Views
 {
-	public class MainViewModel : ReactiveObject, IMainViewModel
+	/// <summary>
+	///     Interaction logic for ReceiverActivationDialog.xaml
+	/// </summary>
+	public partial class ReceiverActivationDialog : Window
 	{
-		public MainViewModel()
+		public ReceiverActivationDialog()
 		{
-			ActivateReceiverCommand=new ReactiveCommand();
-			ActivateReceiverCommand.Subscribe(ActivateReceiver);
-		}
-
-		public string Title
-		{
-			get
-			{
-				return "GraphalyzerPro";
-			}
-		}
-
-		public IReactiveCommand ActivateReceiverCommand
-		{
-			get;
-			private set;
-		}
-
-		private void ActivateReceiver(object o)
-		{
-			var dialog=new ReceiverActivationDialog();
-			dialog.ShowDialog();
+			InitializeComponent();
 		}
 	}
 }
