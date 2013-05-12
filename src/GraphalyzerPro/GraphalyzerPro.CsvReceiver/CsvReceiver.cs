@@ -1,6 +1,6 @@
 ﻿/*
  * Copyright (c) 2006-2009 by Christoph Menzel, Daniel Birkmaier, 
- * Carl-Clemens Ebinger, Maximilian Madeja, Farruch Kouliev, Stefan Zoettlein
+ * Maximilian Madeja, Farruch Kouliev, Stefan Zoettlein
  *
  * This file is part of the GraphalyzerPro application.
  *

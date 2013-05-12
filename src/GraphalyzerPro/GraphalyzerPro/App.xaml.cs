@@ -1,6 +1,6 @@
 ﻿/*
  * Copyright (c) 2006-2009 by Christoph Menzel, Daniel Birkmaier, 
- * Carl-Clemens Ebinger, Maximilian Madeja, Farruch Kouliev, Stefan Zoettlein
+ * Maximilian Madeja, Farruch Kouliev, Stefan Zoettlein
  *
  * This file is part of the GraphalyzerPro application.
  *
@@ -19,8 +19,6 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using ReactiveUI;
-using System.Globalization;
 using System.Windows;
 
 namespace GraphalyzerPro
@@ -30,20 +28,10 @@ namespace GraphalyzerPro
     /// </summary>
     public partial class App : Application
     {
-        private static void InitializeRxBackingFieldNameConventions()
-        {
-            RxApp.GetFieldNameForPropertyNameFunc = delegate(string name)
-            {
-                var nameAsArray = name.ToCharArray();
-                nameAsArray[0] = char.ToLower(nameAsArray[0], CultureInfo.InvariantCulture);
-                return '_' + new string(nameAsArray);
-            };
-        }
-
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            InitializeRxBackingFieldNameConventions();
+            Bootstrapper.InitializeRxBackingFieldNameConventions();
         }
     }
 }

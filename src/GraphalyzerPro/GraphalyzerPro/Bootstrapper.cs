@@ -1,6 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<!--
-/*
+﻿/*
  * Copyright (c) 2006-2009 by Christoph Menzel, Daniel Birkmaier, 
  * Maximilian Madeja, Farruch Kouliev, Stefan Zoettlein
  *
@@ -20,17 +18,22 @@
  * License along with this program. If not, see
  * <http://www.gnu.org/licenses/>.
  */
--->
-<configuration>
-  <configSections>
-    <section name="Receivers" type="System.Configuration.NameValueSectionHandler" />
-  </configSections>
-    <startup> 
-        <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.5" />
-    </startup>
-  <Receivers>
-    <!--
-      For Example: <add key="CsvReceiver" value="GraphalyzerPro.CSVReceiver.dll" />
-      -->
-  </Receivers>
-</configuration>
+
+using System.Globalization;
+using ReactiveUI;
+
+namespace GraphalyzerPro
+{
+    internal static class Bootstrapper
+    {
+        internal static void InitializeRxBackingFieldNameConventions()
+        {
+            RxApp.GetFieldNameForPropertyNameFunc = delegate(string name)
+            {
+                var nameAsArray = name.ToCharArray();
+                nameAsArray[0] = char.ToLower(nameAsArray[0], CultureInfo.InvariantCulture);
+                return '_' + new string(nameAsArray);
+            };
+        }
+    }
+}
