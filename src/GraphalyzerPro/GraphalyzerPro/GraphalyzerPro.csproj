@@ -51,6 +51,15 @@
     <Reference Include="Microsoft.Threading.Tasks.Extensions">
       <HintPath>..\packages\Microsoft.Bcl.Async.1.0.16\lib\net45\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="ReactiveUI.Blend_Net45">
+      <HintPath>..\packages\reactiveui-xaml.4.6.1\lib\net45\ReactiveUI.Blend_Net45.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveUI.Routing_Net45">
+      <HintPath>..\packages\reactiveui-xaml.4.6.1\lib\net45\ReactiveUI.Routing_Net45.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveUI.Xaml_Net45">
+      <HintPath>..\packages\reactiveui-xaml.4.6.1\lib\net45\ReactiveUI.Xaml_Net45.dll</HintPath>
+    </Reference>
     <Reference Include="ReactiveUI_Net45">
       <HintPath>..\packages\reactiveui-core.4.6.1\lib\net45\ReactiveUI_Net45.dll</HintPath>
     </Reference>
@@ -69,6 +78,9 @@
     </Reference>
     <Reference Include="System.Reactive.PlatformServices">
       <HintPath>..\packages\Rx-PlatformServices.2.1.30214.0\lib\Net45\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Windows.Threading">
+      <HintPath>..\packages\Rx-XAML.2.1.30214.0\lib\Net45\System.Reactive.Windows.Threading.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -93,19 +105,27 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="ViewModelLocator.cs" />
     <Compile Include="ViewModels\IMainViewModel.cs" />
+    <Compile Include="ViewModels\IReceiverActivationDialogViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
+    <Compile Include="ViewModels\ReceiverActivationDialogViewModel.cs" />
+    <Compile Include="Views\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
+    <Compile Include="Views\ReceiverActivationDialog.xaml.cs">
+      <DependentUpon>ReceiverActivationDialog.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ReceiverActivationDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -141,6 +161,7 @@
       <Name>GraphalyzerPro.Common</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
