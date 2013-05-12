@@ -1,5 +1,4 @@
-﻿<!--
-/*
+﻿/*
  * Copyright (c) 2006-2009 by Christoph Menzel, Daniel Birkmaier, 
  * Maximilian Madeja, Farruch Kouliev, Stefan Zoettlein
  *
@@ -19,20 +18,22 @@
  * License along with this program. If not, see
  * <http://www.gnu.org/licenses/>.
  */
--->
 
-<Window x:Class="GraphalyzerPro.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        DataContext="{Binding Path=MainViewModel, Source={StaticResource ViewModelLocator}}"
-        Title="{Binding Title}" Height="350" Width="525">
-    <DockPanel>
-        <ListBox ItemsSource="{Binding AllReceiver}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Label Content="{Binding Name}" />
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-    </DockPanel>
-</Window>
+using GraphalyzerPro.Common.Interfaces;
+using ReactiveUI;
+
+namespace GraphalyzerPro.ViewModels
+{
+	public interface IReceiverActivationDialogViewModel
+	{
+		ReactiveCollection<IReceiver> AllReceiver
+		{
+			get;
+		}
+
+		IReceiver SelectedReceiver
+		{
+			get;
+		}
+	}
+}

@@ -29,8 +29,9 @@ namespace GraphalyzerPro
         private readonly static UnityContainer UnityContainer = new UnityContainer();
 
         public ViewModelLocator()
-        {
-            UnityContainer.RegisterType<IMainViewModel, MainViewModel>();
+		{
+			UnityContainer.RegisterType<IMainViewModel, MainViewModel>();
+			UnityContainer.RegisterType<IReceiverActivationDialogViewModel, ReceiverActivationDialogViewModel>();
         }
 
         public static T Resolve<T>() where T : class
@@ -43,9 +44,20 @@ namespace GraphalyzerPro
             return UnityContainer.Resolve<T>(name);
         }
 
-        public static IMainViewModel MainViewModel
-        {
-            get { return UnityContainer.Resolve<IMainViewModel>(); }
-        }
+		public static IMainViewModel MainViewModel
+		{
+			get
+			{
+				return UnityContainer.Resolve<IMainViewModel>();
+			}
+		}
+
+		public static IReceiverActivationDialogViewModel ReceiverActivationDialogViewModel
+		{
+			get
+			{
+				return UnityContainer.Resolve<IReceiverActivationDialogViewModel>();
+			}
+		}
     }
 }
