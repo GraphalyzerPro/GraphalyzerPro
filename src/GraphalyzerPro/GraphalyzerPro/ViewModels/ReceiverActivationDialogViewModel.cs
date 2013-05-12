@@ -27,9 +27,11 @@ using System.Configuration;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reflection;
+using GraphalyzerPro.Common;
 using GraphalyzerPro.Common.Interfaces;
 using ReactiveUI;
 using ReactiveUI.Xaml;
+using System.Windows;
 
 namespace GraphalyzerPro.ViewModels
 {
@@ -112,6 +114,10 @@ namespace GraphalyzerPro.ViewModels
 
 		private void ClickOKButton(object o)
 		{
+			if(MessageBox.Show("Möchten Sie den Empfänger \""+SelectedReceiver.Name+"\" nun wirklich aktivieren?", "Bestätigung", MessageBoxButton.YesNo, MessageBoxImage.Question)==MessageBoxResult.Yes)
+			{
+				SelectedReceiver.Initialize(new InformationEngine());
+			}
 		}
 	}
 }
