@@ -43,6 +43,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="DiagnoseOutputEntry.cs" />
+    <Compile Include="InformationEngine.cs" />
     <Compile Include="Interfaces\IDiagnoseOutputEntry.cs" />
     <Compile Include="Interfaces\IInformationEngine.cs" />
     <Compile Include="Interfaces\IReceiver.cs" />
