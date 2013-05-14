@@ -58,6 +58,9 @@
     <Reference Include="Microsoft.Threading.Tasks.Extensions">
       <HintPath>..\packages\Microsoft.Bcl.Async.1.0.16\lib\net45\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
@@ -99,11 +102,16 @@
     <Compile Include="ViewModelLocatorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModelTests\MainViewModelTest.cs" />
+    <Compile Include="ViewModelTests\SessionViewModelTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GraphalyzerPro.Common\GraphalyzerPro.Common.csproj">
+      <Project>{799A3384-B77E-4A62-ABA0-D938EEAE60DD}</Project>
+      <Name>GraphalyzerPro.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GraphalyzerPro\GraphalyzerPro.csproj">
       <Project>{47747e54-94f1-46d4-bfc6-23997faddf83}</Project>
       <Name>GraphalyzerPro</Name>

@@ -25,99 +25,67 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Linq;
-using System.Reactive.Linq;
 using System.Reflection;
-using GraphalyzerPro.Common;
 using GraphalyzerPro.Common.Interfaces;
 using ReactiveUI;
-using ReactiveUI.Xaml;
-using System.Windows;
 
 namespace GraphalyzerPro.ViewModels
 {
-	public class ReceiverActivationDialogViewModel : ReactiveObject, IReceiverActivationDialogViewModel
-	{
-		private ReactiveCollection<IReceiver> _allReceiver;
-		private IReceiver _selectedReceiver;
+    public class ReceiverActivationDialogViewModel : ReactiveObject, IReceiverActivationDialogViewModel
+    {
+        private ReactiveCollection<IReceiver> _allReceiver;
+        private IReceiver _selectedReceiver;
 
-		public ReceiverActivationDialogViewModel()
-		{
-			AllReceiver=new ReactiveCollection<IReceiver>();
-			OKCommand=new ReactiveCommand(this.ObservableForProperty(x => x.SelectedReceiver, x => (x!=null)).StartWith(false));
-			OKCommand.Subscribe(ClickOKButton);
+        public ReceiverActivationDialogViewModel()
+        {
+            AllReceiver = new ReactiveCollection<IReceiver>();
 
-			CreateInstanceOfReceiverImplementations(GetAllReceiverAssemblyFileNames());
-		}
+            CreateInstanceOfReceiverImplementations(GetAllReceiverAssemblyFileNames());
+        }
 
-		public IReactiveCommand OKCommand
-		{
-			get;
-			private set;
-		}
+        public ReactiveCollection<IReceiver> AllReceiver
+        {
+            get { return _allReceiver; }
+            private set { this.RaiseAndSetIfChanged(value); }
+        }
 
-		public ReactiveCollection<IReceiver> AllReceiver
-		{
-			get
-			{
-				return _allReceiver;
-			}
-			private set
-			{
-				this.RaiseAndSetIfChanged(value);
-			}
-		}
+        public IReceiver SelectedReceiver
+        {
+            get { return _selectedReceiver; }
+            set { this.RaiseAndSetIfChanged(value); }
+        }
 
-		public IReceiver SelectedReceiver
-		{
-			get
-			{
-				return _selectedReceiver;
-			}
-			set
-			{
-				this.RaiseAndSetIfChanged(value);
-			}
-		}
+        private void CreateInstanceOfReceiverImplementations(IEnumerable<string> allReceiverAssemblyFileNames)
+        {
+            foreach (var receiverAssembly in allReceiverAssemblyFileNames)
+            {
+                var assembly = Assembly.LoadFrom(receiverAssembly);
 
-		private void CreateInstanceOfReceiverImplementations(IEnumerable<string> allReceiverAssemblyFileNames)
-		{
-			foreach(var receiverAssembly in allReceiverAssemblyFileNames)
-			{
-				var assembly=Assembly.LoadFrom(receiverAssembly);
+                var allIReceiverTypesOfTheAssembly =
+                    assembly.GetTypes().Where(x => typeof (IReceiver).IsAssignableFrom(x)).ToList();
 
-				var allIReceiverTypesOfTheAssembly=
-					assembly.GetTypes().Where(x => typeof(IReceiver).IsAssignableFrom(x)).ToList();
+                foreach (var type in allIReceiverTypesOfTheAssembly)
+                {
+                    AllReceiver.Add(Activator.CreateInstance(type) as IReceiver);
+                }
+            }
+        }
 
-				foreach(var type in allIReceiverTypesOfTheAssembly)
-				{
-					AllReceiver.Add(Activator.CreateInstance(type) as IReceiver);
-				}
-			}
-		}
+        private static IEnumerable<string> GetAllReceiverAssemblyFileNames()
+        {
+            var returnValue = new Collection<string>();
 
-		private static IEnumerable<string> GetAllReceiverAssemblyFileNames()
-		{
-			var returnValue=new Collection<string>();
+            var connectionManagerDatabaseServers = ConfigurationManager.GetSection("Receivers") as NameValueCollection;
 
-			var connectionManagerDatabaseServers=ConfigurationManager.GetSection("Receivers") as NameValueCollection;
+            if (connectionManagerDatabaseServers != null)
+            {
+                foreach (var serverKey in connectionManagerDatabaseServers.AllKeys)
+                {
+                    returnValue.Add(connectionManagerDatabaseServers.GetValues(serverKey).FirstOrDefault());
+                }
+            }
 
-			if(connectionManagerDatabaseServers!=null)
-			{
-				foreach(var serverKey in connectionManagerDatabaseServers.AllKeys)
-				{
-					returnValue.Add(connectionManagerDatabaseServers.GetValues(serverKey).FirstOrDefault());
-				}
-			}
-
-			return returnValue;
-		}
-
-		private void ClickOKButton(object o)
-		{
-			if(MessageBox.Show("Möchten Sie den Empfänger \""+SelectedReceiver.Name+"\" nun wirklich aktivieren?", "Bestätigung", MessageBoxButton.YesNo, MessageBoxImage.Question)==MessageBoxResult.Yes)
-			{
-				SelectedReceiver.Initialize(new InformationEngine());
-			}
-		}
-	}
+            return returnValue;
+        }
+    }
 }

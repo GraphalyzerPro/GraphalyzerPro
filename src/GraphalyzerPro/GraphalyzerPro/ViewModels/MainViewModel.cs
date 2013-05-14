@@ -20,38 +20,50 @@
  */
 
 using System;
+using GraphalyzerPro.Common;
 using GraphalyzerPro.Views;
 using ReactiveUI;
 using ReactiveUI.Xaml;
 
 namespace GraphalyzerPro.ViewModels
 {
-	public class MainViewModel : ReactiveObject, IMainViewModel
-	{
-		public MainViewModel()
-		{
-			ActivateReceiverCommand=new ReactiveCommand();
-			ActivateReceiverCommand.Subscribe(ActivateReceiver);
-		}
+    public class MainViewModel : ReactiveObject, IMainViewModel
+    {
+        private readonly InformationEngine _informationEngine;
+        private readonly ReactiveCollection<ISessionViewModel> _sessionViewModels;
 
-		public string Title
-		{
-			get
-			{
-				return "GraphalyzerPro";
-			}
-		}
+        public MainViewModel()
+        {
+            _informationEngine = new InformationEngine();
+            _sessionViewModels = new ReactiveCollection<ISessionViewModel>();
 
-		public IReactiveCommand ActivateReceiverCommand
-		{
-			get;
-			private set;
-		}
+            ActivateReceiverCommand = new ReactiveCommand();
+            ActivateReceiverCommand.Subscribe(ActivateReceiver);
+        }
 
-		private void ActivateReceiver(object o)
-		{
-			var dialog=new ReceiverActivationDialog();
-			dialog.ShowDialog();
-		}
-	}
+        public string Title
+        {
+            get { return "GraphalyzerPro"; }
+        }
+
+        public IReactiveCommand ActivateReceiverCommand { get; private set; }
+
+        public ReactiveCollection<ISessionViewModel> SessionViewModels
+        {
+            get { return _sessionViewModels; }
+            set { this.RaiseAndSetIfChanged(value); }
+        }
+
+        private void ActivateReceiver(object o)
+        {
+            var dialog = new ReceiverActivationDialog();
+
+            if (dialog.ShowDialog() == true)
+            {
+                var sessionViewModel = new SessionViewModel(dialog.ViewModel.SelectedReceiver);
+                SessionViewModels.Add(sessionViewModel);
+                sessionViewModel.Receiver.Initialize(_informationEngine);
+            }
+        }
+    }
 }

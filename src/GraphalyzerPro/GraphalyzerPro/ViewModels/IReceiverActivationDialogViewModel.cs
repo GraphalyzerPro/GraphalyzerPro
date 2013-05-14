@@ -24,16 +24,10 @@ using ReactiveUI;
 
 namespace GraphalyzerPro.ViewModels
 {
-	public interface IReceiverActivationDialogViewModel
-	{
-		ReactiveCollection<IReceiver> AllReceiver
-		{
-			get;
-		}
+    public interface IReceiverActivationDialogViewModel
+    {
+        ReactiveCollection<IReceiver> AllReceiver { get; }
 
-		IReceiver SelectedReceiver
-		{
-			get;
-		}
-	}
+        IReceiver SelectedReceiver { get; }
+    }
 }

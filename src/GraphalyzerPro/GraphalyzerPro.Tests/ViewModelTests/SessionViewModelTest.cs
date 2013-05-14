@@ -19,30 +19,25 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System.Linq;
 using FluentAssertions;
+using GraphalyzerPro.Common.Interfaces;
 using GraphalyzerPro.ViewModels;
+using Moq;
 using NUnit.Framework;
 
 namespace GraphalyzerPro.Tests.ViewModelTests
 {
     [TestFixture]
-    public class MainViewModelTest
+    public class SessionViewModelTest
     {
         [Test]
-        public void Constructor_InitialisesSessionViewModlesWithEmptyCollection()
+        public void SessionId_IsNotEmpty()
         {
-            var mainViewModel = new MainViewModel();
+            var mock = new Mock<IReceiver>();
 
-            mainViewModel.SessionViewModels.Any().Should().Be(false);
-        }
+            var sessionViewModel = new SessionViewModel(mock.Object);
 
-        [Test]
-        public void Title_ReturnsCorrectTitle()
-        {
-            var mainViewModel = new MainViewModel();
-
-            mainViewModel.Title.Should().Be("GraphalyzerPro");
+            sessionViewModel.SessionId.Should().NotBeEmpty();
         }
     }
 }
