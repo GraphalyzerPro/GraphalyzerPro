@@ -20,17 +20,27 @@
  */
 
 using System.Windows;
+using GraphalyzerPro.ViewModels;
 
 namespace GraphalyzerPro.Views
 {
-	/// <summary>
-	///     Interaction logic for ReceiverActivationDialog.xaml
-	/// </summary>
-	public partial class ReceiverActivationDialog : Window
-	{
-		public ReceiverActivationDialog()
-		{
-			InitializeComponent();
-		}
-	}
+    /// <summary>
+    ///     Interaction logic for ReceiverActivationDialog.xaml
+    /// </summary>
+    public partial class ReceiverActivationDialog : Window
+    {
+        public ReceiverActivationDialog()
+        {
+            ViewModel = new ReceiverActivationDialogViewModel();
+            InitializeComponent();
+        }
+
+        public ReceiverActivationDialogViewModel ViewModel { get; private set; }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            DialogResult = true;
+            Close();
+        }
+    }
 }

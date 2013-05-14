@@ -24,6 +24,7 @@
 <Window x:Class="GraphalyzerPro.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:viewModels="clr-namespace:GraphalyzerPro.ViewModels"
         DataContext="{Binding Path=MainViewModel, Source={StaticResource ViewModelLocator}}"
         Title="{Binding Title}" Height="350" Width="525">
     <DockPanel>
@@ -32,6 +33,22 @@
                 <MenuItem Header="Empfaenger aktivieren..." Command="{Binding ActivateReceiverCommand}"/>
             </MenuItem>
         </Menu>
-        <TextBlock></TextBlock>
+        <TabControl ItemsSource="{Binding SessionViewModels}">
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <DockPanel>
+                        <TextBlock Text="{Binding SessionId}"/>
+                    </DockPanel>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+            <TabControl.ContentTemplate>
+                <DataTemplate DataType="viewModels:SessionViewModel">
+                    <DockPanel>
+                        <TextBlock>The Session Id of the Receiver:</TextBlock>
+                        <TextBlock Text="{Binding SessionId}"/>
+                    </DockPanel>
+                </DataTemplate>
+            </TabControl.ContentTemplate>
+        </TabControl>
     </DockPanel>
 </Window>
