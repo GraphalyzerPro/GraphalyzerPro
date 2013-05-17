@@ -21,13 +21,30 @@
 
 using System;
 using GraphalyzerPro.Common.Interfaces;
+using ReactiveUI;
 
 namespace GraphalyzerPro.ViewModels
 {
     public interface ISessionViewModel
     {
-        IReceiver Receiver { get; }
+        IReceiver Receiver
+        {
+            get;
+        }
 
-        Guid SessionId { get; }
+        Guid SessionId
+        {
+            get;
+        }
+
+        ReactiveCollection<IAnalysis> AllAnalyses
+        {
+            get;
+        }
+
+        IAnalysis SelectedAnalysis
+        {
+            get;
+        }
     }
 }
