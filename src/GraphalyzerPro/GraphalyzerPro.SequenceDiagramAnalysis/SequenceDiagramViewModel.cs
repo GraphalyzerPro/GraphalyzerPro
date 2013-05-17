@@ -1,7 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-
-<!--
-/*
+﻿/*
  * Copyright (c) 2006-2009 by Christoph Menzel, Daniel Birkmaier, 
  * Maximilian Madeja, Farruch Kouliev, Stefan Zoettlein
  *
@@ -21,22 +18,28 @@
  * License along with this program. If not, see
  * <http://www.gnu.org/licenses/>.
  */
--->
-<configuration>
-  <configSections>
-    <section name="Receivers" type="System.Configuration.NameValueSectionHandler" />
-    <section name="Analyses" type="System.Configuration.NameValueSectionHandler" />
-  </configSections>
-  <startup>
-    <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.5" />
-  </startup>
-  <Receivers>
-    <!--
-      For Example: <add key="CsvReceiver" value="GraphalyzerPro.CsvReceiver.dll" />
-      -->
-    <add key="CsvReceiver" value="GraphalyzerPro.CsvReceiver.dll" />
-  </Receivers>
-  <Analyses>
-    <add key="SequenceDiagramAnalysis" value="GraphalyzerPro.SequenceDiagramAnalysis.dll" />
-  </Analyses>
-</configuration>
+
+using GraphalyzerPro.Common.Interfaces;
+using ReactiveUI;
+
+namespace GraphalyzerPro.SequenceDiagramAnalysis
+{
+    public class SequenceDiagramViewModel : ReactiveObject, IAnalysis
+    {
+        public string Name
+        {
+            get
+            {
+                return "SequenceDiagramAnalysis";
+            }
+        }
+
+        public void Initialize()
+        {
+        }
+
+        public void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry diagnoseOutputEntry)
+        {
+        }
+    }
+}
