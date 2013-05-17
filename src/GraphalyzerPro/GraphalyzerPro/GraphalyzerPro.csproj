@@ -36,6 +36,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentAssertions">
+      <HintPath>..\packages\FluentAssertions.2.0.1\lib\net45\FluentAssertions.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation">
       <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
@@ -50,6 +53,9 @@
     </Reference>
     <Reference Include="Microsoft.Threading.Tasks.Extensions">
       <HintPath>..\packages\Microsoft.Bcl.Async.1.0.16\lib\net45\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
     </Reference>
     <Reference Include="ReactiveUI.Blend_Net45">
       <HintPath>..\packages\reactiveui-xaml.4.6.1\lib\net45\ReactiveUI.Blend_Net45.dll</HintPath>

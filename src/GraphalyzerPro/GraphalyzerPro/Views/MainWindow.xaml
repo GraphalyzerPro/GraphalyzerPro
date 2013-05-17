@@ -1,4 +1,4 @@
-<!--
+﻿<!--
 /*
  * Copyright (c) 2006-2009 by Christoph Menzel, Daniel Birkmaier, 
  * Maximilian Madeja, Farruch Kouliev, Stefan Zoettlein
@@ -29,23 +29,34 @@
         Title="{Binding Title}" Height="350" Width="525">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="Empfaenger">
-                <MenuItem Header="Empfaenger aktivieren..." Command="{Binding ActivateReceiverCommand}"/>
+            <MenuItem Header="Empfänger">
+                <MenuItem Header="Empfänger aktivieren..." Command="{Binding ActivateReceiverCommand}" />
             </MenuItem>
         </Menu>
         <TabControl ItemsSource="{Binding SessionViewModels}">
             <TabControl.ItemTemplate>
                 <DataTemplate>
                     <DockPanel>
-                        <TextBlock Text="{Binding SessionId}"/>
+                        <TextBlock Text="{Binding SessionId}" />
                     </DockPanel>
                 </DataTemplate>
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
                 <DataTemplate DataType="viewModels:SessionViewModel">
                     <DockPanel>
-                        <TextBlock>The Session Id of the Receiver:</TextBlock>
-                        <TextBlock Text="{Binding SessionId}"/>
+                        <DockPanel DockPanel.Dock="Top">
+                            <Button DockPanel.Dock="Right" Content="Auswählen"
+                                    IsEnabled="{Binding ElementName=AnalysisComboBox, Path=SelectedItem}" />
+                            <ComboBox DockPanel.Dock="Left" Name="AnalysisComboBox" ItemsSource="{Binding AllAnalyses}"
+                                      SelectedItem="{Binding SelectedAnalysis}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Label Content="{Binding Name}"></Label>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </DockPanel>
+                        <TextBlock Text="Analysis" />
                     </DockPanel>
                 </DataTemplate>
             </TabControl.ContentTemplate>
