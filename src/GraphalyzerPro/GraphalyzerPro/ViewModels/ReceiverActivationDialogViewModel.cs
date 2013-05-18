@@ -21,13 +21,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Configuration;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Reflection;
 using GraphalyzerPro.Common.Interfaces;
+using GraphalyzerPro.Configuration;
 using ReactiveUI;
+using ReactiveUI.Xaml;
 
 namespace GraphalyzerPro.ViewModels
 {
@@ -38,10 +38,16 @@ namespace GraphalyzerPro.ViewModels
 
         public ReceiverActivationDialogViewModel()
         {
+            ApplyCommand =
+                new ReactiveCommand(this.ObservableForProperty(x => x.SelectedReceiver, x => x != null).StartWith(false));
+
             AllReceiver = new ReactiveCollection<IReceiver>();
 
-            CreateInstanceOfReceiverImplementations(GetAllReceiverAssemblyFileNames());
+            CreateInstanceOfReceiverImplementations(
+                ConfigurationAccessor.GetAllAssemblyFileNamesBySectionName(ConfigurationAccessor.ReceiversSectionName));
         }
+
+        public IReactiveCommand ApplyCommand { get; private set; }
 
         public ReactiveCollection<IReceiver> AllReceiver
         {
@@ -69,23 +75,6 @@ namespace GraphalyzerPro.ViewModels
                     AllReceiver.Add(Activator.CreateInstance(type) as IReceiver);
                 }
             }
-        }
-
-        private static IEnumerable<string> GetAllReceiverAssemblyFileNames()
-        {
-            var returnValue = new Collection<string>();
-
-            var connectionManagerDatabaseServers = ConfigurationManager.GetSection("Receivers") as NameValueCollection;
-
-            if (connectionManagerDatabaseServers != null)
-            {
-                foreach (var serverKey in connectionManagerDatabaseServers.AllKeys)
-                {
-                    returnValue.Add(connectionManagerDatabaseServers.GetValues(serverKey).FirstOrDefault());
-                }
-            }
-
-            return returnValue;
         }
     }
 }

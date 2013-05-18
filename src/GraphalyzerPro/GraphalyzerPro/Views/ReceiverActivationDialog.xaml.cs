@@ -19,6 +19,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Windows;
 using GraphalyzerPro.ViewModels;
 
@@ -29,18 +30,29 @@ namespace GraphalyzerPro.Views
     /// </summary>
     public partial class ReceiverActivationDialog : Window
     {
+        public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
+            "ViewModel",
+            typeof (IReceiverActivationDialogViewModel),
+            typeof (ReceiverActivationDialog),
+            new PropertyMetadata(default(IReceiverActivationDialogViewModel))
+            );
+
         public ReceiverActivationDialog()
         {
-            ViewModel = new ReceiverActivationDialogViewModel();
             InitializeComponent();
+
+            ViewModel = new ReceiverActivationDialogViewModel();
+            ViewModel.ApplyCommand.Subscribe(x =>
+                {
+                    DialogResult = true;
+                    Close();
+                });
         }
 
-        public ReceiverActivationDialogViewModel ViewModel { get; private set; }
-
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        public IReceiverActivationDialogViewModel ViewModel
         {
-            DialogResult = true;
-            Close();
+            get { return (IReceiverActivationDialogViewModel) GetValue(ViewModelProperty); }
+            set { SetValue(ViewModelProperty, value); }
         }
     }
 }
