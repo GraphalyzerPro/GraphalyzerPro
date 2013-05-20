@@ -19,16 +19,38 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using GraphalyzerPro.Common.Interfaces;
 using ReactiveUI;
+using System.Windows.Controls;
 
 namespace GraphalyzerPro.SequenceDiagramAnalysis
 {
-    class SequenceDiagramViewModel : ReactiveObject, ISequenceDiagramViewModel
+
+    public class SequenceDiagramAnalysis : IAnalysis
     {
+        public SequenceDiagramAnalysis()
+        {
+            IsInitialized = false;
+        }
+
+        public string Name
+        {
+            get { return "SequenceDiagramAnalysis"; }
+        }
+
+        public UserControl View { get; private set; }
+
+        public bool IsInitialized { get; private set; }
+
+        public void Initialize()
+        {
+            View = new SequenceDiagram();
+            View.DataContext=new SequenceDiagramViewModel();
+            IsInitialized = true;
+        }
+
+        public void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry diagnoseOutputEntry)
+        {
+        }
     }
 }
