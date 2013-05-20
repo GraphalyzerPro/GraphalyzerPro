@@ -33,6 +33,7 @@ namespace GraphalyzerPro.ViewModels
     {
         private readonly InformationEngine _informationEngine;
         private readonly ReactiveCollection<ISessionViewModel> _sessionViewModels;
+        private readonly Action _showCloseSessionErrorMessage;
         private readonly Action _showInitializationErrorMessage;
 
         public MainViewModel()
@@ -45,6 +46,10 @@ namespace GraphalyzerPro.ViewModels
                 "Bitte schließen Sie die Session und starten den Receiver neu.",
                 "Fehler");
 
+            _showCloseSessionErrorMessage = () => MessageBox.Show(
+                "Beim Schließen der Session trat ein Fehler auf.",
+                "Fehler");
+
             ActivateReceiverCommand = new ReactiveCommand();
             ActivateReceiverCommand.Subscribe(_ => ActivateReceiver());
 
@@ -52,6 +57,10 @@ namespace GraphalyzerPro.ViewModels
             InitializeReceiverCommand.RegisterAsyncAction(x => InitializeReceiver((IReceiver) x));
             InitializeReceiverCommand.ThrownExceptions.Subscribe(
                 ex => _showInitializationErrorMessage());
+
+            CloseSessionCommand = new ReactiveCommand();
+            CloseSessionCommand.Subscribe(x => CloseSession((ISessionViewModel) x));
+            CloseSessionCommand.ThrownExceptions.Subscribe(ex => _showCloseSessionErrorMessage());
         }
 
         public string Title
@@ -60,6 +69,8 @@ namespace GraphalyzerPro.ViewModels
         }
 
         public IReactiveCommand ActivateReceiverCommand { get; private set; }
+
+        public IReactiveCommand CloseSessionCommand { get; private set; }
 
         public IReactiveAsyncCommand InitializeReceiverCommand { get; private set; }
 
@@ -85,6 +96,12 @@ namespace GraphalyzerPro.ViewModels
         private void InitializeReceiver(IReceiver receiver)
         {
             receiver.Initialize(_informationEngine);
+        }
+
+        private void CloseSession(ISessionViewModel sessionViewModel)
+        {
+            sessionViewModel.Receiver.Deactivate();
+            SessionViewModels.Remove(sessionViewModel);
         }
     }
 }

@@ -37,7 +37,11 @@
             <TabControl.ItemTemplate>
                 <DataTemplate>
                     <DockPanel>
-                        <TextBlock Text="{Binding SessionId}" />
+                        <TextBlock DockPanel.Dock="Left" Text="{Binding SessionId}" />
+                        <Button DockPanel.Dock="Right" Content="X" Margin="5,0,0,0" BorderThickness="0" 
+                                Command="{Binding Path=DataContext.CloseSessionCommand,
+                                            RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}}" 
+                                CommandParameter="{Binding .}"/>
                     </DockPanel>
                 </DataTemplate>
             </TabControl.ItemTemplate>

@@ -48,11 +48,53 @@ namespace GraphalyzerPro.Tests.ViewModelTests
         }
 
         [Test]
+        public void CloseSessionCommand_OneSessionThrowsException_ExceptionShouldBeHandled()
+        {
+            var receiverMock = new Mock<IReceiver>();
+            receiverMock.Setup(m => m.Deactivate()).Throws<Exception>();
+
+            var mock = new Mock<ISessionViewModel>();
+            mock.Setup(m => m.Receiver).Returns(receiverMock.Object);
+
+            var mainViewModel = new MainViewModel();
+            var closeSessionErrorMessageWasShown = false;
+
+            SetField(mainViewModel, new Action(() => { closeSessionErrorMessageWasShown = true; }),
+                     "_showCloseSessionErrorMessage");
+
+            mainViewModel.SessionViewModels.Add(mock.Object);
+
+            mainViewModel.CloseSessionCommand.Execute(mock.Object);
+
+            closeSessionErrorMessageWasShown.Should().BeTrue();
+        }
+
+        [Test]
+        public void CloseSessionCommand_OneSession_SessionShouldBeDeleted()
+        {
+            var mock = new Mock<ISessionViewModel>();
+            mock.Setup(m => m.Receiver).Returns(new Mock<IReceiver>().Object);
+
+            var mainViewModel = new MainViewModel();
+            var closeSessionErrorMessageWasShown = false;
+
+            SetField(mainViewModel, new Action(() => { closeSessionErrorMessageWasShown = true; }),
+                     "_showCloseSessionErrorMessage");
+
+            mainViewModel.SessionViewModels.Add(mock.Object);
+
+            mainViewModel.CloseSessionCommand.Execute(mock.Object);
+
+            mainViewModel.SessionViewModels.Count.Should().Be(0);
+            closeSessionErrorMessageWasShown.Should().BeFalse();
+        }
+
+        [Test]
         public void Constructor_InitialisesSessionViewModlesWithEmptyCollection()
         {
             var mainViewModel = new MainViewModel();
 
-            mainViewModel.SessionViewModels.Any().Should().Be(false);
+            mainViewModel.SessionViewModels.Any().Should().BeFalse();
         }
 
         [Test]
@@ -72,7 +114,7 @@ namespace GraphalyzerPro.Tests.ViewModelTests
 
                     scheduler.AdvanceToMs(100);
 
-                    initializationErrorMessageWasShown.Should().Be(false);
+                    initializationErrorMessageWasShown.Should().BeFalse();
                 }
                 );
         }
@@ -95,7 +137,7 @@ namespace GraphalyzerPro.Tests.ViewModelTests
 
                     scheduler.AdvanceToMs(100);
 
-                    initializationErrorMessageWasShown.Should().Be(true);
+                    initializationErrorMessageWasShown.Should().BeTrue();
                 }
                 );
         }
