@@ -20,7 +20,9 @@
  */
 
 using System;
+using System.Windows;
 using GraphalyzerPro.Common;
+using GraphalyzerPro.Common.Interfaces;
 using GraphalyzerPro.Views;
 using ReactiveUI;
 using ReactiveUI.Xaml;
@@ -31,14 +33,34 @@ namespace GraphalyzerPro.ViewModels
     {
         private readonly InformationEngine _informationEngine;
         private readonly ReactiveCollection<ISessionViewModel> _sessionViewModels;
+        private readonly Action _showCloseSessionErrorMessage;
+        private readonly Action _showInitializationErrorMessage;
 
         public MainViewModel()
         {
             _informationEngine = new InformationEngine();
             _sessionViewModels = new ReactiveCollection<ISessionViewModel>();
 
+            _showInitializationErrorMessage = () => MessageBox.Show(
+                "Bei der Initialisierung des Receivers ist ein Fehler aufgetreten.\n" +
+                "Bitte schließen Sie die Session und starten den Receiver neu.",
+                "Fehler");
+
+            _showCloseSessionErrorMessage = () => MessageBox.Show(
+                "Beim Schließen der Session trat ein Fehler auf.",
+                "Fehler");
+
             ActivateReceiverCommand = new ReactiveCommand();
-            ActivateReceiverCommand.Subscribe(ActivateReceiver);
+            ActivateReceiverCommand.Subscribe(_ => ActivateReceiver());
+
+            InitializeReceiverCommand = new ReactiveAsyncCommand();
+            InitializeReceiverCommand.RegisterAsyncAction(x => InitializeReceiver((IReceiver) x));
+            InitializeReceiverCommand.ThrownExceptions.Subscribe(
+                ex => _showInitializationErrorMessage());
+
+            CloseSessionCommand = new ReactiveCommand();
+            CloseSessionCommand.Subscribe(x => CloseSession((ISessionViewModel) x));
+            CloseSessionCommand.ThrownExceptions.Subscribe(ex => _showCloseSessionErrorMessage());
         }
 
         public string Title
@@ -48,13 +70,17 @@ namespace GraphalyzerPro.ViewModels
 
         public IReactiveCommand ActivateReceiverCommand { get; private set; }
 
+        public IReactiveCommand CloseSessionCommand { get; private set; }
+
+        public IReactiveAsyncCommand InitializeReceiverCommand { get; private set; }
+
         public ReactiveCollection<ISessionViewModel> SessionViewModels
         {
             get { return _sessionViewModels; }
             set { this.RaiseAndSetIfChanged(value); }
         }
 
-        private void ActivateReceiver(object o)
+        private void ActivateReceiver()
         {
             var dialog = new ReceiverActivationDialog();
 
@@ -62,8 +88,20 @@ namespace GraphalyzerPro.ViewModels
             {
                 var sessionViewModel = new SessionViewModel(dialog.ViewModel.SelectedReceiver);
                 SessionViewModels.Add(sessionViewModel);
-                sessionViewModel.Receiver.Initialize(_informationEngine);
+
+                InitializeReceiverCommand.Execute(sessionViewModel.Receiver);
             }
+        }
+
+        private void InitializeReceiver(IReceiver receiver)
+        {
+            receiver.Initialize(_informationEngine);
+        }
+
+        private void CloseSession(ISessionViewModel sessionViewModel)
+        {
+            sessionViewModel.Receiver.Deactivate();
+            SessionViewModels.Remove(sessionViewModel);
         }
     }
 }

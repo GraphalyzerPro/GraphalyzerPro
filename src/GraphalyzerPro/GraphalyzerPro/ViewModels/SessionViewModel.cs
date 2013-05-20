@@ -21,13 +21,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Configuration;
 using System.Linq;
-using GraphalyzerPro.Common.Interfaces;
-using ReactiveUI;
 using System.Reflection;
+using GraphalyzerPro.Common.Interfaces;
+using GraphalyzerPro.Configuration;
+using ReactiveUI;
 
 namespace GraphalyzerPro.ViewModels
 {
@@ -41,31 +39,20 @@ namespace GraphalyzerPro.ViewModels
             SessionId = Guid.NewGuid();
             Receiver = receiver;
             AllAnalyses = new ReactiveCollection<IAnalysis>();
-            CreateInstanceOfAnalysisImplementations(GetAllAnalysisAssemblyFileNames());
+            CreateInstanceOfAnalysisImplementations(
+                ConfigurationAccessor.GetAllAssemblyFileNamesBySectionName(ConfigurationAccessor.AnalysesSectionName));
         }
 
         public ReactiveCollection<IAnalysis> AllAnalyses
         {
-            get
-            {
-                return _allAnalyses;
-            }
-            private set
-            {
-                this.RaiseAndSetIfChanged(value);
-            }
+            get { return _allAnalyses; }
+            private set { this.RaiseAndSetIfChanged(value); }
         }
 
         public IAnalysis SelectedAnalysis
         {
-            get
-            {
-                return _selectedAnalysis;
-            }
-            private set
-            {
-                this.RaiseAndSetIfChanged(value);
-            }
+            get { return _selectedAnalysis; }
+            private set { this.RaiseAndSetIfChanged(value); }
         }
 
         public IReceiver Receiver { get; private set; }
@@ -74,35 +61,18 @@ namespace GraphalyzerPro.ViewModels
 
         private void CreateInstanceOfAnalysisImplementations(IEnumerable<string> allAnalysisAssemblyFileNames)
         {
-            foreach(var analysisAssembly in allAnalysisAssemblyFileNames)
+            foreach (var analysisAssembly in allAnalysisAssemblyFileNames)
             {
                 var assembly = Assembly.LoadFrom(analysisAssembly);
 
                 var allIAnalysisTypesOfTheAssembly =
-                    assembly.GetTypes().Where(x => typeof(IAnalysis).IsAssignableFrom(x)).ToList();
+                    assembly.GetTypes().Where(x => typeof (IAnalysis).IsAssignableFrom(x)).ToList();
 
-                foreach(var type in allIAnalysisTypesOfTheAssembly)
+                foreach (var type in allIAnalysisTypesOfTheAssembly)
                 {
                     AllAnalyses.Add(Activator.CreateInstance(type) as IAnalysis);
                 }
             }
-        }
-
-        private static IEnumerable<string> GetAllAnalysisAssemblyFileNames()
-        {
-            var returnValue = new Collection<string>();
-
-            var connectionManagerDatabaseServers = ConfigurationManager.GetSection("Analyses") as NameValueCollection;
-
-            if(connectionManagerDatabaseServers!=null)
-            {
-                foreach(var serverKey in connectionManagerDatabaseServers.AllKeys)
-                {
-                    returnValue.Add(connectionManagerDatabaseServers.GetValues(serverKey).FirstOrDefault());
-                }
-            }
-
-            return returnValue;
         }
     }
 }

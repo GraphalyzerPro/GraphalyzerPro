@@ -27,14 +27,14 @@
         Title="ReceiverActivationDialog" Height="300" Width="300"
         DataContext="{Binding ElementName=ReceiverActivationDialogWindow, Path=ViewModel}">
     <DockPanel>
-        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
-            <Button Content="OK" IsDefault="True" IsEnabled="{Binding ElementName=ReceiverListBox, Path=SelectedItems.Count}" Click="ButtonBase_OnClick"/>
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="OK" IsDefault="True" Command="{Binding ApplyCommand}" Margin="0,0,5,0"/>
             <Button Content="Abbrechen" IsCancel="True"/>
         </StackPanel>
         <ListBox Name="ReceiverListBox" ItemsSource="{Binding AllReceiver}" SelectedItem="{Binding SelectedReceiver}">
            <ListBox.ItemTemplate>
                <DataTemplate>
-                   <Label Content="{Binding Name}"></Label>
+                   <Label Content="{Binding Name}" />
                </DataTemplate>
            </ListBox.ItemTemplate>
        </ListBox>

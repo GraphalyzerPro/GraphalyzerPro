@@ -27,7 +27,7 @@ namespace GraphalyzerPro.Common
     public class DiagnoseOutputEntry : IDiagnoseOutputEntry
     {
         public DiagnoseOutputEntry(DateTime timeStamp, long gap, long duration, int processId, int threadNumber,
-                                   char type, string domain, string application, string component, string module,
+                                   DiagnoseType type, string domain, string application, string component, string module,
                                    string code, string text, string metaInformation)
         {
             TimeStamp = timeStamp;
@@ -50,7 +50,7 @@ namespace GraphalyzerPro.Common
         public long Duration { get; private set; }
         public int ProcessId { get; private set; }
         public int ThreadNumber { get; private set; }
-        public char Type { get; private set; }
+        public DiagnoseType Type { get; private set; }
         public string Domain { get; private set; }
         public string Application { get; private set; }
         public string Component { get; private set; }
