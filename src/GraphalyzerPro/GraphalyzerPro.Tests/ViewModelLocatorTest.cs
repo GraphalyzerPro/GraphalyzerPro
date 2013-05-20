@@ -19,11 +19,11 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using FluentAssertions;
 using GraphalyzerPro.ViewModels;
 using Microsoft.Practices.Unity;
 using NUnit.Framework;
-using System;
 
 namespace GraphalyzerPro.Tests
 {
@@ -31,6 +31,14 @@ namespace GraphalyzerPro.Tests
     public class ViewModelLocatorTest
     {
         private readonly ViewModelLocator _viewModelLocator = new ViewModelLocator();
+
+        [Test]
+        public void GetMainViewModel_ReturnsInstanceOfTheMainViewModel()
+        {
+            var mainViewModel = ViewModelLocator.MainViewModel;
+
+            mainViewModel.GetType().Should().Be(typeof (MainViewModel));
+        }
 
         [Test]
         public void Resolve_CorrectInterface_ReturnsInstanceOfTheGivenInterface()
@@ -41,7 +49,7 @@ namespace GraphalyzerPro.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(ResolutionFailedException))]
+        [ExpectedException(typeof (ResolutionFailedException))]
         public void Resolve_IncorrectInterface_ReturnsInstanceOfTheGivenInterface()
         {
             ViewModelLocator.Resolve<ICloneable>();

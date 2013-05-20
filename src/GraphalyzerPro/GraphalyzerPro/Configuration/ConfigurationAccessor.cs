@@ -43,7 +43,9 @@ namespace GraphalyzerPro.Configuration
             {
                 foreach (var serverKey in connectionManagerDatabaseServers.AllKeys)
                 {
+                    // ReSharper disable AssignNullToNotNullAttribute
                     returnValue.Add(connectionManagerDatabaseServers.GetValues(serverKey).FirstOrDefault());
+                    // ReSharper restore AssignNullToNotNullAttribute
                 }
             }
 

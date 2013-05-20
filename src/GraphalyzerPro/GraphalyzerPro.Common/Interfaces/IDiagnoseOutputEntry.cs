@@ -56,7 +56,7 @@ namespace GraphalyzerPro.Common.Interfaces
         /// <summary>
         /// The type of the <see cref="IDiagnoseOutputEntry"/>.
         /// </summary>
-        char Type { get; }
+        DiagnoseType Type { get; }
 
         /// <summary>
         /// The description of the domain to which the <see cref="IDiagnoseOutputEntry"/> belongs to.

@@ -1,5 +1,4 @@
-﻿<!--
-/*
+﻿/*
  * Copyright (c) 2006-2009 by Christoph Menzel, Daniel Birkmaier, 
  * Maximilian Madeja, Farruch Kouliev, Stefan Zoettlein
  *
@@ -19,14 +18,14 @@
  * License along with this program. If not, see
  * <http://www.gnu.org/licenses/>.
  */
--->
- 
-<Application x:Class="GraphalyzerPro.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:graphalyzerPro="clr-namespace:GraphalyzerPro"
-             StartupUri="Views\MainWindow.xaml">
-    <Application.Resources>
-        <graphalyzerPro:ViewModelLocator x:Key="ViewModelLocator"/>
-    </Application.Resources>
-</Application>
+
+namespace GraphalyzerPro.Common
+{
+    public enum DiagnoseType
+    {
+        Exception,
+        SingleOutput,
+        StartBracketOutput,
+        EndBracketOutput
+    }
+}
