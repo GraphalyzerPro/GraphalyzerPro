@@ -21,6 +21,7 @@
 
 using GraphalyzerPro.Common.Interfaces;
 using ReactiveUI;
+using ReactiveUI.Xaml;
 
 namespace GraphalyzerPro.ViewModels
 {
@@ -29,5 +30,7 @@ namespace GraphalyzerPro.ViewModels
         ReactiveCollection<IReceiver> AllReceiver { get; }
 
         IReceiver SelectedReceiver { get; }
+
+        IReactiveCommand ApplyCommand { get; }
     }
 }

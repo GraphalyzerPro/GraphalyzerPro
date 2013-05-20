@@ -30,6 +30,10 @@ namespace GraphalyzerPro.ViewModels
 
         IReactiveCommand ActivateReceiverCommand { get; }
 
+        IReactiveCommand CloseSessionCommand { get; }
+
+        IReactiveAsyncCommand InitializeReceiverCommand { get; }
+
         ReactiveCollection<ISessionViewModel> SessionViewModels { get; }
     }
 }

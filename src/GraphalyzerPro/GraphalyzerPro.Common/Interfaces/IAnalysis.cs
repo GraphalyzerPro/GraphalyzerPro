@@ -34,7 +34,6 @@ namespace GraphalyzerPro.Common.Interfaces
         /// <summary>
         /// Initializes the <see cref="IAnalysis"/>
         /// </summary>
-        /// <param name="informationEngine">The <see cref="IInformationEngine"/> which handels the requests of the <see cref="IAnalysis"/>. </param>
         void Initialize();
 
         /// <summary>

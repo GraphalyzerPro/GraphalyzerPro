@@ -31,6 +31,16 @@ namespace GraphalyzerPro.CsvReceiver
 {
     public class CsvReceiver : IReceiver
     {
+        private static readonly Dictionary<char, DiagnoseType> TypeCharToTypeEnumLookUp = new Dictionary
+            <char, DiagnoseType>
+            {
+                {'(', DiagnoseType.StartBracketOutput},
+                {')', DiagnoseType.EndBracketOutput},
+                {'E', DiagnoseType.Exception},
+                {'�', DiagnoseType.SingleOutput},
+                {'·', DiagnoseType.SingleOutput},
+            };
+
         private IInformationEngine InformationEngine { get; set; }
 
         public string Name
@@ -77,20 +87,35 @@ namespace GraphalyzerPro.CsvReceiver
 
                 var diagnoseOutputEntries = from line in allLines
                                             let dataEntry = line.Split(';')
-                                            select
-                                                new DiagnoseOutputEntry(Convert.ToDateTime(dataEntry[0]),
-                                                                        Convert.ToInt64(dataEntry[1]),
-                                                                        Convert.ToInt64(dataEntry[2]),
-                                                                        Convert.ToInt32(dataEntry[3]),
-                                                                        Convert.ToInt32(dataEntry[4]),
-                                                                        Convert.ToChar(dataEntry[5]), dataEntry[6],
-                                                                        dataEntry[7], dataEntry[8], dataEntry[9],
-                                                                        dataEntry[10],
-                                                                        dataEntry[13], dataEntry[12]);
+                                            select ParseDataEntryToDiagnoseOutputEntry(dataEntry);
+
                 return diagnoseOutputEntries.ToList();
             }
 
             return new List<IDiagnoseOutputEntry>();
+        }
+
+        private static IDiagnoseOutputEntry ParseDataEntryToDiagnoseOutputEntry(string[] dataEntry)
+        {
+            DateTime dateTimeParseBuffer;
+
+            var type = dataEntry[5].Trim();
+
+            return
+                new DiagnoseOutputEntry(
+                    DateTime.TryParse(dataEntry[0], out dateTimeParseBuffer) ? dateTimeParseBuffer : DateTime.MinValue,
+                    Convert.ToInt64(dataEntry[1]),
+                    Convert.ToInt64(dataEntry[2]),
+                    Convert.ToInt32(dataEntry[3]),
+                    Convert.ToInt32(dataEntry[4]),
+                    type.Length > 0 ? TypeCharToTypeEnumLookUp[type.Last()] : DiagnoseType.SingleOutput,
+                    dataEntry[6],
+                    dataEntry[7],
+                    dataEntry[8],
+                    dataEntry[9],
+                    dataEntry[10],
+                    dataEntry[13],
+                    dataEntry[12]);
         }
     }
 }
