@@ -19,6 +19,9 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using System.Windows.Controls;
+using ReactiveUI;
+
 namespace GraphalyzerPro.Common.Interfaces
 {
     /// <summary>
@@ -30,6 +33,10 @@ namespace GraphalyzerPro.Common.Interfaces
         /// The name of the <see cref="IAnalysis"/>
         /// </summary>
         string Name { get; }
+
+        UserControl View { get; }
+
+        bool IsInitialized { get; }
 
         /// <summary>
         /// Initializes the <see cref="IAnalysis"/>

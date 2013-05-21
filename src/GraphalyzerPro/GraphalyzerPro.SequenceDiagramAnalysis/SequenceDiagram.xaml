@@ -1,4 +1,5 @@
-﻿/*
+﻿<!--
+/*
  * Copyright (c) 2006-2009 by Christoph Menzel, Daniel Birkmaier, 
  * Maximilian Madeja, Farruch Kouliev, Stefan Zoettlein
  *
@@ -18,17 +19,14 @@
  * License along with this program. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ReactiveUI;
-
-namespace GraphalyzerPro.SequenceDiagramAnalysis
-{
-    class SequenceDiagramViewModel : ReactiveObject, ISequenceDiagramViewModel
-    {
-    }
-}
+-->
+<UserControl x:Class="GraphalyzerPro.SequenceDiagramAnalysis.SequenceDiagram"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d">
+    <Grid>
+        <TextBlock Text="SequenceDiagram"></TextBlock>
+    </Grid>
+</UserControl>
