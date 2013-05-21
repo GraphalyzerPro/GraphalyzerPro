@@ -46,7 +46,7 @@
                     <DockPanel>
                         <DockPanel DockPanel.Dock="Top">
                             <Button DockPanel.Dock="Right" Content="Auswählen"
-                                    IsEnabled="{Binding ElementName=AnalysisComboBox, Path=SelectedItem}" />
+                                    IsEnabled="{Binding ElementName=AnalysisComboBox, Path=SelectedItem}" Command="{Binding SelectAnalysisCommand}"/>
                             <ComboBox DockPanel.Dock="Left" Name="AnalysisComboBox" ItemsSource="{Binding AllAnalyses}"
                                       SelectedItem="{Binding SelectedAnalysis}">
                                 <ComboBox.ItemTemplate>
@@ -56,7 +56,7 @@
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
                         </DockPanel>
-                        <TextBlock Text="Analysis" />
+                        <ContentControl Content="{Binding ActivatedAnalysis.View}"/>
                     </DockPanel>
                 </DataTemplate>
             </TabControl.ContentTemplate>

@@ -28,6 +28,7 @@ using System.Linq;
 using GraphalyzerPro.Common.Interfaces;
 using ReactiveUI;
 using System.Reflection;
+using ReactiveUI.Xaml;
 
 namespace GraphalyzerPro.ViewModels
 {
@@ -35,6 +36,7 @@ namespace GraphalyzerPro.ViewModels
     {
         private ReactiveCollection<IAnalysis> _allAnalyses;
         private IAnalysis _selectedAnalysis;
+        private IAnalysis _activatedAnalysis;
 
         public SessionViewModel(IReceiver receiver)
         {
@@ -42,6 +44,9 @@ namespace GraphalyzerPro.ViewModels
             Receiver = receiver;
             AllAnalyses = new ReactiveCollection<IAnalysis>();
             CreateInstanceOfAnalysisImplementations(GetAllAnalysisAssemblyFileNames());
+
+            SelectAnalysisCommand = new ReactiveCommand();
+            SelectAnalysisCommand.Subscribe(SelectAnalysis);
         }
 
         public ReactiveCollection<IAnalysis> AllAnalyses
@@ -61,6 +66,18 @@ namespace GraphalyzerPro.ViewModels
             get
             {
                 return _selectedAnalysis;
+            }
+            private set
+            {
+                this.RaiseAndSetIfChanged(value);
+            }
+        }
+
+        public IAnalysis ActivatedAnalysis
+        {
+            get
+            {
+                return _activatedAnalysis;
             }
             private set
             {
@@ -103,6 +120,17 @@ namespace GraphalyzerPro.ViewModels
             }
 
             return returnValue;
+        }
+
+        public IReactiveCommand SelectAnalysisCommand { get; private set; }
+
+        private void SelectAnalysis(object o)
+        {
+            if(!SelectedAnalysis.IsInitialized)
+            {
+                SelectedAnalysis.Initialize();
+            }
+            ActivatedAnalysis = SelectedAnalysis;
         }
     }
 }
