@@ -22,6 +22,7 @@
 using System;
 using GraphalyzerPro.Common.Interfaces;
 using ReactiveUI;
+using ReactiveUI.Xaml;
 
 namespace GraphalyzerPro.ViewModels
 {
@@ -46,5 +47,7 @@ namespace GraphalyzerPro.ViewModels
         {
             get;
         }
+
+        IReactiveCommand SelectAnalysisCommand { get; }
     }
 }
