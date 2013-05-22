@@ -19,13 +19,11 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using GraphalyzerPro.Common.Interfaces;
-using ReactiveUI;
 using System.Windows.Controls;
+using GraphalyzerPro.Common.Interfaces;
 
 namespace GraphalyzerPro.SequenceDiagramAnalysis
 {
-
     public class SequenceDiagramAnalysis : IAnalysis
     {
         public SequenceDiagramAnalysis()
@@ -45,7 +43,7 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis
         public void Initialize()
         {
             View = new SequenceDiagram();
-            View.DataContext=new SequenceDiagramViewModel();
+            View.DataContext = new SequenceDiagramViewModel();
             IsInitialized = true;
         }
 

@@ -32,9 +32,9 @@ namespace GraphalyzerPro.ViewModels
 {
     public class SessionViewModel : ReactiveObject, ISessionViewModel
     {
+        private IAnalysis _activatedAnalysis;
         private ReactiveCollection<IAnalysis> _allAnalyses;
         private IAnalysis _selectedAnalysis;
-        private IAnalysis _activatedAnalysis;
 
         public SessionViewModel(IReceiver receiver)
         {
@@ -43,9 +43,15 @@ namespace GraphalyzerPro.ViewModels
             AllAnalyses = new ReactiveCollection<IAnalysis>();
             CreateInstanceOfAnalysisImplementations(
                 ConfigurationAccessor.GetAllAssemblyFileNamesBySectionName(ConfigurationAccessor.AnalysesSectionName));
-			
-			SelectAnalysisCommand = new ReactiveCommand();
-            SelectAnalysisCommand.Subscribe(SelectAnalysis);
+
+            SelectAnalysisCommand = new ReactiveCommand();
+            SelectAnalysisCommand.Subscribe(_ => SelectAnalysis());
+        }
+
+        public IAnalysis ActivatedAnalysis
+        {
+            get { return _activatedAnalysis; }
+            private set { this.RaiseAndSetIfChanged(value); }
         }
 
         public ReactiveCollection<IAnalysis> AllAnalyses
@@ -60,21 +66,11 @@ namespace GraphalyzerPro.ViewModels
             private set { this.RaiseAndSetIfChanged(value); }
         }
 
-        public IAnalysis ActivatedAnalysis
-        {
-            get
-            {
-                return _activatedAnalysis;
-            }
-            private set
-            {
-                this.RaiseAndSetIfChanged(value);
-            }
-        }
-
         public IReceiver Receiver { get; private set; }
 
         public Guid SessionId { get; private set; }
+
+        public IReactiveCommand SelectAnalysisCommand { get; private set; }
 
         private void CreateInstanceOfAnalysisImplementations(IEnumerable<string> allAnalysisAssemblyFileNames)
         {
@@ -92,11 +88,9 @@ namespace GraphalyzerPro.ViewModels
             }
         }
 
-        public IReactiveCommand SelectAnalysisCommand { get; private set; }
-
-        private void SelectAnalysis(object o)
+        private void SelectAnalysis()
         {
-            if(!SelectedAnalysis.IsInitialized)
+            if (!SelectedAnalysis.IsInitialized)
             {
                 SelectedAnalysis.Initialize();
             }

@@ -20,7 +20,6 @@
  */
 
 using System.Windows.Controls;
-using ReactiveUI;
 
 namespace GraphalyzerPro.Common.Interfaces
 {
