@@ -30,7 +30,7 @@ namespace GraphalyzerPro.Common.Interfaces
         /// Processes a new <see cref="IDiagnoseOutputEntry"/>.
         /// </summary>
         /// <param name="diagnoseOutputEntry">
-        /// An <see cref="IDiagnoseOutputEntry"/> which should be processed by the <see cref="IInformationEngine"/>. 
+        /// An <see cref="IDiagnoseOutputEntry"/> which should be processed by the <see cref="IInformationEngine"/>.
         /// </param>
         void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry diagnoseOutputEntry);
     }

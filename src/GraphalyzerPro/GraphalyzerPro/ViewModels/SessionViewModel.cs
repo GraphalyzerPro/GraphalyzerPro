@@ -35,9 +35,11 @@ namespace GraphalyzerPro.ViewModels
         private IAnalysis _activatedAnalysis;
         private ReactiveCollection<IAnalysis> _allAnalyses;
         private IAnalysis _selectedAnalysis;
+        private List<IDiagnoseOutputEntry> _diagnoseOutputEntries;
 
         public SessionViewModel(IReceiver receiver)
         {
+            _diagnoseOutputEntries = new List<IDiagnoseOutputEntry>();
             SessionId = Guid.NewGuid();
             Receiver = receiver;
             AllAnalyses = new ReactiveCollection<IAnalysis>();
@@ -72,6 +74,11 @@ namespace GraphalyzerPro.ViewModels
 
         public IReactiveCommand SelectAnalysisCommand { get; private set; }
 
+        public void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry diagnoseOutputEntry)
+        {
+            throw new NotImplementedException();
+        }
+
         private void CreateInstanceOfAnalysisImplementations(IEnumerable<string> allAnalysisAssemblyFileNames)
         {
             foreach (var analysisAssembly in allAnalysisAssemblyFileNames)
@@ -95,6 +102,30 @@ namespace GraphalyzerPro.ViewModels
                 SelectedAnalysis.Initialize();
             }
             ActivatedAnalysis = SelectedAnalysis;
+            int i;
+            if (ActivatedAnalysis.LastProcessedDiagnoseOutputEntry == null)
+            {
+                i = 0;
+            }
+            else
+            {
+                i = _diagnoseOutputEntries.IndexOf(ActivatedAnalysis.LastProcessedDiagnoseOutputEntry) + 1;
+            }
+            for (;
+                i < _diagnoseOutputEntries.Count;
+                i++)
+            {
+                ActivatedAnalysis.ProcessNewDiagnoseOutputEntry(_diagnoseOutputEntries[i]);
+            }
+        }
+
+        public void ProcessNewDiagramOutputEntry(IDiagnoseOutputEntry diagnoseOutputEntry)
+        {
+            _diagnoseOutputEntries.Add(diagnoseOutputEntry);
+            if (ActivatedAnalysis != null)
+            {
+                ActivatedAnalysis.ProcessNewDiagnoseOutputEntry(diagnoseOutputEntry);
+            }
         }
     }
 }
