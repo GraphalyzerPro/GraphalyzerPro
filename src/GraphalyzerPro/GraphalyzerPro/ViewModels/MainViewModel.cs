@@ -24,8 +24,6 @@ using System.Windows;
 using GraphalyzerPro.Common;
 using GraphalyzerPro.Common.Interfaces;
 using GraphalyzerPro.Views;
-using ReactiveUI;
-using ReactiveUI.Xaml;
 
 namespace GraphalyzerPro.ViewModels
 {
