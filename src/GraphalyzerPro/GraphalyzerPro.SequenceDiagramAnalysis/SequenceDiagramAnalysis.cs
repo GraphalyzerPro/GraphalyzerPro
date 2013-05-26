@@ -49,6 +49,7 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis
 
         public void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry diagnoseOutputEntry)
         {
+
         }
     }
 }
