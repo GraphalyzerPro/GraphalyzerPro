@@ -38,6 +38,8 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis
 
         public UserControl View { get; private set; }
 
+        public IDiagnoseOutputEntry LastProcessedDiagnoseOutputEntry { get; private set; }
+
         public bool IsInitialized { get; private set; }
 
         public void Initialize()
