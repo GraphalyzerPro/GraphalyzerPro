@@ -49,5 +49,13 @@ namespace GraphalyzerPro.ViewModels
         }
 
         IReactiveCommand SelectAnalysisCommand { get; }
+
+        /// <summary>
+        /// Processes a new <see cref="IDiagnoseOutputEntry"/>.
+        /// </summary>
+        /// <param name="diagnoseOutputEntry">
+        /// An <see cref="IDiagnoseOutputEntry"/> which should be processed by the <see cref="ISessionViewModel"/>.
+        /// </param>
+        void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry diagnoseOutputEntry);
     }
 }

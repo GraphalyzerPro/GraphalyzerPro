@@ -35,6 +35,8 @@ namespace GraphalyzerPro.Common.Interfaces
 
         UserControl View { get; }
 
+        IDiagnoseOutputEntry LastProcessedDiagnoseOutputEntry { get; }
+
         bool IsInitialized { get; }
 
         /// <summary>
@@ -46,7 +48,7 @@ namespace GraphalyzerPro.Common.Interfaces
         /// Processes a new <see cref="IDiagnoseOutputEntry"/>.
         /// </summary>
         /// <param name="diagnoseOutputEntry">
-        /// An <see cref="IDiagnoseOutputEntry"/> which should be processed by the <see cref="IInformationEngine"/>.
+        /// An <see cref="IDiagnoseOutputEntry"/> which should be processed by the <see cref="ISessionViewModel"/>.
         /// </param>
         void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry diagnoseOutputEntry);
     }
