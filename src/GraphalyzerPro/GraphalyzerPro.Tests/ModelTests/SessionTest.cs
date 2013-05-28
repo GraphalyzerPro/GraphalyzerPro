@@ -19,23 +19,28 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using FluentAssertions;
 using GraphalyzerPro.Common.Interfaces;
+using GraphalyzerPro.Models;
+using Moq;
+using NUnit.Framework;
 
-namespace GraphalyzerPro.Common
+namespace GraphalyzerPro.Tests.ModelTests
 {
-    /// <summary>
-    /// Provides a common implementation for the information engine.
-    /// </summary>
-    public class InformationEngine : IInformationEngine
+    [TestFixture]
+    public class SessionTest
     {
-        /// <summary>
-        /// Processes a new <see cref="IDiagnoseOutputEntry"/>.
-        /// </summary>
-        /// <param name="diagnoseOutputEntry">
-        /// An <see cref="IDiagnoseOutputEntry"/> which should be processed by the <see cref="IInformationEngine"/>.
-        /// </param>
-		public void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry diagnoseOutputEntry)
-		{
-		}
+        [Test]
+        public void Constructor_Normal_CreatsNewGuid()
+        {
+            var receiverMock = new Mock<IReceiver>();
+            var analysisMock = new Mock<IAnalysis>();
+
+            var session = new Session(receiverMock.Object, analysisMock.Object);
+            var session2 = new Session(receiverMock.Object, analysisMock.Object);
+
+            session.Id.Should().NotBeEmpty();
+            session.Id.Should().NotBe(session2.Id);
+        }
     }
 }

@@ -24,32 +24,28 @@ using System.Windows.Controls;
 namespace GraphalyzerPro.Common.Interfaces
 {
     /// <summary>
-    /// Provides a common interface for all analysis implementations.
+    ///     Provides a common interface for all analysis implementations.
     /// </summary>
     public interface IAnalysis
     {
         /// <summary>
-        /// The name of the <see cref="IAnalysis"/>
+        ///     The name of the <see cref="IAnalysis" />
         /// </summary>
         string Name { get; }
 
         UserControl View { get; }
 
-        IDiagnoseOutputEntry LastProcessedDiagnoseOutputEntry { get; }
-
-        bool IsInitialized { get; }
-
         /// <summary>
-        /// Initializes the <see cref="IAnalysis"/>
-        /// </summary>
-        void Initialize();
-
-        /// <summary>
-        /// Processes a new <see cref="IDiagnoseOutputEntry"/>.
+        ///     Processes a new <see cref="IDiagnoseOutputEntry" />.
         /// </summary>
         /// <param name="diagnoseOutputEntry">
-        /// An <see cref="IDiagnoseOutputEntry"/> which should be processed by the <see cref="ISessionViewModel"/>.
+        ///     An <see cref="IDiagnoseOutputEntry" /> which should be processed.
         /// </param>
         void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry diagnoseOutputEntry);
+
+        /// <summary>
+        ///     The <see cref="IAnalysis" /> cleanup everything to be destructed without errors.
+        /// </summary>
+        void Deactivate();
     }
 }

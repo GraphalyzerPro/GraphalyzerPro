@@ -19,33 +19,22 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System.Windows.Controls;
 using GraphalyzerPro.Common.Interfaces;
+using ReactiveUI;
+using ReactiveUI.Xaml;
 
-namespace GraphalyzerPro.SequenceDiagramAnalysis
+namespace GraphalyzerPro.ViewModels
 {
-    public class SequenceDiagramAnalysis : IAnalysis
+    public interface INewSessionDialogViewModel
     {
-        public SequenceDiagramAnalysis()
-        {
-            View = new SequenceDiagram();
-        }
+        IReactiveCommand ApplyCommand { get; }
 
-        public string Name
-        {
-            get { return "SequenceDiagramAnalysis"; }
-        }
+        ReactiveCollection<IReceiver> AllReceiver { get; }
 
-        public UserControl View { get; private set; }
+        ReactiveCollection<IAnalysis> AllAnalyses { get; }
 
-        public void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry diagnoseOutputEntry)
-        {
-            ((SequenceDiagram) View).ViewModel.ProcessNewDiagnoseOutputEntry(diagnoseOutputEntry);
-        }
+        IReceiver SelectedReceiver { get; }
 
-        public void Deactivate()
-        {
-            View = null;
-        }
+        IAnalysis SelectedAnalysis { get; }
     }
 }

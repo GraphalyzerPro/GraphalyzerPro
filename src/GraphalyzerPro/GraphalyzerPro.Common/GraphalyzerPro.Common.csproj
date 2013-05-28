@@ -49,7 +49,6 @@
     </Compile>
     <Compile Include="DiagnoseOutputEntry.cs" />
     <Compile Include="DiagnoseType.cs" />
-    <Compile Include="InformationEngine.cs" />
     <Compile Include="Interfaces\IAnalysis.cs" />
     <Compile Include="Interfaces\IDiagnoseOutputEntry.cs" />
     <Compile Include="Interfaces\IInformationEngine.cs" />

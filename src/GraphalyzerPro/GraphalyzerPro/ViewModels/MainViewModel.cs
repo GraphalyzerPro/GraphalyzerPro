@@ -20,9 +20,10 @@
  */
 
 using System;
+using System.Linq;
 using System.Windows;
-using GraphalyzerPro.Common;
 using GraphalyzerPro.Common.Interfaces;
+using GraphalyzerPro.Models;
 using GraphalyzerPro.Views;
 using ReactiveUI;
 using ReactiveUI.Xaml;
@@ -32,14 +33,16 @@ namespace GraphalyzerPro.ViewModels
     public class MainViewModel : ReactiveObject, IMainViewModel
     {
         private readonly InformationEngine _informationEngine;
-        private readonly ReactiveCollection<ISessionViewModel> _sessionViewModels;
+        private readonly ReactiveDerivedCollection<ISessionViewModel> _sessionViewModels;
         private readonly Action _showCloseSessionErrorMessage;
         private readonly Action _showInitializationErrorMessage;
+        private ISessionViewModel _selectedSessionViewModel;
 
         public MainViewModel()
         {
             _informationEngine = new InformationEngine();
-            _sessionViewModels = new ReactiveCollection<ISessionViewModel>();
+            _sessionViewModels =
+                _informationEngine.Sessions.CreateDerivedCollection(x => new SessionViewModel(x) as ISessionViewModel);
 
             _showInitializationErrorMessage = () => MessageBox.Show(
                 "Bei der Initialisierung des Receivers ist ein Fehler aufgetreten.\n" +
@@ -50,11 +53,11 @@ namespace GraphalyzerPro.ViewModels
                 "Beim Schließen der Session trat ein Fehler auf.",
                 "Fehler");
 
-            ActivateReceiverCommand = new ReactiveCommand();
-            ActivateReceiverCommand.Subscribe(_ => ActivateReceiver());
+            StartNewSessionCommand = new ReactiveCommand();
+            StartNewSessionCommand.Subscribe(_ => StartNewSession());
 
             InitializeReceiverCommand = new ReactiveAsyncCommand();
-            InitializeReceiverCommand.RegisterAsyncAction(x => InitializeReceiver((IReceiver) x));
+            InitializeReceiverCommand.RegisterAsyncAction(x => InitializeReceiver((Tuple<Guid, IReceiver>) x));
             InitializeReceiverCommand.ThrownExceptions.Subscribe(
                 ex => _showInitializationErrorMessage());
 
@@ -68,40 +71,50 @@ namespace GraphalyzerPro.ViewModels
             get { return "GraphalyzerPro"; }
         }
 
-        public IReactiveCommand ActivateReceiverCommand { get; private set; }
+        public IReactiveCommand StartNewSessionCommand { get; private set; }
 
         public IReactiveCommand CloseSessionCommand { get; private set; }
 
         public IReactiveAsyncCommand InitializeReceiverCommand { get; private set; }
 
-        public ReactiveCollection<ISessionViewModel> SessionViewModels
+        public ReactiveDerivedCollection<ISessionViewModel> SessionViewModels
         {
             get { return _sessionViewModels; }
             set { this.RaiseAndSetIfChanged(value); }
         }
 
-        private void ActivateReceiver()
+        public ISessionViewModel SelectedSessionViewModel
         {
-            var dialog = new ReceiverActivationDialog();
+            get { return _selectedSessionViewModel; }
+            set { this.RaiseAndSetIfChanged(value); }
+        }
+
+        private void StartNewSession()
+        {
+            var dialog = new NewSessionDialog();
 
             if (dialog.ShowDialog() == true)
             {
-                var sessionViewModel = new SessionViewModel(dialog.ViewModel.SelectedReceiver);
-                SessionViewModels.Add(sessionViewModel);
+                var newSessionId = _informationEngine.AddSession(dialog.ViewModel.SelectedReceiver,
+                                                                 dialog.ViewModel.SelectedAnalysis);
 
-                InitializeReceiverCommand.Execute(sessionViewModel.Receiver);
+                SelectedSessionViewModel = SessionViewModels.Single(x => x.SessionId == newSessionId);
+
+                InitializeReceiverCommand.Execute(new Tuple<Guid, IReceiver>(SelectedSessionViewModel.SessionId,
+                                                                             SelectedSessionViewModel.Receiver));
             }
         }
 
-        private void InitializeReceiver(IReceiver receiver)
+        private void InitializeReceiver(Tuple<Guid, IReceiver> sessionIdAndReceiver)
         {
-            receiver.Initialize(_informationEngine);
+            sessionIdAndReceiver.Item2.Initialize(_informationEngine, sessionIdAndReceiver.Item1);
         }
 
         private void CloseSession(ISessionViewModel sessionViewModel)
         {
             sessionViewModel.Receiver.Deactivate();
-            SessionViewModels.Remove(sessionViewModel);
+            sessionViewModel.Analysis.Deactivate();
+            _informationEngine.DeleteSession(sessionViewModel.SessionId);
         }
     }
 }

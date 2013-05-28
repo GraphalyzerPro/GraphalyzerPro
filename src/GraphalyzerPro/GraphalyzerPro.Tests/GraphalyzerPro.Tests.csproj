@@ -117,10 +117,13 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="ModelTests\InformationEngineTest.cs" />
+    <Compile Include="ModelTests\SessionTest.cs" />
     <Compile Include="TestsSetup.cs" />
     <Compile Include="ViewModelLocatorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModelTests\MainViewModelTest.cs" />
+    <Compile Include="ViewModelTests\NewSessionDialogViewModelTest.cs" />
     <Compile Include="ViewModelTests\SessionViewModelTest.cs" />
   </ItemGroup>
   <ItemGroup>

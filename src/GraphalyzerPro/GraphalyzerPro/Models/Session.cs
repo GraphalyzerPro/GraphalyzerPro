@@ -19,33 +19,22 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System.Windows.Controls;
+using System;
 using GraphalyzerPro.Common.Interfaces;
 
-namespace GraphalyzerPro.SequenceDiagramAnalysis
+namespace GraphalyzerPro.Models
 {
-    public class SequenceDiagramAnalysis : IAnalysis
+    public class Session : ISession
     {
-        public SequenceDiagramAnalysis()
+        public Session(IReceiver receiver, IAnalysis analysis)
         {
-            View = new SequenceDiagram();
+            Id = Guid.NewGuid();
+            Receiver = receiver;
+            Analysis = analysis;
         }
 
-        public string Name
-        {
-            get { return "SequenceDiagramAnalysis"; }
-        }
-
-        public UserControl View { get; private set; }
-
-        public void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry diagnoseOutputEntry)
-        {
-            ((SequenceDiagram) View).ViewModel.ProcessNewDiagnoseOutputEntry(diagnoseOutputEntry);
-        }
-
-        public void Deactivate()
-        {
-            View = null;
-        }
+        public Guid Id { get; private set; }
+        public IReceiver Receiver { get; private set; }
+        public IAnalysis Analysis { get; private set; }
     }
 }
