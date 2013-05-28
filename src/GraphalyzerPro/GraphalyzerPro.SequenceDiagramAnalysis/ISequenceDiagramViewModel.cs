@@ -19,9 +19,15 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using GraphalyzerPro.Common.Interfaces;
+using ReactiveUI;
+
 namespace GraphalyzerPro.SequenceDiagramAnalysis
 {
-    interface ISequenceDiagramViewModel
+    public interface ISequenceDiagramViewModel
     {
+        ReactiveCollection<IDiagnoseOutputEntry> DiagnoseOutputEntries { get; }
+
+        void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry diagnoseOutputEntry);
     }
 }

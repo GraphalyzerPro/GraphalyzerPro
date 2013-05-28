@@ -29,11 +29,11 @@
         Title="{Binding Title}" Height="350" Width="525">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="Empfänger">
-                <MenuItem Header="Empfänger aktivieren..." Command="{Binding ActivateReceiverCommand}" />
+            <MenuItem Header="Sessions">
+                <MenuItem Header="Neue Session starten" Command="{Binding StartNewSessionCommand}" />
             </MenuItem>
         </Menu>
-        <TabControl ItemsSource="{Binding SessionViewModels}">
+        <TabControl ItemsSource="{Binding SessionViewModels}" SelectedItem="{Binding SelectedSessionViewModel}">
             <TabControl.ItemTemplate>
                 <DataTemplate>
                     <DockPanel>
@@ -48,19 +48,7 @@
             <TabControl.ContentTemplate>
                 <DataTemplate DataType="viewModels:SessionViewModel">
                     <DockPanel>
-                        <DockPanel DockPanel.Dock="Top">
-                            <Button DockPanel.Dock="Right" Content="Auswählen"
-                                    IsEnabled="{Binding ElementName=AnalysisComboBox, Path=SelectedItem}" Command="{Binding SelectAnalysisCommand}"/>
-                            <ComboBox DockPanel.Dock="Left" Name="AnalysisComboBox" ItemsSource="{Binding AllAnalyses}"
-                                      SelectedItem="{Binding SelectedAnalysis}">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <Label Content="{Binding Name}"></Label>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
-                        </DockPanel>
-                        <ContentControl Content="{Binding ActivatedAnalysis.View}"/>
+                        <ContentControl Content="{Binding Analysis.View}"/>
                     </DockPanel>
                 </DataTemplate>
             </TabControl.ContentTemplate>

@@ -28,12 +28,14 @@ namespace GraphalyzerPro.ViewModels
     {
         string Title { get; }
 
-        IReactiveCommand ActivateReceiverCommand { get; }
+        IReactiveCommand StartNewSessionCommand { get; }
 
         IReactiveCommand CloseSessionCommand { get; }
 
         IReactiveAsyncCommand InitializeReceiverCommand { get; }
 
-        ReactiveCollection<ISessionViewModel> SessionViewModels { get; }
+        ReactiveDerivedCollection<ISessionViewModel> SessionViewModels { get; }
+
+        ISessionViewModel SelectedSessionViewModel { get; }
     }
 }

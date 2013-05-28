@@ -19,33 +19,40 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Windows;
-using System.Windows.Controls;
+using GraphalyzerPro.ViewModels;
 
-namespace GraphalyzerPro.SequenceDiagramAnalysis
+namespace GraphalyzerPro.Views
 {
     /// <summary>
-    ///     Interaction logic for SequenceDiagram.xaml
+    ///     Interaction logic for NewSessionDialog.xaml
     /// </summary>
-    public partial class SequenceDiagram : UserControl
+    public partial class NewSessionDialog : Window
     {
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
             "ViewModel",
-            typeof (ISequenceDiagramViewModel),
-            typeof (SequenceDiagram),
-            new PropertyMetadata(default(ISequenceDiagramViewModel))
+            typeof (INewSessionDialogViewModel),
+            typeof (NewSessionDialog),
+            new PropertyMetadata(default(INewSessionDialogViewModel))
             );
 
-        public SequenceDiagram()
+        public NewSessionDialog()
         {
             InitializeComponent();
 
-            ViewModel = new SequenceDiagramViewModel();
+            ViewModel = new NewSessionDialogViewModel();
+
+            ViewModel.ApplyCommand.Subscribe(x =>
+                {
+                    DialogResult = true;
+                    Close();
+                });
         }
 
-        public ISequenceDiagramViewModel ViewModel
+        public INewSessionDialogViewModel ViewModel
         {
-            get { return (ISequenceDiagramViewModel) GetValue(ViewModelProperty); }
+            get { return (INewSessionDialogViewModel) GetValue(ViewModelProperty); }
             set { SetValue(ViewModelProperty, value); }
         }
     }
