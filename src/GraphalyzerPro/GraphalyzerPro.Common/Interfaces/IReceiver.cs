@@ -19,28 +19,31 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using System;
+
 namespace GraphalyzerPro.Common.Interfaces
 {
     /// <summary>
-    /// Provides a common interface for all receiver implementations.
+    ///     Provides a common interface for all receiver implementations.
     /// </summary>
     public interface IReceiver
     {
         /// <summary>
-        /// The name of the <see cref="IReceiver"/>
+        ///     The name of the <see cref="IReceiver" />
         /// </summary>
         string Name { get; }
 
         /// <summary>
-        /// Initializes the <see cref="IReceiver"/>
+        ///     Initializes the <see cref="IReceiver" />
         /// </summary>
         /// <param name="informationEngine">
-        /// The <see cref="IInformationEngine"/> which handels the requests of the <see cref="IReceiver"/>.
+        ///     The <see cref="IInformationEngine" /> which handels the requests of the <see cref="IReceiver" />.
         /// </param>
-        void Initialize(IInformationEngine informationEngine);
+        /// <param name="sessionId">The session id.</param>
+        void Initialize(IInformationEngine informationEngine, Guid sessionId);
 
         /// <summary>
-        /// The <see cref="IReceiver"/> cleanup everything to be destructed without errors.
+        ///     The <see cref="IReceiver" /> cleanup everything to be destructed without errors.
         /// </summary>
         void Deactivate();
     }

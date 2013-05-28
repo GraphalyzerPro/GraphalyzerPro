@@ -19,11 +19,29 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using GraphalyzerPro.Common.Interfaces;
 using ReactiveUI;
 
 namespace GraphalyzerPro.SequenceDiagramAnalysis
 {
-    class SequenceDiagramViewModel : ReactiveObject, ISequenceDiagramViewModel
+    internal class SequenceDiagramViewModel : ReactiveObject, ISequenceDiagramViewModel
     {
+        private readonly ReactiveCollection<IDiagnoseOutputEntry> _diagnoseOutputEntries;
+
+        public SequenceDiagramViewModel()
+        {
+            _diagnoseOutputEntries = new ReactiveCollection<IDiagnoseOutputEntry>();
+        }
+
+        public ReactiveCollection<IDiagnoseOutputEntry> DiagnoseOutputEntries
+        {
+            get { return _diagnoseOutputEntries; }
+            private set { this.RaiseAndSetIfChanged(value); }
+        }
+
+        public void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry diagnoseOutputEntry)
+        {
+            DiagnoseOutputEntries.Add(diagnoseOutputEntry);
+        }
     }
 }

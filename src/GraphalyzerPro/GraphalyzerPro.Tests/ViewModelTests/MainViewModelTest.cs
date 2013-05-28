@@ -24,6 +24,7 @@ using System.Linq;
 using System.Reflection;
 using FluentAssertions;
 using GraphalyzerPro.Common.Interfaces;
+using GraphalyzerPro.Models;
 using GraphalyzerPro.ViewModels;
 using Microsoft.Reactive.Testing;
 using Moq;
@@ -47,14 +48,25 @@ namespace GraphalyzerPro.Tests.ViewModelTests
             // ReSharper restore PossibleNullReferenceException
         }
 
+        private static object GetField(object obj, string fieldName)
+        {
+            var fieldInfo = obj.GetType().GetField(fieldName,
+                                                   BindingFlags.NonPublic | BindingFlags.Public |
+                                                   BindingFlags.Instance |
+                                                   BindingFlags.Static);
+
+            // ReSharper disable PossibleNullReferenceException
+            return fieldInfo.GetValue(obj);
+            // ReSharper restore PossibleNullReferenceException
+        }
+
         [Test]
         public void CloseSessionCommand_OneSessionThrowsException_ExceptionShouldBeHandled()
         {
             var receiverMock = new Mock<IReceiver>();
             receiverMock.Setup(m => m.Deactivate()).Throws<Exception>();
 
-            var mock = new Mock<ISessionViewModel>();
-            mock.Setup(m => m.Receiver).Returns(receiverMock.Object);
+            var analysisMock = new Mock<IAnalysis>();
 
             var mainViewModel = new MainViewModel();
             var closeSessionErrorMessageWasShown = false;
@@ -62,9 +74,13 @@ namespace GraphalyzerPro.Tests.ViewModelTests
             SetField(mainViewModel, new Action(() => { closeSessionErrorMessageWasShown = true; }),
                      "_showCloseSessionErrorMessage");
 
-            mainViewModel.SessionViewModels.Add(mock.Object);
+            var informationEngine = GetField(mainViewModel, "_informationEngine") as InformationEngine;
 
-            mainViewModel.CloseSessionCommand.Execute(mock.Object);
+            // ReSharper disable PossibleNullReferenceException
+            informationEngine.AddSession(receiverMock.Object, analysisMock.Object);
+            // ReSharper restore PossibleNullReferenceException
+
+            mainViewModel.CloseSessionCommand.Execute(mainViewModel.SessionViewModels.First());
 
             closeSessionErrorMessageWasShown.Should().BeTrue();
         }
@@ -72,8 +88,8 @@ namespace GraphalyzerPro.Tests.ViewModelTests
         [Test]
         public void CloseSessionCommand_OneSession_SessionShouldBeDeleted()
         {
-            var mock = new Mock<ISessionViewModel>();
-            mock.Setup(m => m.Receiver).Returns(new Mock<IReceiver>().Object);
+            var receiverMock = new Mock<IReceiver>();
+            var analysisMock = new Mock<IAnalysis>();
 
             var mainViewModel = new MainViewModel();
             var closeSessionErrorMessageWasShown = false;
@@ -81,9 +97,14 @@ namespace GraphalyzerPro.Tests.ViewModelTests
             SetField(mainViewModel, new Action(() => { closeSessionErrorMessageWasShown = true; }),
                      "_showCloseSessionErrorMessage");
 
-            mainViewModel.SessionViewModels.Add(mock.Object);
+            var informationEngine = GetField(mainViewModel, "_informationEngine") as InformationEngine;
 
-            mainViewModel.CloseSessionCommand.Execute(mock.Object);
+            // ReSharper disable PossibleNullReferenceException
+            informationEngine.AddSession(receiverMock.Object, analysisMock.Object);
+            // ReSharper restore PossibleNullReferenceException
+
+
+            mainViewModel.CloseSessionCommand.Execute(mainViewModel.SessionViewModels.First());
 
             mainViewModel.SessionViewModels.Count.Should().Be(0);
             closeSessionErrorMessageWasShown.Should().BeFalse();
@@ -103,20 +124,20 @@ namespace GraphalyzerPro.Tests.ViewModelTests
             (new TestScheduler()).With(scheduler =>
                 {
                     var mock = new Mock<IReceiver>();
-                    mock.Setup(m => m.Initialize(It.IsAny<IInformationEngine>()));
+                    mock.Setup(m => m.Initialize(It.IsAny<IInformationEngine>(), It.IsAny<Guid>()));
 
                     var mainViewModel = new MainViewModel();
                     var initializationErrorMessageWasShown = false;
                     SetField(mainViewModel, new Action(() => { initializationErrorMessageWasShown = true; }),
                              "_showInitializationErrorMessage");
 
-                    mainViewModel.InitializeReceiverCommand.Execute(mock.Object);
+                    mainViewModel.InitializeReceiverCommand.Execute(new Tuple<Guid, IReceiver>(Guid.NewGuid(),
+                                                                                               mock.Object));
 
                     scheduler.AdvanceToMs(100);
 
                     initializationErrorMessageWasShown.Should().BeFalse();
-                }
-                );
+                });
         }
 
         [Test]
@@ -126,7 +147,7 @@ namespace GraphalyzerPro.Tests.ViewModelTests
             (new TestScheduler()).With(scheduler =>
                 {
                     var mock = new Mock<IReceiver>();
-                    mock.Setup(m => m.Initialize(It.IsAny<IInformationEngine>())).Throws<Exception>();
+                    mock.Setup(m => m.Initialize(It.IsAny<IInformationEngine>(), It.IsAny<Guid>())).Throws<Exception>();
 
                     var mainViewModel = new MainViewModel();
                     var initializationErrorMessageWasShown = false;

@@ -67,7 +67,7 @@ namespace GraphalyzerPro.CsvReceiver.Tests
             var csvReceiver = new CsvReceiver();
 
             var mock = new Mock<IInformationEngine>();
-            mock.Setup(m => m.ProcessNewDiagnoseOutputEntry(It.IsAny<IDiagnoseOutputEntry>()));
+            mock.Setup(m => m.ProcessNewDiagnoseOutputEntry(It.IsAny<IDiagnoseOutputEntry>(), It.IsAny<Guid>()));
 
             SetProperty(csvReceiver, mock.Object, "InformationEngine");
 
@@ -84,7 +84,7 @@ namespace GraphalyzerPro.CsvReceiver.Tests
             var csvReceiver = new CsvReceiver();
 
             var mock = new Mock<IInformationEngine>();
-            mock.Setup(m => m.ProcessNewDiagnoseOutputEntry(It.IsAny<IDiagnoseOutputEntry>()))
+            mock.Setup(m => m.ProcessNewDiagnoseOutputEntry(It.IsAny<IDiagnoseOutputEntry>(), It.IsAny<Guid>()))
                 .Callback(() => numberOfCalls++);
 
             SetProperty(csvReceiver, mock.Object, "InformationEngine");
@@ -106,7 +106,7 @@ namespace GraphalyzerPro.CsvReceiver.Tests
             var csvReceiver = new CsvReceiver();
 
             var mock = new Mock<IInformationEngine>();
-            mock.Setup(m => m.ProcessNewDiagnoseOutputEntry(It.IsAny<IDiagnoseOutputEntry>()))
+            mock.Setup(m => m.ProcessNewDiagnoseOutputEntry(It.IsAny<IDiagnoseOutputEntry>(), It.IsAny<Guid>()))
                 .Callback(() => numberOfCalls++);
 
             SetProperty(csvReceiver, mock.Object, "InformationEngine");

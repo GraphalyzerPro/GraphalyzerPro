@@ -19,6 +19,8 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using System;
+
 namespace GraphalyzerPro.Common.Interfaces
 {
     /// <summary>
@@ -32,6 +34,9 @@ namespace GraphalyzerPro.Common.Interfaces
         /// <param name="diagnoseOutputEntry">
         /// An <see cref="IDiagnoseOutputEntry"/> which should be processed by the <see cref="IInformationEngine"/>.
         /// </param>
-        void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry diagnoseOutputEntry);
+        /// <param name="sessionId">
+        /// The session id.
+        /// </param>
+        void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry diagnoseOutputEntry, Guid sessionId);
     }
 }

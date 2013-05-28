@@ -20,112 +20,30 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using GraphalyzerPro.Common.Interfaces;
-using GraphalyzerPro.Configuration;
+using GraphalyzerPro.Models;
 using ReactiveUI;
-using ReactiveUI.Xaml;
 
 namespace GraphalyzerPro.ViewModels
 {
     public class SessionViewModel : ReactiveObject, ISessionViewModel
     {
-        private IAnalysis _activatedAnalysis;
-        private ReactiveCollection<IAnalysis> _allAnalyses;
-        private IAnalysis _selectedAnalysis;
-        private List<IDiagnoseOutputEntry> _diagnoseOutputEntries;
-
-        public SessionViewModel(IReceiver receiver)
+        public SessionViewModel(ISession session)
         {
-            _diagnoseOutputEntries = new List<IDiagnoseOutputEntry>();
-            SessionId = Guid.NewGuid();
-            Receiver = receiver;
-            AllAnalyses = new ReactiveCollection<IAnalysis>();
-            CreateInstanceOfAnalysisImplementations(
-                ConfigurationAccessor.GetAllAssemblyFileNamesBySectionName(ConfigurationAccessor.AnalysesSectionName));
-
-            SelectAnalysisCommand = new ReactiveCommand();
-            SelectAnalysisCommand.Subscribe(_ => SelectAnalysis());
-        }
-
-        public IAnalysis ActivatedAnalysis
-        {
-            get { return _activatedAnalysis; }
-            private set { this.RaiseAndSetIfChanged(value); }
-        }
-
-        public ReactiveCollection<IAnalysis> AllAnalyses
-        {
-            get { return _allAnalyses; }
-            private set { this.RaiseAndSetIfChanged(value); }
-        }
-
-        public IAnalysis SelectedAnalysis
-        {
-            get { return _selectedAnalysis; }
-            private set { this.RaiseAndSetIfChanged(value); }
+            SessionId = session.Id;
+            Receiver = session.Receiver;
+            Analysis = session.Analysis;
         }
 
         public IReceiver Receiver { get; private set; }
 
-        public Guid SessionId { get; private set; }
+        public IAnalysis Analysis { get; private set; }
 
-        public IReactiveCommand SelectAnalysisCommand { get; private set; }
+        public Guid SessionId { get; private set; }
 
         public void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry diagnoseOutputEntry)
         {
-            throw new NotImplementedException();
-        }
-
-        private void CreateInstanceOfAnalysisImplementations(IEnumerable<string> allAnalysisAssemblyFileNames)
-        {
-            foreach (var analysisAssembly in allAnalysisAssemblyFileNames)
-            {
-                var assembly = Assembly.LoadFrom(analysisAssembly);
-
-                var allIAnalysisTypesOfTheAssembly =
-                    assembly.GetTypes().Where(x => typeof (IAnalysis).IsAssignableFrom(x)).ToList();
-
-                foreach (var type in allIAnalysisTypesOfTheAssembly)
-                {
-                    AllAnalyses.Add(Activator.CreateInstance(type) as IAnalysis);
-                }
-            }
-        }
-
-        private void SelectAnalysis()
-        {
-            if (!SelectedAnalysis.IsInitialized)
-            {
-                SelectedAnalysis.Initialize();
-            }
-            ActivatedAnalysis = SelectedAnalysis;
-            int i;
-            if (ActivatedAnalysis.LastProcessedDiagnoseOutputEntry == null)
-            {
-                i = 0;
-            }
-            else
-            {
-                i = _diagnoseOutputEntries.IndexOf(ActivatedAnalysis.LastProcessedDiagnoseOutputEntry) + 1;
-            }
-            for (;
-                i < _diagnoseOutputEntries.Count;
-                i++)
-            {
-                ActivatedAnalysis.ProcessNewDiagnoseOutputEntry(_diagnoseOutputEntries[i]);
-            }
-        }
-
-        public void ProcessNewDiagramOutputEntry(IDiagnoseOutputEntry diagnoseOutputEntry)
-        {
-            _diagnoseOutputEntries.Add(diagnoseOutputEntry);
-            if (ActivatedAnalysis != null)
-            {
-                ActivatedAnalysis.ProcessNewDiagnoseOutputEntry(diagnoseOutputEntry);
-            }
+            Analysis.ProcessNewDiagnoseOutputEntry(diagnoseOutputEntry);
         }
     }
 }

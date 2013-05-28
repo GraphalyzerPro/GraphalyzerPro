@@ -21,40 +21,22 @@
 
 using System;
 using GraphalyzerPro.Common.Interfaces;
-using ReactiveUI;
-using ReactiveUI.Xaml;
 
 namespace GraphalyzerPro.ViewModels
 {
     public interface ISessionViewModel
     {
-        IReceiver Receiver
-        {
-            get;
-        }
+        Guid SessionId { get; }
 
-        Guid SessionId
-        {
-            get;
-        }
+        IReceiver Receiver { get; }
 
-        ReactiveCollection<IAnalysis> AllAnalyses
-        {
-            get;
-        }
-
-        IAnalysis SelectedAnalysis
-        {
-            get;
-        }
-
-        IReactiveCommand SelectAnalysisCommand { get; }
+        IAnalysis Analysis { get; }
 
         /// <summary>
-        /// Processes a new <see cref="IDiagnoseOutputEntry"/>.
+        ///     Processes a new <see cref="IDiagnoseOutputEntry" />.
         /// </summary>
         /// <param name="diagnoseOutputEntry">
-        /// An <see cref="IDiagnoseOutputEntry"/> which should be processed by the <see cref="ISessionViewModel"/>.
+        ///     An <see cref="IDiagnoseOutputEntry" /> which should be processed by the <see cref="ISessionViewModel" />.
         /// </param>
         void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry diagnoseOutputEntry);
     }

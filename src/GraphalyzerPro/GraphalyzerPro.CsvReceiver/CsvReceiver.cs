@@ -43,14 +43,17 @@ namespace GraphalyzerPro.CsvReceiver
 
         private IInformationEngine InformationEngine { get; set; }
 
+        private Guid SessionId { get; set; }
+
         public string Name
         {
             get { return "CSVReceiver"; }
         }
 
-        public void Initialize(IInformationEngine informationEngine)
+        public void Initialize(IInformationEngine informationEngine, Guid sessionId)
         {
             InformationEngine = informationEngine;
+            SessionId = sessionId;
             ProcessTheCsvFile(GetFilePath());
         }
 
@@ -72,7 +75,7 @@ namespace GraphalyzerPro.CsvReceiver
 
             foreach (var diagnoseOutputEntry in diagnoseOutputEntries)
             {
-                InformationEngine.ProcessNewDiagnoseOutputEntry(diagnoseOutputEntry);
+                InformationEngine.ProcessNewDiagnoseOutputEntry(diagnoseOutputEntry, SessionId);
             }
         }
 

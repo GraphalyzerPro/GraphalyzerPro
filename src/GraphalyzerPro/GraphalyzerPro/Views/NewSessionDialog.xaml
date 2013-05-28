@@ -1,0 +1,57 @@
+﻿<!--
+/*
+ * Copyright (c) 2006-2009 by Christoph Menzel, Daniel Birkmaier, 
+ * Maximilian Madeja, Farruch Kouliev, Stefan Zoettlein
+ *
+ * This file is part of the GraphalyzerPro application.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>.
+ */ 
+--> 
+    <Window x:Class="GraphalyzerPro.Views.NewSessionDialog"
+        x:Name="NewSessionDialogWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Neu Session erstellen" Height="300" Width="350"
+        DataContext="{Binding ElementName=NewSessionDialogWindow, Path=ViewModel}">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="OK" IsDefault="True" Command="{Binding ApplyCommand}" Margin="0,0,5,0"/>
+            <Button Content="Abbrechen" IsCancel="True"/>
+        </StackPanel>
+        <StackPanel>
+            <DockPanel Margin="0,10,0,10">
+                <Label MinWidth="130">Empfänger auswählen: </Label>
+                <ComboBox Grid.Column="0" ItemsSource="{Binding AllReceiver}" SelectedItem="{Binding SelectedReceiver}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding Name}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </DockPanel>
+            <DockPanel>
+                <Label MinWidth="130">Analyse auswählen: </Label>
+                <ComboBox Grid.Column="1" ItemsSource="{Binding AllAnalyses}" SelectedItem="{Binding SelectedAnalysis}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding Name}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </DockPanel>
+        </StackPanel>
+    </DockPanel>
+</Window>
