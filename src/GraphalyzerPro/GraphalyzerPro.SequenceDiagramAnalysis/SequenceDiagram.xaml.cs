@@ -21,6 +21,7 @@
 
 using System.Windows;
 using System.Windows.Controls;
+using GraphalyzerPro.SequenceDiagramAnalysis.ViewModels;
 
 namespace GraphalyzerPro.SequenceDiagramAnalysis
 {

@@ -22,11 +22,13 @@
 using GraphalyzerPro.Common.Interfaces;
 using ReactiveUI;
 
-namespace GraphalyzerPro.SequenceDiagramAnalysis
+namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
 {
     public interface ISequenceDiagramViewModel
     {
         ReactiveCollection<IDiagnoseOutputEntry> DiagnoseOutputEntries { get; }
+
+        ReactiveDerivedCollection<IProcessViewModel> Processes { get; }
 
         void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry diagnoseOutputEntry);
     }

@@ -29,6 +29,19 @@
              DataContext="{Binding ElementName=SequenceDiagrammUserControl, Path=ViewModel}"
              mc:Ignorable="d">
     <DockPanel>
-        <ListView ItemsSource="{Binding DiagnoseOutputEntries}"/>
+        <ItemsControl ItemsSource="{Binding Processes}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border Margin="5,0,5,0" Padding="5" BorderBrush="Black" BorderThickness="1">
+                        <TextBlock Text="{Binding Id}"/>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </DockPanel>
 </UserControl>
