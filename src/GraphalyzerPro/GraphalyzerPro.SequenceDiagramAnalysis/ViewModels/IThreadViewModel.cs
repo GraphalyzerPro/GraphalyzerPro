@@ -19,19 +19,9 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-
-[assembly: AssemblyTitle("GraphalyzerPro.SequenceDiagramAnalysis")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyCulture("")]
-
-// The following GUID is for the ID of the typelib if this project is exposed to COM
-
-[assembly: Guid("cdb61747-ec65-4fe8-928a-0c42a57125bd")]
-[assembly: InternalsVisibleTo("GraphalyzerPro.SequenceDiagramAnalysis.Tests")]
+namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
+{
+    public interface IThreadViewModel
+    {
+    }
+}

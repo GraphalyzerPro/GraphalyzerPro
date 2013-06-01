@@ -22,26 +22,30 @@
 using GraphalyzerPro.Common.Interfaces;
 using ReactiveUI;
 
-namespace GraphalyzerPro.SequenceDiagramAnalysis
+namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
 {
-    internal class SequenceDiagramViewModel : ReactiveObject, ISequenceDiagramViewModel
+    internal class ProcessViewModel : ReactiveObject, IProcessViewModel
     {
-        private readonly ReactiveCollection<IDiagnoseOutputEntry> _diagnoseOutputEntries;
+        private readonly ReactiveCollection<IThreadViewModel> _threads;
 
-        public SequenceDiagramViewModel()
+        public ProcessViewModel(int processId)
         {
-            _diagnoseOutputEntries = new ReactiveCollection<IDiagnoseOutputEntry>();
+            _threads = new ReactiveCollection<IThreadViewModel>();
+
+            Id = processId;
         }
 
-        public ReactiveCollection<IDiagnoseOutputEntry> DiagnoseOutputEntries
+        public int Id { get; private set; }
+
+        public ReactiveCollection<IThreadViewModel> Threads
         {
-            get { return _diagnoseOutputEntries; }
-            private set { this.RaiseAndSetIfChanged(value); }
+            get { return _threads; }
+            set { this.RaiseAndSetIfChanged(value); }
         }
 
-        public void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry diagnoseOutputEntry)
+        public void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry entry)
         {
-            DiagnoseOutputEntries.Add(diagnoseOutputEntry);
+            // TODO Create new Thread View Models if necessary and process the Diagnose Output Entry
         }
     }
 }
