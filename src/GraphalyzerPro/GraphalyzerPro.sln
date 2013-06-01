@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphalyzerPro.CsvReceiver.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphalyzerPro.SequenceDiagramAnalysis", "GraphalyzerPro.SequenceDiagramAnalysis\GraphalyzerPro.SequenceDiagramAnalysis.csproj", "{B1868434-2993-4E53-B51E-678F9651CD98}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphalyzerPro.SequenceDiagramAnalysis.Tests", "GraphalyzerPro.SequenceDiagramAnalysis.Tests\GraphalyzerPro.SequenceDiagramAnalysis.Tests.csproj", "{C41C1B4C-F1DC-4E3B-A4B1-733E9C852353}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,8 @@ Global
 		{6B90874D-86CD-4687-A301-045639D6BF20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1868434-2993-4E53-B51E-678F9651CD98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B1868434-2993-4E53-B51E-678F9651CD98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C41C1B4C-F1DC-4E3B-A4B1-733E9C852353}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C41C1B4C-F1DC-4E3B-A4B1-733E9C852353}.Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
