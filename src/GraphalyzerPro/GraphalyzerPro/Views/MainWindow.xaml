@@ -28,35 +28,42 @@
         DataContext="{Binding Path=MainViewModel, Source={StaticResource ViewModelLocator}}"
         Title="{Binding Title}" Height="350" Width="525">
     <Window.Resources>
-        <DataTemplate x:Key="NewTabButtonContentTemplate">
-            <Grid/>
-        </DataTemplate>
-        <DataTemplate x:Key="NewTabButtonHeaderTemplate">
-            <DockPanel>
-                <Button Content="+" Command="{Binding Path=DataContext.StartNewSessionCommand,
-                                            RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}}"/>
-            </DockPanel>
-        </DataTemplate>
-        <DataTemplate x:Key="ItemContentTemplate" DataType="viewModels:SessionViewModel">
-            <DockPanel>
-                <ContentControl Content="{Binding Analysis.View}"/>
-            </DockPanel>
-        </DataTemplate>
-        <DataTemplate x:Key="ItemHeaderTemplate">
-            <DockPanel>
-                <TextBlock DockPanel.Dock="Left" Text="{Binding SessionId}" />
-                <Button DockPanel.Dock="Right" Content="X" Margin="5,0,0,0" BorderThickness="0" 
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Styles/DefaultStyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <DataTemplate x:Key="NewTabButtonContentTemplate">
+                <Grid/>
+            </DataTemplate>
+            <DataTemplate x:Key="NewTabButtonHeaderTemplate">
+                <DockPanel>
+                    <Button Content="+" Command="{Binding Path=DataContext.StartNewSessionCommand,
+                                            RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}}"
+                            Style="{StaticResource TabItemHeaderButtonStyle}"/>
+                </DockPanel>
+            </DataTemplate>
+            <DataTemplate x:Key="ItemContentTemplate" DataType="viewModels:SessionViewModel">
+                <DockPanel>
+                    <ContentControl Content="{Binding Analysis.View}"/>
+                </DockPanel>
+            </DataTemplate>
+            <DataTemplate x:Key="ItemHeaderTemplate" DataType="{x:Type viewModels:ISessionViewModel}">
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Left" Text="{Binding SessionId}" />
+                    <Button DockPanel.Dock="Right" Content="X" Margin="5,0,0,0" BorderThickness="0" 
                                 Command="{Binding Path=DataContext.CloseSessionCommand,
                                             RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}}" 
-                                CommandParameter="{Binding .}"/>
-            </DockPanel>
-        </DataTemplate>
-        <views:SessionTabControlDataTemplateSelector x:Key="headerTemplateSelector"
+                                CommandParameter="{Binding .}"
+                            Style="{StaticResource TabItemHeaderButtonStyle}"/>
+                </DockPanel>
+            </DataTemplate>
+            <views:SessionTabControlDataTemplateSelector x:Key="HeaderTemplateSelector"
                            NewButtonTemplate="{StaticResource NewTabButtonHeaderTemplate}"
                            ItemTemplate="{StaticResource ItemHeaderTemplate}"/>
-        <views:SessionTabControlDataTemplateSelector x:Key="contentTemplateSelector"
+            <views:SessionTabControlDataTemplateSelector x:Key="ContentTemplateSelector"
                             NewButtonTemplate="{StaticResource NewTabButtonContentTemplate}"
                             ItemTemplate="{StaticResource ItemContentTemplate}"/>
+        </ResourceDictionary>
     </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
@@ -66,8 +73,8 @@
         </Menu>
         <TabControl ItemsSource="{Binding SessionViewModels}"
                     SelectedItem="{Binding SelectedSessionViewModel}"
-                    ItemTemplateSelector="{StaticResource headerTemplateSelector}"
-                    ContentTemplateSelector="{StaticResource contentTemplateSelector}">
+                    ItemTemplateSelector="{StaticResource HeaderTemplateSelector}"
+                    ContentTemplateSelector="{StaticResource ContentTemplateSelector}">
         </TabControl>
     </DockPanel>
 </Window>
