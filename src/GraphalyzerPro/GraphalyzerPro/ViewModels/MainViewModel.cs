@@ -45,7 +45,8 @@ namespace GraphalyzerPro.ViewModels
             _informationEngine = new InformationEngine();
             _sessionViewModels =
                 _informationEngine.Sessions.CreateDerivedCollection(x => new SessionViewModel(x) as ISessionViewModel);
-            ((IEditableCollectionView)(CollectionViewSource.GetDefaultView(_sessionViewModels))).NewItemPlaceholderPosition = NewItemPlaceholderPosition.AtEnd;
+            ((IEditableCollectionView) (CollectionViewSource.GetDefaultView(_sessionViewModels)))
+                .NewItemPlaceholderPosition = NewItemPlaceholderPosition.AtEnd;
 
             _showInitializationErrorMessage = () => MessageBox.Show(
                 "Bei der Initialisierung des Receivers ist ein Fehler aufgetreten.\n" +
@@ -94,7 +95,7 @@ namespace GraphalyzerPro.ViewModels
 
         private void StartNewSession()
         {
-            var dialog = new NewSessionDialog();
+            var dialog = new NewSessionDialog {Owner = Application.Current.MainWindow};
 
             if (dialog.ShowDialog() == true)
             {

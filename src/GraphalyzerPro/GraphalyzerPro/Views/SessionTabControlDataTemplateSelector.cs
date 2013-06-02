@@ -33,15 +33,8 @@ namespace GraphalyzerPro.Views
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            DataTemplate result;
-            if (item == CollectionView.NewItemPlaceholder)
-            {
-                result = NewButtonTemplate;
-            }
-            else
-            {
-                result = ItemTemplate;
-            }
+            var result = item == CollectionView.NewItemPlaceholder ? NewButtonTemplate : ItemTemplate;
+
             return result;
         }
     }
