@@ -42,7 +42,7 @@
                 <ContentControl Content="{Binding Analysis.View}"/>
             </DockPanel>
         </DataTemplate>
-        <DataTemplate x:Key="ItemHeaderTemplate">
+        <DataTemplate x:Key="ItemHeaderTemplate" DataType="{x:Type viewModels:ISessionViewModel}">
             <DockPanel>
                 <TextBlock DockPanel.Dock="Left" Text="{Binding SessionId}" />
                 <Button DockPanel.Dock="Right" Content="X" Margin="5,0,0,0" BorderThickness="0" 
@@ -51,10 +51,10 @@
                                 CommandParameter="{Binding .}"/>
             </DockPanel>
         </DataTemplate>
-        <views:SessionTabControlDataTemplateSelector x:Key="headerTemplateSelector"
+        <views:SessionTabControlDataTemplateSelector x:Key="HeaderTemplateSelector"
                            NewButtonTemplate="{StaticResource NewTabButtonHeaderTemplate}"
                            ItemTemplate="{StaticResource ItemHeaderTemplate}"/>
-        <views:SessionTabControlDataTemplateSelector x:Key="contentTemplateSelector"
+        <views:SessionTabControlDataTemplateSelector x:Key="ContentTemplateSelector"
                             NewButtonTemplate="{StaticResource NewTabButtonContentTemplate}"
                             ItemTemplate="{StaticResource ItemContentTemplate}"/>
     </Window.Resources>
@@ -66,8 +66,8 @@
         </Menu>
         <TabControl ItemsSource="{Binding SessionViewModels}"
                     SelectedItem="{Binding SelectedSessionViewModel}"
-                    ItemTemplateSelector="{StaticResource headerTemplateSelector}"
-                    ContentTemplateSelector="{StaticResource contentTemplateSelector}">
+                    ItemTemplateSelector="{StaticResource HeaderTemplateSelector}"
+                    ContentTemplateSelector="{StaticResource ContentTemplateSelector}">
         </TabControl>
     </DockPanel>
 </Window>
