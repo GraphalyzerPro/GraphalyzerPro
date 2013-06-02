@@ -129,6 +129,10 @@
       <DependentUpon>NewSessionDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SessionTabControlDataTemplateSelector.cs" />
+    <Page Include="Styles\DefaultStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
