@@ -24,12 +24,29 @@ using ReactiveUI;
 
 namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
 {
-    public interface IProcessViewModel
+    internal class ThreadViewModel : ReactiveObject, IThreadViewModel
     {
-        int Id { get; }
+        private readonly ReactiveCollection<IMethodExecutionViewModel> _methodExecutions;
+        private int _number;
 
-        ReactiveDerivedCollection<IThreadViewModel> Threads { get; }
+        public ThreadViewModel(int threadNumber)
+        {
+            _methodExecutions = new ReactiveCollection<IMethodExecutionViewModel>();
 
-        void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry entry);
+            Number = threadNumber;
+        }
+
+        public int Number { get; private set; }
+
+        public ReactiveCollection<IMethodExecutionViewModel> MethodExecutions
+        {
+            get { return _methodExecutions; }
+            set { this.RaiseAndSetIfChanged(value); }
+        }
+
+        public void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry entry)
+        {
+            // TODO Create new Method Execution View Models if necessary and thread the Diagnose Output Entry
+        }
     }
 }
