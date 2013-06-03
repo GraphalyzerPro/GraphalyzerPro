@@ -19,9 +19,17 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using GraphalyzerPro.Common.Interfaces;
+using ReactiveUI;
+
 namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
 {
     public interface IThreadViewModel
     {
+        int Number { get; }
+
+        ReactiveCollection<IMethodExecutionViewModel> MethodExecutions { get; }
+
+        void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry entry);
     }
 }

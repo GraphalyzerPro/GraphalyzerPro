@@ -19,6 +19,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using System.Linq;
 using GraphalyzerPro.Common.Interfaces;
 using ReactiveUI;
 
@@ -26,26 +27,45 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
 {
     internal class ProcessViewModel : ReactiveObject, IProcessViewModel
     {
-        private readonly ReactiveCollection<IThreadViewModel> _threads;
+        private readonly ReactiveCollection<IDiagnoseOutputEntry> _diagnoseOutputEntries;
+        private readonly ReactiveDerivedCollection<IThreadViewModel> _threads;
 
         public ProcessViewModel(int processId)
         {
-            _threads = new ReactiveCollection<IThreadViewModel>();
+            _diagnoseOutputEntries = new ReactiveCollection<IDiagnoseOutputEntry>();
+
+            _threads =
+                DiagnoseOutputEntries.CreateDerivedCollection(
+                    x => new ThreadViewModel(x.ThreadNumber) as IThreadViewModel, entry =>
+                    {
+                        if(Threads.Any(x => x.Number == entry.ThreadNumber))
+                        {
+                            Threads.Single(x => x.Number == entry.ThreadNumber).ProcessNewDiagnoseOutputEntry(entry);
+                            return false;
+                        }
+                        return true;
+                    });
 
             Id = processId;
         }
 
         public int Id { get; private set; }
 
-        public ReactiveCollection<IThreadViewModel> Threads
+        public ReactiveDerivedCollection<IThreadViewModel> Threads
         {
             get { return _threads; }
             set { this.RaiseAndSetIfChanged(value); }
         }
 
-        public void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry entry)
+        public ReactiveCollection<IDiagnoseOutputEntry> DiagnoseOutputEntries
         {
-            // TODO Create new Thread View Models if necessary and process the Diagnose Output Entry
+            get { return _diagnoseOutputEntries; }
+            private set { this.RaiseAndSetIfChanged(value); }
+        }
+
+        public void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry diagnoseOutputEntry)
+        {
+            DiagnoseOutputEntries.Add(diagnoseOutputEntry);
         }
     }
 }
