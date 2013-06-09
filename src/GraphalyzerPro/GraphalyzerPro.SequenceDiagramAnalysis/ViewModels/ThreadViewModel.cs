@@ -19,6 +19,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using System.Linq;
 using GraphalyzerPro.Common.Interfaces;
 using ReactiveUI;
 
@@ -26,27 +27,37 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
 {
     internal class ThreadViewModel : ReactiveObject, IThreadViewModel
     {
-        private readonly ReactiveCollection<IMethodExecutionViewModel> _methodExecutions;
-        private int _number;
+        private readonly ReactiveCollection<IDiagnoseOutputViewModel> _diagnoseOutputEntries;
 
-        public ThreadViewModel(int threadNumber)
+        public ThreadViewModel(IDiagnoseOutputEntry diagnoseOutputEntry)
         {
-            _methodExecutions = new ReactiveCollection<IMethodExecutionViewModel>();
+            _diagnoseOutputEntries = new ReactiveCollection<IDiagnoseOutputViewModel>();
 
-            Number = threadNumber;
+            ThreadNumber = diagnoseOutputEntry.ThreadNumber;
+
+            ProcessNewDiagnoseOutputEntry(diagnoseOutputEntry);
         }
 
-        public int Number { get; private set; }
+        public int ThreadNumber { get; private set; }
 
-        public ReactiveCollection<IMethodExecutionViewModel> MethodExecutions
+        public ReactiveCollection<IDiagnoseOutputViewModel> DiagnoseOutputEntries
         {
-            get { return _methodExecutions; }
+            get { return _diagnoseOutputEntries; }
             set { this.RaiseAndSetIfChanged(value); }
         }
 
         public void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry entry)
         {
-            // TODO Create new Method Execution View Models if necessary and thread the Diagnose Output Entry
+            var output = DiagnoseOutputEntries.SingleOrDefault(x => x.IsBracketOpen);
+
+            if (output != null)
+            {
+                output.ProcessNewDiagnoseOutputEntry(entry);
+            }
+            else
+            {
+                DiagnoseOutputEntries.Add(new DiagnoseOutputViewModel(entry));
+            }
         }
     }
 }

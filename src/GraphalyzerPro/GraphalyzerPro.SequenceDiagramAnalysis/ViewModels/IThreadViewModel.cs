@@ -26,9 +26,9 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
 {
     public interface IThreadViewModel
     {
-        int Number { get; }
+        int ThreadNumber { get; }
 
-        ReactiveCollection<IMethodExecutionViewModel> MethodExecutions { get; }
+        ReactiveCollection<IDiagnoseOutputViewModel> DiagnoseOutputEntries { get; }
 
         void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry entry);
     }

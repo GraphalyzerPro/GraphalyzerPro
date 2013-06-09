@@ -28,7 +28,7 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
     {
         int Id { get; }
 
-        ReactiveDerivedCollection<IThreadViewModel> Threads { get; }
+        ReactiveCollection<IThreadViewModel> Threads { get; }
 
         void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry entry);
     }

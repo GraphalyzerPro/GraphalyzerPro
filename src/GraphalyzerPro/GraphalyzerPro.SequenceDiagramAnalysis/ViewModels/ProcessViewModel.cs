@@ -27,45 +27,34 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
 {
     internal class ProcessViewModel : ReactiveObject, IProcessViewModel
     {
-        private readonly ReactiveCollection<IDiagnoseOutputEntry> _diagnoseOutputEntries;
-        private readonly ReactiveDerivedCollection<IThreadViewModel> _threads;
+        private readonly ReactiveCollection<IThreadViewModel> _threads;
 
         public ProcessViewModel(int processId)
         {
-            _diagnoseOutputEntries = new ReactiveCollection<IDiagnoseOutputEntry>();
-
-            _threads =
-                DiagnoseOutputEntries.CreateDerivedCollection(
-                    x => new ThreadViewModel(x.ThreadNumber) as IThreadViewModel, entry =>
-                    {
-                        if(Threads.Any(x => x.Number == entry.ThreadNumber))
-                        {
-                            Threads.Single(x => x.Number == entry.ThreadNumber).ProcessNewDiagnoseOutputEntry(entry);
-                            return false;
-                        }
-                        return true;
-                    });
-
+            _threads = new ReactiveCollection<IThreadViewModel>();
             Id = processId;
         }
 
         public int Id { get; private set; }
 
-        public ReactiveDerivedCollection<IThreadViewModel> Threads
+        public ReactiveCollection<IThreadViewModel> Threads
         {
             get { return _threads; }
             set { this.RaiseAndSetIfChanged(value); }
         }
 
-        public ReactiveCollection<IDiagnoseOutputEntry> DiagnoseOutputEntries
-        {
-            get { return _diagnoseOutputEntries; }
-            private set { this.RaiseAndSetIfChanged(value); }
-        }
-
         public void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry diagnoseOutputEntry)
         {
-            DiagnoseOutputEntries.Add(diagnoseOutputEntry);
+            var thread = Threads.SingleOrDefault(x => x.ThreadNumber == diagnoseOutputEntry.ThreadNumber);
+
+            if (thread != null)
+            {
+                thread.ProcessNewDiagnoseOutputEntry(diagnoseOutputEntry);
+            }
+            else
+            {
+                Threads.Add(new ThreadViewModel(diagnoseOutputEntry));
+            }
         }
     }
 }
