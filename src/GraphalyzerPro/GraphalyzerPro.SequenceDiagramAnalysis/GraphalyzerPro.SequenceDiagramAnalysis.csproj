@@ -81,6 +81,8 @@
       <DependentUpon>SequenceDiagram.xaml</DependentUpon>
     </Compile>
     <Compile Include="SequenceDiagramAnalysis.cs" />
+    <Compile Include="ViewModels\DiagnoseOutputViewModel.cs" />
+    <Compile Include="ViewModels\IDiagnoseOutputViewModel.cs" />
     <Compile Include="ViewModels\IMethodExecutionViewModel.cs" />
     <Compile Include="ViewModels\ThreadViewModel.cs" />
     <Compile Include="ViewModels\IProcessViewModel.cs" />

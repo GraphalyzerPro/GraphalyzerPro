@@ -1,0 +1,110 @@
+﻿/*
+ * Copyright (c) 2006-2009 by Christoph Menzel, Daniel Birkmaier, 
+ * Maximilian Madeja, Farruch Kouliev, Stefan Zoettlein
+ *
+ * This file is part of the GraphalyzerPro application.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
+
+using System;
+using System.Linq;
+using GraphalyzerPro.Common;
+using GraphalyzerPro.Common.Interfaces;
+using ReactiveUI;
+
+namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
+{
+    public class DiagnoseOutputViewModel : ReactiveObject, IDiagnoseOutputViewModel
+    {
+        private readonly ReactiveCollection<IDiagnoseOutputViewModel> _diagnoseOutputViewModels;
+        private long _duration;
+        private bool _isBracketOpen;
+
+        public DiagnoseOutputViewModel(IDiagnoseOutputEntry diagnoseOutputEntry)
+        {
+            _diagnoseOutputViewModels = new ReactiveCollection<IDiagnoseOutputViewModel>();
+
+            if (diagnoseOutputEntry.Type == DiagnoseType.StartBracketOutput)
+            {
+                IsBracketOpen = true;
+            }
+        }
+
+        public DateTime TimeStamp { get; private set; }
+
+        public long Gap { get; private set; }
+
+        public long Duration
+        {
+            get { return _duration; }
+            private set { this.RaiseAndSetIfChanged(value); }
+        }
+
+        public int ProcessId { get; private set; }
+
+        public int ThreadNumber { get; private set; }
+
+        public DiagnoseType Type { get; private set; }
+
+        public string Domain { get; private set; }
+
+        public string Application { get; private set; }
+
+        public string Component { get; private set; }
+
+        public string Module { get; private set; }
+
+        public string Code { get; private set; }
+
+        public string Text { get; private set; }
+
+        public string MetaInformation { get; private set; }
+
+        public ReactiveCollection<IDiagnoseOutputViewModel> DiagnoseOutputViewModels
+        {
+            get { return _diagnoseOutputViewModels; }
+            private set { this.RaiseAndSetIfChanged(value); }
+        }
+
+        public bool IsBracketOpen
+        {
+            get { return _isBracketOpen; }
+            set { this.RaiseAndSetIfChanged(value); }
+        }
+
+        public void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry entry)
+        {
+            var output = DiagnoseOutputViewModels.SingleOrDefault(x => x.IsBracketOpen);
+
+            if (output != null)
+            {
+                output.ProcessNewDiagnoseOutputEntry(entry);
+            }
+            else
+            {
+                if (entry.Type == DiagnoseType.EndBracketOutput)
+                {
+                    IsBracketOpen = false;
+                    Duration = entry.Duration;
+                }
+                else
+                {
+                    DiagnoseOutputViewModels.Add(new DiagnoseOutputViewModel(entry));
+                }
+            }
+        }
+    }
+}
