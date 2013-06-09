@@ -69,8 +69,20 @@
                                                 <ItemsControl.Resources>
                                                     <DataTemplate DataType="{x:Type viewModels:DiagnoseOutputViewModel}">
                                                         <Grid>
-                                                            <Border BorderBrush="Black" BorderThickness="1" Background="Beige" Margin="1"
+                                                            <Border BorderThickness="1" Margin="1"
                                                                     HorizontalAlignment="Left" Width="10">
+                                                                <Border.Style>
+                                                                    <Style TargetType="{x:Type Border}">
+                                                                        <Setter Property="BorderBrush" Value="Black"/>
+                                                                        <Setter Property="Background" Value="Beige"/>
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding Type}" Value="Exception">
+                                                                                <Setter Property="BorderBrush" Value="Red"/>
+                                                                                <Setter Property="Background" Value="Red"/>
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </Border.Style>
                                                             </Border>   
                                                             <ItemsControl ItemsSource="{Binding DiagnoseOutputViewModels}" Margin="5"/>        
                                                         </Grid>

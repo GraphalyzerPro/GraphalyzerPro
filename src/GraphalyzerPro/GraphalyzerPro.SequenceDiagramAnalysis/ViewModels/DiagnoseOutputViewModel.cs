@@ -37,6 +37,8 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
         {
             _diagnoseOutputViewModels = new ReactiveCollection<IDiagnoseOutputViewModel>();
 
+            Type = diagnoseOutputEntry.Type;
+
             if (diagnoseOutputEntry.Type == DiagnoseType.StartBracketOutput)
             {
                 IsBracketOpen = true;
