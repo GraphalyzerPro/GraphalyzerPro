@@ -30,7 +30,10 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
     public class DiagnoseOutputViewModel : ReactiveObject, IDiagnoseOutputViewModel
     {
         private readonly ReactiveCollection<IDiagnoseOutputViewModel> _diagnoseOutputViewModels;
+        private long _gap;
         private long _duration;
+        private long _totalDuration;
+        private long _totalDurationWithoutLastOpenBracketDiagnoseOutputViewModel;
         private bool _isBracketOpen;
 
         public DiagnoseOutputViewModel(IDiagnoseOutputEntry diagnoseOutputEntry)
@@ -38,7 +41,10 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
             _diagnoseOutputViewModels = new ReactiveCollection<IDiagnoseOutputViewModel>();
 
             Type = diagnoseOutputEntry.Type;
-
+            Duration = diagnoseOutputEntry.Duration;
+            Gap = diagnoseOutputEntry.Gap;
+            TotalDuration = diagnoseOutputEntry.Duration;
+            _totalDurationWithoutLastOpenBracketDiagnoseOutputViewModel = diagnoseOutputEntry.Duration;
             if (diagnoseOutputEntry.Type == DiagnoseType.StartBracketOutput)
             {
                 IsBracketOpen = true;
@@ -47,11 +53,31 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
 
         public DateTime TimeStamp { get; private set; }
 
-        public long Gap { get; private set; }
+        public long Gap
+        {
+            get { return _gap; }
+            private set { this.RaiseAndSetIfChanged(value); }
+        }
 
         public long Duration
         {
             get { return _duration; }
+            private set { this.RaiseAndSetIfChanged(value); }
+        }
+
+        public long GapAndDuration
+        {
+            get { return Gap + Duration; }
+        }
+
+        public long GapAndTotalDuration
+        {
+            get { return Gap + TotalDuration; }
+        }
+
+        public long TotalDuration
+        {
+            get { return _totalDuration; }
             private set { this.RaiseAndSetIfChanged(value); }
         }
 
@@ -91,21 +117,30 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
         {
             var output = DiagnoseOutputViewModels.SingleOrDefault(x => x.IsBracketOpen);
 
-            if (output != null)
+            if(output == null)
             {
-                output.ProcessNewDiagnoseOutputEntry(entry);
-            }
-            else
-            {
-                if (entry.Type == DiagnoseType.EndBracketOutput)
+                output = new DiagnoseOutputViewModel(entry);
+                if(entry.Type == DiagnoseType.EndBracketOutput)
                 {
                     IsBracketOpen = false;
-                    Duration = entry.Duration;
                 }
                 else
                 {
-                    DiagnoseOutputViewModels.Add(new DiagnoseOutputViewModel(entry));
+                    DiagnoseOutputViewModels.Add(output);
                 }
+            }
+            else
+            {
+                output.ProcessNewDiagnoseOutputEntry(entry);
+            }
+            if(output.IsBracketOpen)
+            {
+                TotalDuration = _totalDurationWithoutLastOpenBracketDiagnoseOutputViewModel + output.GapAndTotalDuration;
+            }
+            else
+            {
+                _totalDurationWithoutLastOpenBracketDiagnoseOutputViewModel += output.GapAndTotalDuration;
+                TotalDuration = _totalDurationWithoutLastOpenBracketDiagnoseOutputViewModel;
             }
         }
     }

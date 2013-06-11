@@ -27,41 +27,45 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
 {
     internal class SequenceDiagramViewModel : ReactiveObject, ISequenceDiagramViewModel
     {
-        private readonly ReactiveCollection<IDiagnoseOutputEntry> _diagnoseOutputEntries;
-        private readonly ReactiveDerivedCollection<IProcessViewModel> _processes;
+        private readonly ReactiveCollection<IProcessViewModel> _processes;
+        private long _totalDuration;
 
         public SequenceDiagramViewModel()
         {
-            _diagnoseOutputEntries = new ReactiveCollection<IDiagnoseOutputEntry>();
-
-            _processes =
-                DiagnoseOutputEntries.CreateDerivedCollection(
-                    x => new ProcessViewModel(x.ProcessId) as IProcessViewModel, entry =>
-                        {
-                            if (Processes.Any(x => x.Id == entry.ProcessId))
-                            {
-                                Processes.Single(x => x.Id == entry.ProcessId).ProcessNewDiagnoseOutputEntry(entry);
-                                return false;
-                            }
-                            return true;
-                        });
+            Processes = new ReactiveCollection<IProcessViewModel>();
+            TotalDuration = 0;
         }
 
-        public ReactiveDerivedCollection<IProcessViewModel> Processes
+        public ReactiveCollection<IProcessViewModel> Processes
         {
             get { return _processes; }
-            set { this.RaiseAndSetIfChanged(value); }
+            private set { this.RaiseAndSetIfChanged(value); }
         }
 
-        public ReactiveCollection<IDiagnoseOutputEntry> DiagnoseOutputEntries
+        public long TotalDuration
         {
-            get { return _diagnoseOutputEntries; }
+            get { return _totalDuration; }
             private set { this.RaiseAndSetIfChanged(value); }
         }
 
         public void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry diagnoseOutputEntry)
         {
-            DiagnoseOutputEntries.Add(diagnoseOutputEntry);
+            var process = Processes.SingleOrDefault(x => x.ProcessId == diagnoseOutputEntry.ProcessId);
+
+            if (process == null)
+            {
+                process = new ProcessViewModel(diagnoseOutputEntry);
+                Processes.Add(process);
+            }
+            else
+            {
+                process.ProcessNewDiagnoseOutputEntry(diagnoseOutputEntry);
+            }
+
+            if (process.TotalDuration > TotalDuration)
+            {
+                TotalDuration = process.TotalDuration;
+            }
         }
     }
 }

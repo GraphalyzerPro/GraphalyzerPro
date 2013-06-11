@@ -47,6 +47,7 @@
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationFramework" />
     <Reference Include="ReactiveUI_Net45">
       <HintPath>..\packages\reactiveui-core.4.6.3\lib\net45\ReactiveUI_Net45.dll</HintPath>
     </Reference>
@@ -73,6 +74,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GapToMarginConverterTest.cs" />
+    <Compile Include="DurationToHeightConverterTest.cs" />
+    <Compile Include="DiagnoseOutputViewModelTest.cs" />
+    <Compile Include="ProcessViewModelTest.cs" />
+    <Compile Include="ThreadViewModelTest.cs" />
     <Compile Include="SequenceDiagramViewModelTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
