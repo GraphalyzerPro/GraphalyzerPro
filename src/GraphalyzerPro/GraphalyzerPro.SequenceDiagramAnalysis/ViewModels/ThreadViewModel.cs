@@ -20,6 +20,7 @@
  */
 
 using System.Linq;
+using GraphalyzerPro.Common;
 using GraphalyzerPro.Common.Interfaces;
 using ReactiveUI;
 
@@ -27,36 +28,55 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
 {
     internal class ThreadViewModel : ReactiveObject, IThreadViewModel
     {
-        private readonly ReactiveCollection<IDiagnoseOutputViewModel> _diagnoseOutputEntries;
+        private readonly ReactiveCollection<IDiagnoseOutputViewModel> _diagnoseOutputViewModels;
+        private long _totalDuration;
+        private long _totalDurationWithoutLastOpenBracketDiagnoseOutputViewModel;
 
         public ThreadViewModel(IDiagnoseOutputEntry diagnoseOutputEntry)
         {
-            _diagnoseOutputEntries = new ReactiveCollection<IDiagnoseOutputViewModel>();
-
+            DiagnoseOutputViewModels = new ReactiveCollection<IDiagnoseOutputViewModel>();
             ThreadNumber = diagnoseOutputEntry.ThreadNumber;
+            TotalDuration = 0;
+            _totalDurationWithoutLastOpenBracketDiagnoseOutputViewModel = 0;
 
             ProcessNewDiagnoseOutputEntry(diagnoseOutputEntry);
         }
 
         public int ThreadNumber { get; private set; }
 
-        public ReactiveCollection<IDiagnoseOutputViewModel> DiagnoseOutputEntries
+        public long TotalDuration
         {
-            get { return _diagnoseOutputEntries; }
+            get { return _totalDuration; }
+            private set { this.RaiseAndSetIfChanged(value); }
+        }
+
+        public ReactiveCollection<IDiagnoseOutputViewModel> DiagnoseOutputViewModels
+        {
+            get { return _diagnoseOutputViewModels; }
             set { this.RaiseAndSetIfChanged(value); }
         }
 
         public void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry entry)
         {
-            var output = DiagnoseOutputEntries.SingleOrDefault(x => x.IsBracketOpen);
+            var output = DiagnoseOutputViewModels.SingleOrDefault(x => x.IsBracketOpen);
 
-            if (output != null)
+            if (output == null)
             {
-                output.ProcessNewDiagnoseOutputEntry(entry);
+                output = new DiagnoseOutputViewModel(entry);
+                DiagnoseOutputViewModels.Add(output);
             }
             else
             {
-                DiagnoseOutputEntries.Add(new DiagnoseOutputViewModel(entry));
+                output.ProcessNewDiagnoseOutputEntry(entry);
+            }
+            if(output.IsBracketOpen)
+            {
+                TotalDuration = _totalDurationWithoutLastOpenBracketDiagnoseOutputViewModel + output.GapAndTotalDuration;
+            }
+            else
+            {
+                _totalDurationWithoutLastOpenBracketDiagnoseOutputViewModel += output.GapAndTotalDuration;
+                TotalDuration = _totalDurationWithoutLastOpenBracketDiagnoseOutputViewModel;
             }
         }
     }
