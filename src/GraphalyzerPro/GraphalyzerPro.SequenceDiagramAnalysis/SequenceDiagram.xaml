@@ -79,7 +79,7 @@
                                                                         HorizontalAlignment="Left" Width="11">
                                                                     <Border.Margin>
                                                                         <MultiBinding Converter="{StaticResource GapToMarginConverter}">
-                                                                            <Binding Path="DataContext.Gap" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Grid}}"/>
+                                                                            <Binding Path="DataContext.GapAndExtraGap" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Grid}}"/>
                                                                             <Binding Path="DataContext.TotalDuration" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"/>
                                                                             <Binding ElementName="ThreadEntries" Path="ActualHeight"/>
                                                                         </MultiBinding>
@@ -107,7 +107,7 @@
                                                                 <ItemsControl ItemsSource="{Binding DiagnoseOutputViewModels}">
                                                                     <ItemsControl.Margin>
                                                                         <MultiBinding Converter="{StaticResource GapToMarginConverter}" ConverterParameter="5">
-                                                                            <Binding Path="DataContext.GapAndDuration" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Grid}}"/>
+                                                                            <Binding Path="DataContext.GapExtraGapAndDuration" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Grid}}"/>
                                                                             <Binding Path="DataContext.TotalDuration" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"/>
                                                                             <Binding ElementName="ThreadEntries" Path="ActualHeight"/>
                                                                         </MultiBinding>

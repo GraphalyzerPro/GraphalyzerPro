@@ -30,19 +30,21 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
     public class DiagnoseOutputViewModel : ReactiveObject, IDiagnoseOutputViewModel
     {
         private readonly ReactiveCollection<IDiagnoseOutputViewModel> _diagnoseOutputViewModels;
+        private long _extraGap;
         private long _gap;
         private long _duration;
         private long _totalDuration;
         private long _totalDurationWithoutLastOpenBracketDiagnoseOutputViewModel;
         private bool _isBracketOpen;
 
-        public DiagnoseOutputViewModel(IDiagnoseOutputEntry diagnoseOutputEntry)
+        public DiagnoseOutputViewModel(IDiagnoseOutputEntry diagnoseOutputEntry, long extraGap)
         {
             _diagnoseOutputViewModels = new ReactiveCollection<IDiagnoseOutputViewModel>();
 
             Type = diagnoseOutputEntry.Type;
             Duration = diagnoseOutputEntry.Duration;
             Gap = diagnoseOutputEntry.Gap;
+            ExtraGap = extraGap;
             TotalDuration = diagnoseOutputEntry.Duration;
             _totalDurationWithoutLastOpenBracketDiagnoseOutputViewModel = diagnoseOutputEntry.Duration;
             if (diagnoseOutputEntry.Type == DiagnoseType.StartBracketOutput)
@@ -51,12 +53,27 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
             }
         }
 
-        public DateTime TimeStamp { get; private set; }
+        public DateTime TimeStamp
+        {
+            get;
+            private set;
+        }
 
         public long Gap
         {
             get { return _gap; }
             private set { this.RaiseAndSetIfChanged(value); }
+        }
+
+        public long ExtraGap
+        {
+            get { return _extraGap; }
+            private set { this.RaiseAndSetIfChanged(value); }
+        }
+
+        public long GapAndExtraGap
+        {
+            get { return Gap + ExtraGap; }
         }
 
         public long Duration
@@ -65,14 +82,14 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
             private set { this.RaiseAndSetIfChanged(value); }
         }
 
-        public long GapAndDuration
+        public long GapExtraGapAndDuration
         {
-            get { return Gap + Duration; }
+            get { return Gap + ExtraGap + Duration; }
         }
 
-        public long GapAndTotalDuration
+        public long GapExtraGapAndTotalDuration
         {
-            get { return Gap + TotalDuration; }
+            get { return Gap + ExtraGap + TotalDuration; }
         }
 
         public long TotalDuration
@@ -113,13 +130,13 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
             set { this.RaiseAndSetIfChanged(value); }
         }
 
-        public void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry entry)
+        public void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry entry, long extraGap)
         {
             var output = DiagnoseOutputViewModels.SingleOrDefault(x => x.IsBracketOpen);
 
             if(output == null)
             {
-                output = new DiagnoseOutputViewModel(entry);
+                output = new DiagnoseOutputViewModel(entry, extraGap);
                 if(entry.Type == DiagnoseType.EndBracketOutput)
                 {
                     IsBracketOpen = false;
@@ -131,15 +148,15 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
             }
             else
             {
-                output.ProcessNewDiagnoseOutputEntry(entry);
+                output.ProcessNewDiagnoseOutputEntry(entry, extraGap);
             }
             if(output.IsBracketOpen)
             {
-                TotalDuration = _totalDurationWithoutLastOpenBracketDiagnoseOutputViewModel + output.GapAndTotalDuration;
+                TotalDuration = _totalDurationWithoutLastOpenBracketDiagnoseOutputViewModel + output.GapExtraGapAndTotalDuration;
             }
             else
             {
-                _totalDurationWithoutLastOpenBracketDiagnoseOutputViewModel += output.GapAndTotalDuration;
+                _totalDurationWithoutLastOpenBracketDiagnoseOutputViewModel += output.GapExtraGapAndTotalDuration;
                 TotalDuration = _totalDurationWithoutLastOpenBracketDiagnoseOutputViewModel;
             }
         }

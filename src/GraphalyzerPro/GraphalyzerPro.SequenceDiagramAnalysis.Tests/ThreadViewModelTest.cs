@@ -51,7 +51,7 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.Tests
             mock.Setup(x => x.Type).Returns(DiagnoseType.SingleOutput);
             mock.Setup(x => x.Duration).Returns(1);
             mock.Setup(x => x.Gap).Returns(2);
-            var threadViewModel = new ThreadViewModel(mock.Object);
+            var threadViewModel = new ThreadViewModel(mock.Object, 0);
             threadViewModel.DiagnoseOutputViewModels.Should().NotBeNull();
         }
 
@@ -63,7 +63,7 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.Tests
             mock.Setup(x => x.Duration).Returns(1);
             mock.Setup(x => x.Gap).Returns(2);
 
-            var threadViewModel = new ThreadViewModel(mock.Object);
+            var threadViewModel = new ThreadViewModel(mock.Object, 0);
             threadViewModel.ProcessNewDiagnoseOutputEntry(mock.Object);
 
             threadViewModel.DiagnoseOutputViewModels.Should().HaveCount(1);
@@ -78,7 +78,7 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.Tests
             mock.Setup(x => x.Duration).Returns(1);
             mock.Setup(x => x.Gap).Returns(2);
 
-            var threadViewModel = new ThreadViewModel(mock.Object);
+            var threadViewModel = new ThreadViewModel(mock.Object, 0);
             threadViewModel.ProcessNewDiagnoseOutputEntry(mock.Object);
 
             threadViewModel.DiagnoseOutputViewModels.Should().HaveCount(2);
@@ -94,7 +94,7 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.Tests
             mock.Setup(x => x.Duration).Returns(1);
             mock.Setup(x => x.Gap).Returns(2);
 
-            var threadViewModel = new ThreadViewModel(mock.Object);
+            var threadViewModel = new ThreadViewModel(mock.Object, 0);
             threadViewModel.ProcessNewDiagnoseOutputEntry(mock.Object);
 
             threadViewModel.TotalDuration.Should().Be(6);
@@ -108,7 +108,7 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.Tests
             mock.Setup(x => x.Duration).Returns(1);
             mock.Setup(x => x.Gap).Returns(2);
 
-            var threadViewModel = new ThreadViewModel(mock.Object);
+            var threadViewModel = new ThreadViewModel(mock.Object, 0);
             threadViewModel.ProcessNewDiagnoseOutputEntry(mock.Object);
 
             threadViewModel.TotalDuration.Should().Be(6);
@@ -122,7 +122,7 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.Tests
             mock.Setup(x => x.Duration).Returns(1);
             mock.Setup(x => x.Gap).Returns(2);
 
-            var threadViewModel = new ThreadViewModel(mock.Object);
+            var threadViewModel = new ThreadViewModel(mock.Object, 0);
 
             threadViewModel.DiagnoseOutputViewModels[0].IsBracketOpen.Should().Be(true);
         }
@@ -139,7 +139,7 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.Tests
             mock2.Setup(x => x.Duration).Returns(1);
             mock2.Setup(x => x.Gap).Returns(2);
 
-            var threadViewModel = new ThreadViewModel(mock1.Object);
+            var threadViewModel = new ThreadViewModel(mock1.Object, 0);
             threadViewModel.ProcessNewDiagnoseOutputEntry(mock2.Object);
 
             threadViewModel.DiagnoseOutputViewModels[0].IsBracketOpen.Should().Be(false);
