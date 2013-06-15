@@ -100,12 +100,14 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
 
         ReactiveCollection<IDiagnoseOutputViewModel> DiagnoseOutputViewModels { get; }
 
-        void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry entry);
+        void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry entry, long extraGap);
 
         bool IsBracketOpen { get; }
 
-        long GapAndDuration { get; }
+        long GapExtraGapAndDuration { get; }
 
-        long GapAndTotalDuration { get; }
+        long GapExtraGapAndTotalDuration { get; }
+
+        long ExtraGap { get; }
     }
 }
