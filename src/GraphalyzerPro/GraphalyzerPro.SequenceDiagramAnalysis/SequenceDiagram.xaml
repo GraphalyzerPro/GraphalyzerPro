@@ -30,7 +30,11 @@
              xmlns:viewModels="clr-namespace:GraphalyzerPro.SequenceDiagramAnalysis.ViewModels"
              DataContext="{Binding ElementName=SequenceDiagrammUserControl, Path=ViewModel}"
              mc:Ignorable="d">
-    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
+    <UserControl.Resources>
+        <viewModels:GapToMarginConverter x:Key="GapToMarginConverter"/>
+        <viewModels:DurationToHeightConverter x:Key="DurationToHeightConverter"/>
+    </UserControl.Resources>
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" CanContentScroll="True">
         <ItemsControl ItemsSource="{Binding Processes}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -42,7 +46,7 @@
                     <Border Margin="5,0,5,0" Padding="5" BorderBrush="Black" BorderThickness="1">
                         <DockPanel>
                             <DockPanel Dock="Top">
-                                <TextBlock Text="{Binding Id}" TextAlignment="Center" Margin="0,0,5,5" Padding="5"/>
+                                <TextBlock Text="{Binding ProcessId}" TextAlignment="Center" Margin="0,0,5,5" Padding="5"/>
                             </DockPanel>
                             <ItemsControl ItemsSource="{Binding Threads}">
                                 <ItemsControl.ItemsPanel>
@@ -58,37 +62,62 @@
                                                     <TextBlock Text="{Binding ThreadNumber}" HorizontalAlignment="Center"/>
                                                 </Border>
                                             </DockPanel>
-                                            <ItemsControl ItemsSource="{Binding DiagnoseOutputEntries}" 
-                                                            VirtualizingStackPanel.IsVirtualizing="True"
-                                                            Margin="10,0,0,0">
-                                                <ItemsControl.ItemsPanel>
-                                                    <ItemsPanelTemplate>
-                                                        <StackPanel/>
-                                                    </ItemsPanelTemplate>
-                                                </ItemsControl.ItemsPanel>
-                                                <ItemsControl.Resources>
-                                                    <DataTemplate DataType="{x:Type viewModels:DiagnoseOutputViewModel}">
-                                                        <Grid>
-                                                            <Border BorderThickness="1" Margin="1"
-                                                                    HorizontalAlignment="Left" Width="10">
-                                                                <Border.Style>
-                                                                    <Style TargetType="{x:Type Border}">
-                                                                        <Setter Property="BorderBrush" Value="Black"/>
-                                                                        <Setter Property="Background" Value="Beige"/>
-                                                                        <Style.Triggers>
-                                                                            <DataTrigger Binding="{Binding Type}" Value="Exception">
-                                                                                <Setter Property="BorderBrush" Value="Red"/>
-                                                                                <Setter Property="Background" Value="Red"/>
-                                                                            </DataTrigger>
-                                                                        </Style.Triggers>
-                                                                    </Style>
-                                                                </Border.Style>
-                                                            </Border>   
-                                                            <ItemsControl ItemsSource="{Binding DiagnoseOutputViewModels}" Margin="5"/>        
-                                                        </Grid>
-                                                    </DataTemplate>
-                                                </ItemsControl.Resources>
-                                            </ItemsControl>
+                                            <Grid Name="ThreadEntries">
+                                                <Border BorderThickness="1" BorderBrush="DimGray" HorizontalAlignment="Left" Width="1" Height="{Binding ElementName=ThreadEntries, Path=ActualHeight}" Margin="15,0,0,0"/>
+                                                <ItemsControl ItemsSource="{Binding DiagnoseOutputViewModels}" 
+                                                                VirtualizingStackPanel.IsVirtualizing="True"
+                                                                Margin="10,0,0,0">
+                                                    <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <StackPanel />
+                                                        </ItemsPanelTemplate>
+                                                    </ItemsControl.ItemsPanel>
+                                                    <ItemsControl.Resources>
+                                                        <DataTemplate DataType="{x:Type viewModels:DiagnoseOutputViewModel}">
+                                                            <Grid>
+                                                                <Border BorderThickness="1"
+                                                                        HorizontalAlignment="Left" Width="11">
+                                                                    <Border.Margin>
+                                                                        <MultiBinding Converter="{StaticResource GapToMarginConverter}">
+                                                                            <Binding Path="DataContext.Gap" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Grid}}"/>
+                                                                            <Binding Path="DataContext.TotalDuration" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"/>
+                                                                            <Binding ElementName="ThreadEntries" Path="ActualHeight"/>
+                                                                        </MultiBinding>
+                                                                    </Border.Margin>
+                                                                    <Border.Height>
+                                                                        <MultiBinding Converter="{StaticResource DurationToHeightConverter}">
+                                                                            <Binding Path="DataContext.TotalDuration" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Grid}}"/>
+                                                                            <Binding Path="DataContext.TotalDuration" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"/>
+                                                                            <Binding ElementName="ThreadEntries" Path="ActualHeight"/>
+                                                                        </MultiBinding>
+                                                                    </Border.Height>
+                                                                    <Border.Style>
+                                                                        <Style TargetType="{x:Type Border}">
+                                                                            <Setter Property="BorderBrush" Value="Black"/>
+                                                                            <Setter Property="Background" Value="Beige"/>
+                                                                            <Style.Triggers>
+                                                                                <DataTrigger Binding="{Binding Type}" Value="Exception">
+                                                                                    <Setter Property="BorderBrush" Value="Red"/>
+                                                                                    <Setter Property="Background" Value="Red"/>
+                                                                                </DataTrigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </Border.Style>
+                                                                </Border>
+                                                                <ItemsControl ItemsSource="{Binding DiagnoseOutputViewModels}">
+                                                                    <ItemsControl.Margin>
+                                                                        <MultiBinding Converter="{StaticResource GapToMarginConverter}" ConverterParameter="5">
+                                                                            <Binding Path="DataContext.GapAndDuration" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Grid}}"/>
+                                                                            <Binding Path="DataContext.TotalDuration" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"/>
+                                                                            <Binding ElementName="ThreadEntries" Path="ActualHeight"/>
+                                                                        </MultiBinding>
+                                                                    </ItemsControl.Margin>
+                                                                </ItemsControl>
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </ItemsControl.Resources>
+                                                </ItemsControl>
+                                            </Grid>
                                         </DockPanel>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
