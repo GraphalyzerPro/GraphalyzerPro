@@ -35,7 +35,7 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
                 (values[2] != DependencyProperty.UnsetValue))
             {
                 double duration = (double)((long)(values[0]));
-                double totalDuration = (double)((long)(values[1]));
+                double totalDuration = (double)(values[1]);
                 if((totalDuration == 0.0) || (duration == 0.0))
                 {
                     result = 1.0;
