@@ -43,7 +43,7 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
             if ((values[0] != DependencyProperty.UnsetValue) && (values[1] != DependencyProperty.UnsetValue) &&
                 (values[2] != DependencyProperty.UnsetValue))
             {
-                double totalDuration = (double) ((long)(values[1]));
+                double totalDuration = (double) (values[1]);
                 if(totalDuration == 0.0)
                 {
                     result = new Thickness(marginLeft, 0.0, 0.0, 0.0);
