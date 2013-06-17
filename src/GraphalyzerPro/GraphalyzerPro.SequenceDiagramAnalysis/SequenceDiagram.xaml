@@ -76,10 +76,10 @@
                                                         <DataTemplate DataType="{x:Type viewModels:DiagnoseOutputViewModel}">
                                                             <Grid>
                                                                 <Border BorderThickness="1"
-                                                                        HorizontalAlignment="Left" Width="11">
+                                                                        HorizontalAlignment="Left" Width="11" SnapsToDevicePixels="True">
                                                                     <Border.Margin>
                                                                         <MultiBinding Converter="{StaticResource GapToMarginConverter}">
-                                                                            <Binding Path="DataContext.Gap" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Grid}}"/>
+                                                                            <Binding Path="DataContext.GapAndExtraGap" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Grid}}"/>
                                                                             <Binding Path="DataContext.TotalDuration" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"/>
                                                                             <Binding ElementName="ThreadEntries" Path="ActualHeight"/>
                                                                         </MultiBinding>
@@ -104,10 +104,10 @@
                                                                         </Style>
                                                                     </Border.Style>
                                                                 </Border>
-                                                                <ItemsControl ItemsSource="{Binding DiagnoseOutputViewModels}">
+                                                                <ItemsControl ItemsSource="{Binding DiagnoseOutputViewModels}" SnapsToDevicePixels="True">
                                                                     <ItemsControl.Margin>
                                                                         <MultiBinding Converter="{StaticResource GapToMarginConverter}" ConverterParameter="5">
-                                                                            <Binding Path="DataContext.GapAndDuration" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Grid}}"/>
+                                                                            <Binding Path="DataContext.GapExtraGapAndDuration" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Grid}}"/>
                                                                             <Binding Path="DataContext.TotalDuration" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"/>
                                                                             <Binding ElementName="ThreadEntries" Path="ActualHeight"/>
                                                                         </MultiBinding>

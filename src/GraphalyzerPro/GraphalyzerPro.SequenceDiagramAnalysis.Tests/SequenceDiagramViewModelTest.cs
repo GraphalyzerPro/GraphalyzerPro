@@ -100,10 +100,10 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.Tests
             mock2.Setup(x => x.Gap).Returns(7);
             mock2.Setup(x => x.Duration).Returns(8);
 
-            var processViewModel = new ProcessViewModel(mock1.Object);
+            var processViewModel = new ProcessViewModel(mock1.Object, 0);
             processViewModel.ProcessNewDiagnoseOutputEntry(mock2.Object);
 
-            processViewModel.TotalDuration.Should().Be(15);
+            processViewModel.TotalDuration.Should().Be(22);
         }
     }
 }
