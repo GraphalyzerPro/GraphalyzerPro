@@ -52,7 +52,7 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
                 {
                     double gap = (double)((long)(values[0]));
                     double totalHeight = (double)(values[2]);
-                    result = new Thickness(marginLeft, gap/totalDuration*totalHeight, 0.0, 0.0);
+                    result = new Thickness(marginLeft, gap / totalDuration * totalHeight, 0.0, 0.0);
                 }
             }
             else

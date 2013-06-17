@@ -51,7 +51,7 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.Tests
             mock.Setup(x => x.Type).Returns(DiagnoseType.SingleOutput);
             mock.Setup(x => x.Duration).Returns(1);
             mock.Setup(x => x.Gap).Returns(2);
-            var diagnoseOutputViewModel = new DiagnoseOutputViewModel(mock.Object);
+            var diagnoseOutputViewModel = new DiagnoseOutputViewModel(mock.Object, 0);
             diagnoseOutputViewModel.DiagnoseOutputViewModels.Should().NotBeNull();
         }
 
@@ -63,8 +63,8 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.Tests
             mock.Setup(x => x.Duration).Returns(1);
             mock.Setup(x => x.Gap).Returns(2);
 
-            var diagnoseViewModel = new DiagnoseOutputViewModel(mock.Object);
-            diagnoseViewModel.ProcessNewDiagnoseOutputEntry(mock.Object);
+            var diagnoseViewModel = new DiagnoseOutputViewModel(mock.Object, 0);
+            diagnoseViewModel.ProcessNewDiagnoseOutputEntry(mock.Object, 0);
 
             diagnoseViewModel.TotalDuration.Should().Be(4);
         }
@@ -77,8 +77,8 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.Tests
             mock.Setup(x => x.Duration).Returns(1);
             mock.Setup(x => x.Gap).Returns(2);
 
-            var diagnoseViewModel = new DiagnoseOutputViewModel(mock.Object);
-            diagnoseViewModel.ProcessNewDiagnoseOutputEntry(mock.Object);
+            var diagnoseViewModel = new DiagnoseOutputViewModel(mock.Object, 0);
+            diagnoseViewModel.ProcessNewDiagnoseOutputEntry(mock.Object, 0);
 
             diagnoseViewModel.TotalDuration.Should().Be(4);
         }
@@ -91,7 +91,7 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.Tests
             mock.Setup(x => x.Duration).Returns(1);
             mock.Setup(x => x.Gap).Returns(2);
 
-            var diagnoseViewModel = new DiagnoseOutputViewModel(mock.Object);
+            var diagnoseViewModel = new DiagnoseOutputViewModel(mock.Object, 0);
 
             diagnoseViewModel.IsBracketOpen.Should().Be(true);
         }
@@ -108,8 +108,8 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.Tests
             mock2.Setup(x => x.Duration).Returns(1);
             mock2.Setup(x => x.Gap).Returns(2);
 
-            var diagnoseViewModel = new DiagnoseOutputViewModel(mock1.Object);
-            diagnoseViewModel.ProcessNewDiagnoseOutputEntry(mock2.Object);
+            var diagnoseViewModel = new DiagnoseOutputViewModel(mock1.Object, 0);
+            diagnoseViewModel.ProcessNewDiagnoseOutputEntry(mock2.Object, 0);
 
             diagnoseViewModel.IsBracketOpen.Should().Be(false);
         }
