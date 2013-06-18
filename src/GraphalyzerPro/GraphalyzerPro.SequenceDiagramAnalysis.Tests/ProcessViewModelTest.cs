@@ -51,7 +51,7 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.Tests
             mock.Setup(x => x.Type).Returns(DiagnoseType.SingleOutput);
             mock.Setup(x => x.Duration).Returns(1);
             mock.Setup(x => x.Gap).Returns(2);
-            var processViewModel = new ProcessViewModel(mock.Object);
+            var processViewModel = new ProcessViewModel(mock.Object, 0);
             processViewModel.Threads.Should().NotBeNull();
         }
 
@@ -64,7 +64,7 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.Tests
             mock.Setup(x => x.Duration).Returns(1);
             mock.Setup(x => x.Gap).Returns(2);
 
-            var processViewModel = new ProcessViewModel(mock.Object);
+            var processViewModel = new ProcessViewModel(mock.Object, 0);
 
             processViewModel.Threads.Should().Contain(x => x.ThreadNumber == 1234);
         }
@@ -78,7 +78,7 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.Tests
             mock.Setup(x => x.Duration).Returns(1);
             mock.Setup(x => x.Gap).Returns(2);
 
-            var processViewModel = new ProcessViewModel(mock.Object);
+            var processViewModel = new ProcessViewModel(mock.Object, 0);
             processViewModel.ProcessNewDiagnoseOutputEntry(mock.Object);
 
             processViewModel.Threads.Count.Should().Be(1);
@@ -97,10 +97,10 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.Tests
             mock2.Setup(x => x.Gap).Returns(5);
             mock2.Setup(x => x.Duration).Returns(6);
 
-            var processViewModel = new ProcessViewModel(mock1.Object);
+            var processViewModel = new ProcessViewModel(mock1.Object, 0);
             processViewModel.ProcessNewDiagnoseOutputEntry(mock2.Object);
 
-            processViewModel.TotalDuration.Should().Be(11);
+            processViewModel.TotalDuration.Should().Be(16);
         }
     }
 }
