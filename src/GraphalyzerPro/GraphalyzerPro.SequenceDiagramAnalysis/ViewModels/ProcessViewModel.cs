@@ -20,6 +20,7 @@
  */
 
 using System.Linq;
+using System.Threading;
 using GraphalyzerPro.Common.Interfaces;
 using ReactiveUI;
 
@@ -28,14 +29,24 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
     internal class ProcessViewModel : ReactiveObject, IProcessViewModel
     {
         private readonly ReactiveCollection<IThreadViewModel> _threads;
+        private long _totalDuration;
 
-        public ProcessViewModel(int processId)
+        public ProcessViewModel(IDiagnoseOutputEntry entry)
         {
-            _threads = new ReactiveCollection<IThreadViewModel>();
-            Id = processId;
+            Threads = new ReactiveCollection<IThreadViewModel>();
+            ProcessId = entry.ProcessId;
+            TotalDuration = 0;
+
+            ProcessNewDiagnoseOutputEntry(entry);
         }
 
-        public int Id { get; private set; }
+        public int ProcessId { get; private set; }
+
+        public long TotalDuration
+        {
+            get { return _totalDuration; }
+            private set { this.RaiseAndSetIfChanged(value); }
+        }
 
         public ReactiveCollection<IThreadViewModel> Threads
         {
@@ -47,13 +58,19 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
         {
             var thread = Threads.SingleOrDefault(x => x.ThreadNumber == diagnoseOutputEntry.ThreadNumber);
 
-            if (thread != null)
+            if (thread == null)
             {
-                thread.ProcessNewDiagnoseOutputEntry(diagnoseOutputEntry);
+                thread = new ThreadViewModel(diagnoseOutputEntry);
+                Threads.Add(thread);
             }
             else
             {
-                Threads.Add(new ThreadViewModel(diagnoseOutputEntry));
+                thread.ProcessNewDiagnoseOutputEntry(diagnoseOutputEntry);
+            }
+
+            if (thread.TotalDuration > TotalDuration)
+            {
+                TotalDuration = thread.TotalDuration;
             }
         }
     }
