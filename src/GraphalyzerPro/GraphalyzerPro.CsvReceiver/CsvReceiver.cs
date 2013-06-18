@@ -25,6 +25,7 @@ using System.IO;
 using System.Linq;
 using GraphalyzerPro.Common;
 using GraphalyzerPro.Common.Interfaces;
+using LINQtoCSV;
 using Microsoft.Win32;
 
 namespace GraphalyzerPro.CsvReceiver
@@ -83,14 +84,18 @@ namespace GraphalyzerPro.CsvReceiver
         {
             if (File.Exists(filePath))
             {
-                var allLines = File.ReadAllLines(filePath).ToList();
+                var csvContext = new CsvContext();
 
-                // Removing the header line of the csv file.
-                allLines.RemoveAt(0);
+                var csvFileDescription = new CsvFileDescription
+                    {
+                        SeparatorChar = ';',
+                        FirstLineHasColumnNames = true,
+                    };
 
-                var diagnoseOutputEntries = from line in allLines
-                                            let dataEntry = line.Split(';')
-                                            select ParseDataEntryToDiagnoseOutputEntry(dataEntry);
+                var allEntries = csvContext.Read<DataEntry>(filePath, csvFileDescription);
+
+                var diagnoseOutputEntries = from entry in allEntries
+                                            select ParseDataEntryToDiagnoseOutputEntry(entry);
 
                 return diagnoseOutputEntries.ToList();
             }
@@ -98,27 +103,29 @@ namespace GraphalyzerPro.CsvReceiver
             return new List<IDiagnoseOutputEntry>();
         }
 
-        private static IDiagnoseOutputEntry ParseDataEntryToDiagnoseOutputEntry(string[] dataEntry)
+        private static IDiagnoseOutputEntry ParseDataEntryToDiagnoseOutputEntry(DataEntry dataEntry)
         {
             DateTime dateTimeParseBuffer;
 
-            var type = dataEntry[5].Trim();
+            var type = dataEntry.State != null ? dataEntry.State.Trim() : string.Empty;
 
             return
                 new DiagnoseOutputEntry(
-                    DateTime.TryParse(dataEntry[0], out dateTimeParseBuffer) ? dateTimeParseBuffer : DateTime.MinValue,
-                    Convert.ToInt64(dataEntry[1]),
-                    Convert.ToInt64(dataEntry[2]),
-                    Convert.ToInt32(dataEntry[3]),
-                    Convert.ToInt32(dataEntry[4]),
+                    DateTime.TryParse(dataEntry.Timestamp, out dateTimeParseBuffer)
+                        ? dateTimeParseBuffer
+                        : DateTime.MinValue,
+                    Convert.ToInt64(dataEntry.Gap),
+                    Convert.ToInt64(dataEntry.Duration),
+                    Convert.ToInt32(dataEntry.ProcessId),
+                    Convert.ToInt32(dataEntry.Thread),
                     type.Length > 0 ? TypeCharToTypeEnumLookUp[type.Last()] : DiagnoseType.SingleOutput,
-                    dataEntry[6],
-                    dataEntry[7],
-                    dataEntry[8],
-                    dataEntry[9],
-                    dataEntry[10],
-                    dataEntry[13],
-                    dataEntry[12]);
+                    dataEntry.Domain,
+                    dataEntry.Application,
+                    dataEntry.Component,
+                    dataEntry.Module,
+                    dataEntry.Code,
+                    dataEntry.Text,
+                    dataEntry.Parent);
         }
     }
 }
