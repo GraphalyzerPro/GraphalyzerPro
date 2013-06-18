@@ -39,9 +39,14 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
         long Gap { get; }
 
         /// <summary>
-        /// Duration of the bracket in microseconds.
+        /// Duration of the <see cref="IDiagnoseOutputEntry"/> in microseconds.
         /// </summary>
         long Duration { get; }
+
+        /// <summary>
+        /// Total duration of the <see cref="IDiagnoseOutputEntry"/> in microseconds. If it is a subelements containing <see cref="IDiagnoseOutputEntry"/>, the total duration comprises the gap and total duration of all subelements.
+        /// </summary>
+        long TotalDuration { get; }
 
         /// <summary>
         /// The process id to which the <see cref="IDiagnoseOutputEntry"/> belongs to.
@@ -98,5 +103,9 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
         void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry entry);
 
         bool IsBracketOpen { get; }
+
+        long GapAndDuration { get; }
+
+        long GapAndTotalDuration { get; }
     }
 }

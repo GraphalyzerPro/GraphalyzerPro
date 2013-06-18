@@ -81,15 +81,16 @@
       <DependentUpon>SequenceDiagram.xaml</DependentUpon>
     </Compile>
     <Compile Include="SequenceDiagramAnalysis.cs" />
+    <Compile Include="ViewModels\GapToMarginConverter.cs" />
     <Compile Include="ViewModels\DiagnoseOutputViewModel.cs" />
     <Compile Include="ViewModels\IDiagnoseOutputViewModel.cs" />
-    <Compile Include="ViewModels\IMethodExecutionViewModel.cs" />
     <Compile Include="ViewModels\ThreadViewModel.cs" />
     <Compile Include="ViewModels\IProcessViewModel.cs" />
     <Compile Include="ViewModels\ISequenceDiagramViewModel.cs" />
     <Compile Include="ViewModels\IThreadViewModel.cs" />
     <Compile Include="ViewModels\ProcessViewModel.cs" />
     <Compile Include="ViewModels\SequenceDiagramViewModel.cs" />
+    <Compile Include="ViewModels\DurationToHeightConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GraphalyzerPro.Common\GraphalyzerPro.Common.csproj">
