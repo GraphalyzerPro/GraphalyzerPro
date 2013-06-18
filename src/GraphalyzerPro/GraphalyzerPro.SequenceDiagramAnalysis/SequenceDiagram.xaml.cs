@@ -15,7 +15,7 @@
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public
- * License along with this program. If not, see
+ * License adouble with this program. If not, see
  * <http://www.gnu.org/licenses/>.
  */
 
@@ -37,6 +37,13 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis
             new PropertyMetadata(default(ISequenceDiagramViewModel))
             );
 
+        public static readonly DependencyProperty DurationPerActualHeightProperty = DependencyProperty.Register(
+            "DurationPerActualHeight",
+            typeof (double),
+            typeof (SequenceDiagram),
+            new PropertyMetadata(5000000.0)
+            );
+
         public SequenceDiagram()
         {
             InitializeComponent();
@@ -48,6 +55,12 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis
         {
             get { return (ISequenceDiagramViewModel) GetValue(ViewModelProperty); }
             set { SetValue(ViewModelProperty, value); }
+        }
+
+        public double DurationPerActualHeight
+        {
+            get { return (double) GetValue(DurationPerActualHeightProperty); }
+            set { SetValue(DurationPerActualHeightProperty, value); }
         }
     }
 }

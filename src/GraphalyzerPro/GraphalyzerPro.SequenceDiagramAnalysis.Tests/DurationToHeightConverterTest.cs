@@ -46,7 +46,7 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.Tests
         public void Convert_AllValuesOk()
         {
             var converter = new DurationToHeightConverter();
-            ((double)(converter.Convert(new object[] { (long)(1), (long)(10), (double)(20) }, typeof(double), null, CultureInfo.InvariantCulture))).Should().Be(2);
+            ((double)(converter.Convert(new object[] { (long)(1), (double)(10), (double)(20) }, typeof(double), null, CultureInfo.InvariantCulture))).Should().Be(2);
         }
 
         [Test]
@@ -75,14 +75,14 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.Tests
         public void Convert_TotalDurationIsNull()
         {
             var converter = new DurationToHeightConverter();
-            ((double)(converter.Convert(new object[] { (long)(1), (long)(0), (double)(20) }, typeof(double), null, CultureInfo.InvariantCulture))).Should().Be(1.0);
+            ((double)(converter.Convert(new object[] { (long)(1), (double)(0), (double)(20) }, typeof(double), null, CultureInfo.InvariantCulture))).Should().Be(1.0);
         }
 
         [Test]
         public void Convert_DurationIsNull()
         {
             var converter = new DurationToHeightConverter();
-            ((double)(converter.Convert(new object[] { (long)(0), (long)(10), (double)(20) }, typeof(double), null, CultureInfo.InvariantCulture))).Should().Be(1.0);
+            ((double)(converter.Convert(new object[] { (long)(0), (double)(10), (double)(20) }, typeof(double), null, CultureInfo.InvariantCulture))).Should().Be(1.0);
         }
     }
 }
