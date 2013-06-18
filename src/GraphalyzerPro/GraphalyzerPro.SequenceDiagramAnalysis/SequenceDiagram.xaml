@@ -30,73 +30,93 @@
              xmlns:viewModels="clr-namespace:GraphalyzerPro.SequenceDiagramAnalysis.ViewModels"
              DataContext="{Binding ElementName=SequenceDiagrammUserControl, Path=ViewModel}"
              mc:Ignorable="d">
-    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
-        <ItemsControl ItemsSource="{Binding Processes}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <VirtualizingStackPanel Orientation="Horizontal"/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Border Margin="5,0,5,0" Padding="5" BorderBrush="Black" BorderThickness="1">
-                        <DockPanel>
-                            <DockPanel Dock="Top">
-                                <TextBlock Text="{Binding Id}" TextAlignment="Center" Margin="0,0,5,5" Padding="5"/>
-                            </DockPanel>
-                            <ItemsControl ItemsSource="{Binding Threads}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel Orientation="Horizontal"/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <DockPanel>
-                                            <DockPanel Dock="Top">
-                                                <Border Margin="5,0,5,0" Padding="5" BorderBrush="Black" BorderThickness="1">
-                                                    <TextBlock Text="{Binding ThreadNumber}" HorizontalAlignment="Center"/>
-                                                </Border>
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" CanContentScroll="True"
+                  MouseEnter="ScrollViewerOnMouseEnter" MouseLeave="ScrollViewerOnMouseLeave" 
+                  ScrollChanged="ScrollViewerOnScrollChanged">
+        <Grid x:Name="MainGrid">
+            <ItemsControl ItemsSource="{Binding Processes}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="5,0,5,0" Padding="5" BorderBrush="Black" BorderThickness="1">
+                            <DockPanel>
+                                <DockPanel Dock="Top">
+                                    <TextBlock Text="{Binding Id}" TextAlignment="Center" Margin="0,0,5,5" Padding="5"/>
+                                </DockPanel>
+                                <ItemsControl ItemsSource="{Binding Threads}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <DockPanel>
+                                                <DockPanel Dock="Top">
+                                                    <Border Margin="5,0,5,0" Padding="5" BorderBrush="Black" BorderThickness="1">
+                                                        <TextBlock Text="{Binding ThreadNumber}" HorizontalAlignment="Center"/>
+                                                    </Border>
+                                                </DockPanel>
+                                                <ItemsControl ItemsSource="{Binding DiagnoseOutputEntries}" 
+                                                                VirtualizingStackPanel.IsVirtualizing="True"
+                                                                Margin="10,0,0,0">
+                                                    <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <StackPanel/>
+                                                        </ItemsPanelTemplate>
+                                                    </ItemsControl.ItemsPanel>
+                                                    <ItemsControl.Resources>
+                                                        <DataTemplate DataType="{x:Type viewModels:DiagnoseOutputViewModel}">
+                                                            <Grid>
+                                                                <Border BorderThickness="1" Margin="1"
+                                                                        HorizontalAlignment="Left" Width="10">
+                                                                    <Border.Style>
+                                                                        <Style TargetType="{x:Type Border}">
+                                                                            <Setter Property="BorderBrush" Value="Black"/>
+                                                                            <Setter Property="Background" Value="Beige"/>
+                                                                            <Style.Triggers>
+                                                                                <DataTrigger Binding="{Binding Type}" Value="Exception">
+                                                                                    <Setter Property="BorderBrush" Value="Red"/>
+                                                                                    <Setter Property="Background" Value="Red"/>
+                                                                                </DataTrigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </Border.Style>
+                                                                </Border>   
+                                                                <ItemsControl ItemsSource="{Binding DiagnoseOutputViewModels}" Margin="5"/>        
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </ItemsControl.Resources>
+                                                </ItemsControl>
                                             </DockPanel>
-                                            <ItemsControl ItemsSource="{Binding DiagnoseOutputEntries}" 
-                                                            VirtualizingStackPanel.IsVirtualizing="True"
-                                                            Margin="10,0,0,0">
-                                                <ItemsControl.ItemsPanel>
-                                                    <ItemsPanelTemplate>
-                                                        <StackPanel/>
-                                                    </ItemsPanelTemplate>
-                                                </ItemsControl.ItemsPanel>
-                                                <ItemsControl.Resources>
-                                                    <DataTemplate DataType="{x:Type viewModels:DiagnoseOutputViewModel}">
-                                                        <Grid>
-                                                            <Border BorderThickness="1" Margin="1"
-                                                                    HorizontalAlignment="Left" Width="10">
-                                                                <Border.Style>
-                                                                    <Style TargetType="{x:Type Border}">
-                                                                        <Setter Property="BorderBrush" Value="Black"/>
-                                                                        <Setter Property="Background" Value="Beige"/>
-                                                                        <Style.Triggers>
-                                                                            <DataTrigger Binding="{Binding Type}" Value="Exception">
-                                                                                <Setter Property="BorderBrush" Value="Red"/>
-                                                                                <Setter Property="Background" Value="Red"/>
-                                                                            </DataTrigger>
-                                                                        </Style.Triggers>
-                                                                    </Style>
-                                                                </Border.Style>
-                                                            </Border>   
-                                                            <ItemsControl ItemsSource="{Binding DiagnoseOutputViewModels}" Margin="5"/>        
-                                                        </Grid>
-                                                    </DataTemplate>
-                                                </ItemsControl.Resources>
-                                            </ItemsControl>
-                                        </DockPanel>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </DockPanel>
-                    </Border>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </DockPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <Line x:Name="CrosshairTopLine" HorizontalAlignment="Left" VerticalAlignment="Top"
+                  Stroke="Black"
+                  Opacity="0.3"
+                  StrokeThickness="5"/>
+            <Line x:Name="CrosshairBottomLine" HorizontalAlignment="Left" VerticalAlignment="Top"
+                  Stroke="Black"
+                  Opacity="0.3"
+                  StrokeThickness="5"/>
+            <Line x:Name="CrosshairLeftLine" HorizontalAlignment="Left" VerticalAlignment="Top"
+                  Stroke="Black"
+                  Opacity="0.3"
+                  StrokeThickness="5"/>
+            <Line x:Name="CrosshairRightLine" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                  Stroke="Black"
+                  Opacity="0.3"
+                  StrokeThickness="5"/>
+        </Grid>
     </ScrollViewer>
 </UserControl>
