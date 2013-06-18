@@ -54,7 +54,7 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
 
             if (process == null)
             {
-                process = new ProcessViewModel(diagnoseOutputEntry);
+                process = new ProcessViewModel(diagnoseOutputEntry, TotalDuration);
                 Processes.Add(process);
             }
             else
@@ -62,9 +62,10 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
                 process.ProcessNewDiagnoseOutputEntry(diagnoseOutputEntry);
             }
 
-            if (process.TotalDuration > TotalDuration)
+            TotalDuration = process.TotalDuration;
+            foreach(ProcessViewModel p in Processes)
             {
-                TotalDuration = process.TotalDuration;
+                p.UpdateTotalDuration(TotalDuration);
             }
         }
     }

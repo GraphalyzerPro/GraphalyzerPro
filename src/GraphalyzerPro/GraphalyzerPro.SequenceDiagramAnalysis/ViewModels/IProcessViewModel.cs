@@ -33,5 +33,7 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
         long TotalDuration { get; }
 
         void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry entry);
+
+        void UpdateTotalDuration(long totalDuration);
     }
 }
