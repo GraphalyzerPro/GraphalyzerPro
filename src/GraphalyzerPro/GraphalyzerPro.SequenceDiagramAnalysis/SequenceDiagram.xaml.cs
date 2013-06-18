@@ -21,6 +21,7 @@
 
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using GraphalyzerPro.SequenceDiagramAnalysis.ViewModels;
 
 namespace GraphalyzerPro.SequenceDiagramAnalysis
@@ -48,6 +49,51 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis
         {
             get { return (ISequenceDiagramViewModel) GetValue(ViewModelProperty); }
             set { SetValue(ViewModelProperty, value); }
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+
+            RefreshCrossairPosition();
+        }
+
+        private void ScrollViewerOnMouseEnter(object sender, MouseEventArgs e)
+        {
+            CrosshairTopLine.Visibility =
+                CrosshairBottomLine.Visibility =
+                CrosshairRightLine.Visibility = CrosshairLeftLine.Visibility = Visibility.Visible;
+        }
+
+        private void ScrollViewerOnMouseLeave(object sender, MouseEventArgs e)
+        {
+            CrosshairTopLine.Visibility =
+                CrosshairBottomLine.Visibility =
+                CrosshairRightLine.Visibility = CrosshairLeftLine.Visibility = Visibility.Collapsed;
+        }
+
+        private void ScrollViewerOnScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            RefreshCrossairPosition();
+        }
+
+        private void RefreshCrossairPosition()
+        {
+            var position = Mouse.GetPosition(MainGrid);
+
+            CrosshairTopLine.X1 = CrosshairTopLine.X2 = position.X;
+            CrosshairTopLine.Y1 = position.Y - 15;
+
+            CrosshairBottomLine.X1 = CrosshairBottomLine.X2 = position.X;
+            CrosshairBottomLine.Y1 = position.Y + 15;
+            CrosshairBottomLine.Y2 = MainGrid.ActualHeight;
+
+            CrosshairRightLine.Y1 = CrosshairRightLine.Y2 = position.Y;
+            CrosshairRightLine.X1 = position.X - 15;
+
+            CrosshairLeftLine.Y1 = CrosshairLeftLine.Y2 = position.Y;
+            CrosshairLeftLine.X1 = position.X + 15;
+            CrosshairLeftLine.X2 = MainGrid.ActualWidth;
         }
     }
 }
