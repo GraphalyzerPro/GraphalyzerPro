@@ -34,8 +34,11 @@
         <viewModels:GapToMarginConverter x:Key="GapToMarginConverter"/>
         <viewModels:DurationToHeightConverter x:Key="DurationToHeightConverter"/>
     </UserControl.Resources>
-    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
-        <ItemsControl ItemsSource="{Binding Processes}">
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" CanContentScroll="True"
+MouseEnter="ScrollViewerOnMouseEnter" MouseLeave="ScrollViewerOnMouseLeave" 
+                  ScrollChanged="ScrollViewerOnScrollChanged">
+        <Grid x:Name="MainGrid">
+		<ItemsControl ItemsSource="{Binding Processes}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <VirtualizingStackPanel Orientation="Horizontal"/>
@@ -127,5 +130,22 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
+ <Line x:Name="CrosshairTopLine" HorizontalAlignment="Left" VerticalAlignment="Top"
+                  Stroke="Black"
+                  Opacity="0.7"
+                  StrokeThickness="1"/>
+            <Line x:Name="CrosshairBottomLine" HorizontalAlignment="Left" VerticalAlignment="Top"
+                  Stroke="Black"
+                  Opacity="0.7"
+                  StrokeThickness="1"/>
+            <Line x:Name="CrosshairLeftLine" HorizontalAlignment="Left" VerticalAlignment="Top"
+                  Stroke="Black"
+                  Opacity="0.7"
+                  StrokeThickness="1"/>
+            <Line x:Name="CrosshairRightLine" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                  Stroke="Black"
+                  Opacity="0.7"
+                  StrokeThickness="1"/>
+        </Grid>
     </ScrollViewer>
 </UserControl>
