@@ -28,8 +28,12 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
     {
         int ThreadNumber { get; }
 
-        ReactiveCollection<IDiagnoseOutputViewModel> DiagnoseOutputEntries { get; }
+        ReactiveCollection<IDiagnoseOutputViewModel> DiagnoseOutputViewModels { get; }
 
         void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry entry);
+
+        long TotalDuration { get; }
+
+        void UpdateTotalDuration(long totalDuration);
     }
 }

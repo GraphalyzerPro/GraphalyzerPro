@@ -20,6 +20,7 @@
  */
 
 using System.Linq;
+using GraphalyzerPro.Common;
 using GraphalyzerPro.Common.Interfaces;
 using ReactiveUI;
 
@@ -27,37 +28,71 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
 {
     internal class ThreadViewModel : ReactiveObject, IThreadViewModel
     {
-        private readonly ReactiveCollection<IDiagnoseOutputViewModel> _diagnoseOutputEntries;
+        private readonly ReactiveCollection<IDiagnoseOutputViewModel> _diagnoseOutputViewModels;
+        private long _totalDuration;
+        private long _totalDurationWithoutLastOpenBracketDiagnoseOutputViewModel;
+        private long _duration;
+        private long _totalDurationWithoutExtraGap;
 
-        public ThreadViewModel(IDiagnoseOutputEntry diagnoseOutputEntry)
+        public ThreadViewModel(IDiagnoseOutputEntry diagnoseOutputEntry, long totalDuration)
         {
-            _diagnoseOutputEntries = new ReactiveCollection<IDiagnoseOutputViewModel>();
-
+            DiagnoseOutputViewModels = new ReactiveCollection<IDiagnoseOutputViewModel>();
             ThreadNumber = diagnoseOutputEntry.ThreadNumber;
+            TotalDuration = totalDuration;
+            _totalDurationWithoutLastOpenBracketDiagnoseOutputViewModel = 0;
+            _totalDurationWithoutExtraGap = 0;
 
             ProcessNewDiagnoseOutputEntry(diagnoseOutputEntry);
         }
 
         public int ThreadNumber { get; private set; }
 
-        public ReactiveCollection<IDiagnoseOutputViewModel> DiagnoseOutputEntries
+        public long TotalDurationWithoutExtraGap
         {
-            get { return _diagnoseOutputEntries; }
+            get { return _totalDurationWithoutExtraGap; }
+            private set { this.RaiseAndSetIfChanged(value); }
+        }
+
+        public long TotalDuration
+        {
+            get { return _totalDuration; }
+            private set { this.RaiseAndSetIfChanged(value); }
+        }
+
+        public ReactiveCollection<IDiagnoseOutputViewModel> DiagnoseOutputViewModels
+        {
+            get { return _diagnoseOutputViewModels; }
             set { this.RaiseAndSetIfChanged(value); }
         }
 
         public void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry entry)
         {
-            var output = DiagnoseOutputEntries.SingleOrDefault(x => x.IsBracketOpen);
+            var output = DiagnoseOutputViewModels.SingleOrDefault(x => x.IsBracketOpen);
 
-            if (output != null)
+            if (output == null)
             {
-                output.ProcessNewDiagnoseOutputEntry(entry);
+                output = new DiagnoseOutputViewModel(entry, TotalDuration - TotalDurationWithoutExtraGap);
+                DiagnoseOutputViewModels.Add(output);
             }
             else
             {
-                DiagnoseOutputEntries.Add(new DiagnoseOutputViewModel(entry));
+                output.ProcessNewDiagnoseOutputEntry(entry, TotalDuration - TotalDurationWithoutExtraGap);
             }
+
+            if(output.IsBracketOpen)
+            {
+                TotalDurationWithoutExtraGap = TotalDuration = _totalDurationWithoutLastOpenBracketDiagnoseOutputViewModel + output.GapExtraGapAndTotalDuration;
+            }
+            else
+            {
+                _totalDurationWithoutLastOpenBracketDiagnoseOutputViewModel += output.GapExtraGapAndTotalDuration;
+                TotalDurationWithoutExtraGap = TotalDuration = _totalDurationWithoutLastOpenBracketDiagnoseOutputViewModel;
+            }
+        }
+
+        public void UpdateTotalDuration(long totalDuration)
+        {
+            TotalDuration = totalDuration;
         }
     }
 }
