@@ -21,6 +21,7 @@
 
 using GraphalyzerPro.Common.Interfaces;
 using ReactiveUI;
+using ReactiveUI.Xaml;
 
 namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
 {
@@ -29,6 +30,10 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
         ReactiveCollection<IProcessViewModel> Processes { get; }
 
         long TotalDuration { get; }
+
+        ReactiveCommand SelectDiagnoseOutputViewModel { get; }
+
+        IDiagnoseOutputViewModel SelectedDiagnoseOutputViewModel { get; }
 
         void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry diagnoseOutputEntry);
     }

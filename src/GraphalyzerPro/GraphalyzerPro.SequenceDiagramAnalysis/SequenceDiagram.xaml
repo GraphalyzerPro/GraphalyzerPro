@@ -28,124 +28,193 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:GraphalyzerPro.SequenceDiagramAnalysis.ViewModels"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              DataContext="{Binding ElementName=SequenceDiagrammUserControl, Path=ViewModel}"
              mc:Ignorable="d">
     <UserControl.Resources>
         <viewModels:GapToMarginConverter x:Key="GapToMarginConverter"/>
         <viewModels:DurationToHeightConverter x:Key="DurationToHeightConverter"/>
     </UserControl.Resources>
-    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" CanContentScroll="True"
-MouseEnter="ScrollViewerOnMouseEnter" MouseLeave="ScrollViewerOnMouseLeave" 
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Right" Width="400" Margin="5">
+            <TextBlock Text="Detail View:"/>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <TextBlock Text="Process ID:" Width="100"/>
+                <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.ProcessId}" TextWrapping="Wrap" Width="300"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <TextBlock Text="Thread Number:" Width="100"/>
+                <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.ThreadNumber}" TextWrapping="Wrap" Width="300"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <TextBlock Text="Start Time Stamp:" Width="100"/>
+                <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.StartTimeStamp}" TextWrapping="Wrap" Width="300"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <TextBlock Text="End TimeStamp:" Width="100"/>
+                <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.EndTimeStamp}" TextWrapping="Wrap" Width="300"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <TextBlock Text="Gap:" Width="100"/>
+                <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.Gap}" TextWrapping="Wrap" Width="300"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <TextBlock Text="Duration:" Width="100"/>
+                <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.Duration}" TextWrapping="Wrap" Width="300"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <TextBlock Text="State:" Width="100"/>
+                <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.Type}" TextWrapping="Wrap" Width="300"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <TextBlock Text="Domain:" Width="100"/>
+                <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.Domain}" TextWrapping="Wrap" Width="300"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <TextBlock Text="Application:" Width="100"/>
+                <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.Application}" TextWrapping="Wrap" Width="300"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <TextBlock Text="Component:" Width="100"/>
+                <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.Component}" TextWrapping="Wrap" Width="300"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <TextBlock Text="Module:" Width="100"/>
+                <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.Module}" TextWrapping="Wrap" Width="300"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <TextBlock Text="Code:" Width="100"/>
+                <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.Code}" TextWrapping="Wrap" Width="300"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <TextBlock Text="Text:" Width="100"/>
+                <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.Text}" TextWrapping="Wrap" Width="300"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <TextBlock Text="Meta Information:" Width="100"/>
+                <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.MetaInformation}" TextWrapping="Wrap" Width="300"/>
+            </StackPanel>
+        </StackPanel>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" CanContentScroll="True"
+                  MouseEnter="ScrollViewerOnMouseEnter" MouseLeave="ScrollViewerOnMouseLeave" 
                   ScrollChanged="ScrollViewerOnScrollChanged">
-        <Grid x:Name="MainGrid">
-		<ItemsControl ItemsSource="{Binding Processes}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <VirtualizingStackPanel Orientation="Horizontal"/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Border Margin="5,0,5,0" Padding="5" BorderBrush="Black" BorderThickness="1">
-                        <DockPanel>
-                            <DockPanel Dock="Top">
-                                <TextBlock Text="{Binding ProcessId}" TextAlignment="Center" Margin="0,0,5,5" Padding="5"/>
-                            </DockPanel>
-                            <ItemsControl ItemsSource="{Binding Threads}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel Orientation="Horizontal"/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <DockPanel>
-                                            <DockPanel Dock="Top">
-                                                <Border Margin="5,0,5,0" Padding="5" BorderBrush="Black" BorderThickness="1">
-                                                    <TextBlock Text="{Binding ThreadNumber}" HorizontalAlignment="Center"/>
-                                                </Border>
-                                            </DockPanel>
-                                            <Grid Name="ThreadEntries">
-                                                <Border BorderThickness="1" BorderBrush="DimGray" HorizontalAlignment="Left" Width="1" Height="{Binding ElementName=ThreadEntries, Path=ActualHeight}" Margin="15,0,0,0"/>
-                                                <ItemsControl ItemsSource="{Binding DiagnoseOutputViewModels}"
+            <Grid x:Name="MainGrid">
+                <ItemsControl ItemsSource="{Binding Processes}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="5,0,5,0" Padding="5" BorderBrush="Black" BorderThickness="1">
+                                <DockPanel>
+                                    <DockPanel Dock="Top">
+                                        <TextBlock Text="{Binding ProcessId}" TextAlignment="Center" Margin="0,0,5,5" Padding="5"/>
+                                    </DockPanel>
+                                    <ItemsControl ItemsSource="{Binding Threads}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Horizontal"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <DockPanel>
+                                                    <DockPanel Dock="Top">
+                                                        <Border Margin="5,0,5,0" Padding="5" BorderBrush="Black" BorderThickness="1">
+                                                            <TextBlock Text="{Binding ThreadNumber}" HorizontalAlignment="Center"/>
+                                                        </Border>
+                                                    </DockPanel>
+                                                    <Grid Name="ThreadEntries">
+                                                        <Border BorderThickness="1" BorderBrush="DimGray" HorizontalAlignment="Left" Width="1" Height="{Binding ElementName=ThreadEntries, Path=ActualHeight}" Margin="15,0,0,0"/>
+                                                        <ItemsControl ItemsSource="{Binding DiagnoseOutputViewModels}"
                                                                 VirtualizingStackPanel.IsVirtualizing="True"
                                                                 Margin="10,0,0,0">
-                                                    <ItemsControl.ItemsPanel>
-                                                        <ItemsPanelTemplate>
-                                                            <StackPanel />
-                                                        </ItemsPanelTemplate>
-                                                    </ItemsControl.ItemsPanel>
-                                                    <ItemsControl.Resources>
-                                                        <DataTemplate DataType="{x:Type viewModels:DiagnoseOutputViewModel}">
-                                                            <Grid>
-                                                                <Border BorderThickness="1"
-                                                                        HorizontalAlignment="Left" Width="11" SnapsToDevicePixels="True">
-                                                                    <Border.Margin>
-                                                                        <MultiBinding Converter="{StaticResource GapToMarginConverter}">
-                                                                            <Binding Path="DataContext.GapAndExtraGap" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Grid}}"/>
-                                                                            <Binding Path="DurationPerActualHeight" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"/>
-                                                                            <Binding Path="ActualHeight" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"/>
-                                                                        </MultiBinding>
-                                                                    </Border.Margin>
-                                                                    <Border.Height>
-                                                                        <MultiBinding Converter="{StaticResource DurationToHeightConverter}">
-                                                                            <Binding Path="DataContext.TotalDuration" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Grid}}"/>
-                                                                            <Binding Path="DurationPerActualHeight" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"/>
-                                                                            <Binding Path="ActualHeight" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"/>
-                                                                        </MultiBinding>
-                                                                    </Border.Height>
-                                                                    <Border.Style>
-                                                                        <Style TargetType="{x:Type Border}">
-                                                                            <Setter Property="BorderBrush" Value="Black"/>
-                                                                            <Setter Property="Background" Value="Beige"/>
-                                                                            <Style.Triggers>
-                                                                                <DataTrigger Binding="{Binding Type}" Value="Exception">
-                                                                                    <Setter Property="BorderBrush" Value="Red"/>
-                                                                                    <Setter Property="Background" Value="Red"/>
-                                                                                </DataTrigger>
-                                                                            </Style.Triggers>
-                                                                        </Style>
-                                                                    </Border.Style>
-                                                                </Border>
-                                                                <ItemsControl ItemsSource="{Binding DiagnoseOutputViewModels}" SnapsToDevicePixels="True">
-                                                                    <ItemsControl.Margin>
-                                                                        <MultiBinding Converter="{StaticResource GapToMarginConverter}" ConverterParameter="5">
-                                                                            <Binding Path="DataContext.GapExtraGapAndDuration" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Grid}}"/>
-                                                                            <Binding Path="DurationPerActualHeight" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"/>
-                                                                            <Binding Path="ActualHeight" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"/>
-                                                                        </MultiBinding>
-                                                                    </ItemsControl.Margin>
-                                                                </ItemsControl>
-                                                            </Grid>
-                                                        </DataTemplate>
-                                                    </ItemsControl.Resources>
-                                                </ItemsControl>
-                                            </Grid>
-                                        </DockPanel>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </DockPanel>
-                    </Border>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
- <Line x:Name="CrosshairTopLine" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                                            <ItemsControl.ItemsPanel>
+                                                                <ItemsPanelTemplate>
+                                                                    <StackPanel />
+                                                                </ItemsPanelTemplate>
+                                                            </ItemsControl.ItemsPanel>
+                                                            <ItemsControl.Resources>
+                                                                <DataTemplate DataType="{x:Type viewModels:DiagnoseOutputViewModel}">
+                                                                    <Grid>
+                                                                        <Border BorderThickness="1" HorizontalAlignment="Left" Width="11" SnapsToDevicePixels="True">
+                                                                            <i:Interaction.Triggers>
+                                                                                <i:EventTrigger EventName="MouseEnter">
+                                                                                    <i:InvokeCommandAction 
+                                                                                        Command="{Binding ElementName=SequenceDiagrammUserControl, 
+                                                                                        Path=DataContext.SelectDiagnoseOutputViewModel}"
+                                                                                        CommandParameter="{Binding}" />
+                                                                                </i:EventTrigger>
+                                                                            </i:Interaction.Triggers>
+                                                                            <Border.Margin>
+                                                                                <MultiBinding Converter="{StaticResource GapToMarginConverter}">
+                                                                                    <Binding Path="DataContext.GapAndExtraGap" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Grid}}"/>
+                                                                                    <Binding Path="DurationPerActualHeight" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"/>
+                                                                                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"/>
+                                                                                </MultiBinding>
+                                                                            </Border.Margin>
+                                                                            <Border.Height>
+                                                                                <MultiBinding Converter="{StaticResource DurationToHeightConverter}">
+                                                                                    <Binding Path="DataContext.TotalDuration" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Grid}}"/>
+                                                                                    <Binding Path="DurationPerActualHeight" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"/>
+                                                                                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"/>
+                                                                                </MultiBinding>
+                                                                            </Border.Height>
+                                                                            <Border.Style>
+                                                                                <Style TargetType="{x:Type Border}">
+                                                                                    <Setter Property="BorderBrush" Value="Black"/>
+                                                                                    <Setter Property="Background" Value="Beige"/>
+                                                                                    <Style.Triggers>
+                                                                                        <DataTrigger Binding="{Binding Type}" Value="Exception">
+                                                                                            <Setter Property="BorderBrush" Value="Red"/>
+                                                                                            <Setter Property="Background" Value="Red"/>
+                                                                                        </DataTrigger>
+                                                                                    </Style.Triggers>
+                                                                                </Style>
+                                                                            </Border.Style>
+                                                                        </Border>
+                                                                        <ItemsControl ItemsSource="{Binding DiagnoseOutputViewModels}" SnapsToDevicePixels="True">
+                                                                            <ItemsControl.Margin>
+                                                                                <MultiBinding Converter="{StaticResource GapToMarginConverter}" ConverterParameter="5">
+                                                                                    <Binding Path="DataContext.GapExtraGapAndDuration" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Grid}}"/>
+                                                                                    <Binding Path="DurationPerActualHeight" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"/>
+                                                                                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"/>
+                                                                                </MultiBinding>
+                                                                            </ItemsControl.Margin>
+                                                                        </ItemsControl>
+                                                                    </Grid>
+                                                                </DataTemplate>
+                                                            </ItemsControl.Resources>
+                                                        </ItemsControl>
+                                                    </Grid>
+                                                </DockPanel>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </DockPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Line x:Name="CrosshairTopLine" HorizontalAlignment="Left" VerticalAlignment="Top"
                   Stroke="Black"
                   Opacity="0.7"
                   StrokeThickness="1"/>
-            <Line x:Name="CrosshairBottomLine" HorizontalAlignment="Left" VerticalAlignment="Top"
+                <Line x:Name="CrosshairBottomLine" HorizontalAlignment="Left" VerticalAlignment="Top"
                   Stroke="Black"
                   Opacity="0.7"
                   StrokeThickness="1"/>
-            <Line x:Name="CrosshairLeftLine" HorizontalAlignment="Left" VerticalAlignment="Top"
+                <Line x:Name="CrosshairLeftLine" HorizontalAlignment="Left" VerticalAlignment="Top"
                   Stroke="Black"
                   Opacity="0.7"
                   StrokeThickness="1"/>
-            <Line x:Name="CrosshairRightLine" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                <Line x:Name="CrosshairRightLine" HorizontalAlignment="Left" VerticalAlignment="Top" 
                   Stroke="Black"
                   Opacity="0.7"
                   StrokeThickness="1"/>
-        </Grid>
-    </ScrollViewer>
+            </Grid>
+        </ScrollViewer>
+    </DockPanel>
 </UserControl>
