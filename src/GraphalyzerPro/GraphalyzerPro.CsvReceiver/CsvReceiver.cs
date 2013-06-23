@@ -111,7 +111,7 @@ namespace GraphalyzerPro.CsvReceiver
 
             return
                 new DiagnoseOutputEntry(
-                    DateTime.TryParse(dataEntry.Timestamp, out dateTimeParseBuffer)
+                    DateTime.TryParse(dataEntry.Timestamp.Replace(',', ':'), out dateTimeParseBuffer)
                         ? dateTimeParseBuffer
                         : DateTime.MinValue,
                     Convert.ToInt64(dataEntry.Gap),

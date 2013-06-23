@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (c) 2006-2009 by Christoph Menzel, Daniel Birkmaier, 
  * Maximilian Madeja, Farruch Kouliev, Stefan Zoettlein
  *
@@ -28,7 +28,7 @@ using Moq;
 using NUnit.Framework;
 using ReactiveUI;
 
-namespace GraphalyzerPro.SequenceDiagramAnalysis.Tests
+namespace GraphalyzerPro.SequenceDiagramAnalysis.Tests.ViewModelTests
 {
     [TestFixture]
     public class SequenceDiagramViewModelTest

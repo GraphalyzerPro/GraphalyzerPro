@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (c) 2006-2009 by Christoph Menzel, Daniel Birkmaier, 
  * Maximilian Madeja, Farruch Kouliev, Stefan Zoettlein
  *
@@ -24,7 +24,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
+namespace GraphalyzerPro.SequenceDiagramAnalysis.Converter
 {
     internal class DurationToHeightConverter : IMultiValueConverter
     {
