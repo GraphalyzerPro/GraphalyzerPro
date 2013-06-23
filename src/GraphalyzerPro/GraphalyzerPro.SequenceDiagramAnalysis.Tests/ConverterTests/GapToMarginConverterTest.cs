@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (c) 2006-2009 by Christoph Menzel, Daniel Birkmaier, 
  * Maximilian Madeja, Farruch Kouliev, Stefan Zoettlein
  *
@@ -22,14 +22,11 @@
 using System.Globalization;
 using System.Windows;
 using FluentAssertions;
-using GraphalyzerPro.Common;
-using GraphalyzerPro.Common.Interfaces;
-using GraphalyzerPro.SequenceDiagramAnalysis.ViewModels;
-using Moq;
+using GraphalyzerPro.SequenceDiagramAnalysis.Converter;
 using NUnit.Framework;
 using ReactiveUI;
 
-namespace GraphalyzerPro.SequenceDiagramAnalysis.Tests
+namespace GraphalyzerPro.SequenceDiagramAnalysis.Tests.ConverterTests
 {
     [TestFixture]
     public class GapToMarginConverterTest

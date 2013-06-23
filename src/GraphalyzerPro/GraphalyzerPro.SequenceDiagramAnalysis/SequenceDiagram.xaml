@@ -30,11 +30,12 @@
              xmlns:viewModels="clr-namespace:GraphalyzerPro.SequenceDiagramAnalysis.ViewModels"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:behaviors="clr-namespace:GraphalyzerPro.SequenceDiagramAnalysis.Behaviors"
+             xmlns:converter="clr-namespace:GraphalyzerPro.SequenceDiagramAnalysis.Converter"
              DataContext="{Binding ElementName=SequenceDiagrammUserControl, Path=ViewModel}"
              mc:Ignorable="d">
     <UserControl.Resources>
-        <viewModels:GapToMarginConverter x:Key="GapToMarginConverter"/>
-        <viewModels:DurationToHeightConverter x:Key="DurationToHeightConverter"/>
+        <converter:GapToMarginConverter x:Key="GapToMarginConverter"/>
+        <converter:DurationToHeightConverter x:Key="DurationToHeightConverter"/>
     </UserControl.Resources>
     <DockPanel>
         <StackPanel DockPanel.Dock="Right" Width="400" Margin="5">

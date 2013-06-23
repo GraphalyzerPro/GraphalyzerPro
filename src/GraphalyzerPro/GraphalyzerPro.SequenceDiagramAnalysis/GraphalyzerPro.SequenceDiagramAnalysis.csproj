@@ -78,12 +78,13 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Behaviors\ScrollViewerAutoScrollBehavior.cs" />
+    <Compile Include="Converter\DurationToHeightConverter.cs" />
+    <Compile Include="Converter\GapToMarginConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SequenceDiagram.xaml.cs">
       <DependentUpon>SequenceDiagram.xaml</DependentUpon>
     </Compile>
     <Compile Include="SequenceDiagramAnalysis.cs" />
-    <Compile Include="ViewModels\GapToMarginConverter.cs" />
     <Compile Include="ViewModels\DiagnoseOutputViewModel.cs" />
     <Compile Include="ViewModels\IDiagnoseOutputViewModel.cs" />
     <Compile Include="ViewModels\ThreadViewModel.cs" />
@@ -92,7 +93,6 @@
     <Compile Include="ViewModels\IThreadViewModel.cs" />
     <Compile Include="ViewModels\ProcessViewModel.cs" />
     <Compile Include="ViewModels\SequenceDiagramViewModel.cs" />
-    <Compile Include="ViewModels\DurationToHeightConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GraphalyzerPro.Common\GraphalyzerPro.Common.csproj">
