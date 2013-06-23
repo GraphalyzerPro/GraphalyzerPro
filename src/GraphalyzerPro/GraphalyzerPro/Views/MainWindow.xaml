@@ -44,7 +44,7 @@
             </DataTemplate>
             <DataTemplate x:Key="ItemContentTemplate" DataType="viewModels:SessionViewModel">
                 <DockPanel>
-                    <ContentControl Cursor="Cross" Content="{Binding Analysis.View}"/>
+                    <ContentControl Content="{Binding Analysis.View}"/>
                 </DockPanel>
             </DataTemplate>
             <DataTemplate x:Key="ItemHeaderTemplate" DataType="{x:Type viewModels:ISessionViewModel}">

@@ -29,6 +29,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:GraphalyzerPro.SequenceDiagramAnalysis.ViewModels"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:behaviors="clr-namespace:GraphalyzerPro.SequenceDiagramAnalysis.Behaviors"
              DataContext="{Binding ElementName=SequenceDiagrammUserControl, Path=ViewModel}"
              mc:Ignorable="d">
     <UserControl.Resources>
@@ -95,11 +96,15 @@
                 <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.MetaInformation}" TextWrapping="Wrap" Width="300"/>
             </StackPanel>
         </StackPanel>
-        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" CanContentScroll="True"
-                  MouseEnter="ScrollViewerOnMouseEnter" MouseLeave="ScrollViewerOnMouseLeave" 
-                  ScrollChanged="ScrollViewerOnScrollChanged">
+        <ScrollViewer x:Name="ScrollViewer" CanContentScroll="True" Cursor="Cross" 
+                      HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                      MouseEnter="ScrollViewerOnMouseEnter" MouseLeave="ScrollViewerOnMouseLeave"
+                      ScrollChanged="ScrollViewerOnScrollChanged">
+            <i:Interaction.Behaviors>
+                <behaviors:ScrollViewerAutoScrollBehavior />
+            </i:Interaction.Behaviors>
             <Grid x:Name="MainGrid">
-                <ItemsControl ItemsSource="{Binding Processes}">
+                <ItemsControl x:Name="ItemsControl" ItemsSource="{Binding Processes}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <VirtualizingStackPanel Orientation="Horizontal"/>
@@ -206,11 +211,11 @@
                   Stroke="Black"
                   Opacity="0.7"
                   StrokeThickness="1"/>
-                <Line x:Name="CrosshairLeftLine" HorizontalAlignment="Left" VerticalAlignment="Top"
+                <Line x:Name="CrosshairRightLine" HorizontalAlignment="Left" VerticalAlignment="Top"
                   Stroke="Black"
                   Opacity="0.7"
                   StrokeThickness="1"/>
-                <Line x:Name="CrosshairRightLine" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                <Line x:Name="CrosshairLeftLine" HorizontalAlignment="Left" VerticalAlignment="Top" 
                   Stroke="Black"
                   Opacity="0.7"
                   StrokeThickness="1"/>
