@@ -29,9 +29,14 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
     public interface IDiagnoseOutputViewModel
     {
         /// <summary>
-        /// Represents the time stamp of the <see cref="IDiagnoseOutputEntry"/>.
+        /// Represents the start time stamp of the <see cref="IDiagnoseOutputEntry"/>.
         /// </summary>
-        DateTime TimeStamp { get; }
+        DateTime StartTimeStamp { get; }
+
+        /// <summary>
+        /// Represents the end time stamp of the <see cref="IDiagnoseOutputEntry"/>.
+        /// </summary>
+        DateTime EndTimeStamp { get; }
 
         /// <summary>
         /// Time between the previous <see cref="IDiagnoseOutputEntry"/> and the actual <see cref="IDiagnoseOutputEntry"/> in microseconds.

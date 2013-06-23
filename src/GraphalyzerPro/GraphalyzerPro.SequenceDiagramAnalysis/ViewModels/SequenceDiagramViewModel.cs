@@ -19,21 +19,28 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Linq;
+using System.Reactive.Linq;
 using GraphalyzerPro.Common.Interfaces;
 using ReactiveUI;
+using ReactiveUI.Xaml;
 
 namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
 {
     internal class SequenceDiagramViewModel : ReactiveObject, ISequenceDiagramViewModel
     {
         private readonly ReactiveCollection<IProcessViewModel> _processes;
+        private IDiagnoseOutputViewModel _selectedDiagnoseOutputViewModel;
         private long _totalDuration;
 
         public SequenceDiagramViewModel()
         {
             Processes = new ReactiveCollection<IProcessViewModel>();
             TotalDuration = 0;
+            SelectDiagnoseOutputViewModel = new ReactiveCommand();
+            SelectDiagnoseOutputViewModel.Throttle(TimeSpan.FromSeconds(1))
+                                         .Subscribe(x => SelectedDiagnoseOutputViewModel = (IDiagnoseOutputViewModel) x);
         }
 
         public ReactiveCollection<IProcessViewModel> Processes
@@ -63,10 +70,18 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
             }
 
             TotalDuration = process.TotalDuration;
-            foreach(ProcessViewModel p in Processes)
+            foreach (ProcessViewModel p in Processes)
             {
                 p.UpdateTotalDuration(TotalDuration);
             }
+        }
+
+        public ReactiveCommand SelectDiagnoseOutputViewModel { get; private set; }
+
+        public IDiagnoseOutputViewModel SelectedDiagnoseOutputViewModel
+        {
+            get { return _selectedDiagnoseOutputViewModel; }
+            private set { this.RaiseAndSetIfChanged(value); }
         }
     }
 }
