@@ -38,65 +38,82 @@
         <converter:DurationToHeightConverter x:Key="DurationToHeightConverter"/>
     </UserControl.Resources>
     <DockPanel>
-        <StackPanel DockPanel.Dock="Right" Width="400" Margin="5">
-            <TextBlock Text="Detail View:"/>
-            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                <TextBlock Text="Process ID:" Width="100"/>
-                <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.ProcessId}" TextWrapping="Wrap" Width="300"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                <TextBlock Text="Thread Number:" Width="100"/>
-                <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.ThreadNumber}" TextWrapping="Wrap" Width="300"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                <TextBlock Text="Start Time Stamp:" Width="100"/>
-                <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.StartTimeStamp}" TextWrapping="Wrap" Width="300"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                <TextBlock Text="End TimeStamp:" Width="100"/>
-                <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.EndTimeStamp}" TextWrapping="Wrap" Width="300"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                <TextBlock Text="Gap:" Width="100"/>
-                <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.Gap}" TextWrapping="Wrap" Width="300"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                <TextBlock Text="Duration:" Width="100"/>
-                <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.Duration}" TextWrapping="Wrap" Width="300"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                <TextBlock Text="State:" Width="100"/>
-                <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.Type}" TextWrapping="Wrap" Width="300"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                <TextBlock Text="Domain:" Width="100"/>
-                <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.Domain}" TextWrapping="Wrap" Width="300"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                <TextBlock Text="Application:" Width="100"/>
-                <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.Application}" TextWrapping="Wrap" Width="300"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                <TextBlock Text="Component:" Width="100"/>
-                <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.Component}" TextWrapping="Wrap" Width="300"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                <TextBlock Text="Module:" Width="100"/>
-                <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.Module}" TextWrapping="Wrap" Width="300"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                <TextBlock Text="Code:" Width="100"/>
-                <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.Code}" TextWrapping="Wrap" Width="300"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                <TextBlock Text="Text:" Width="100"/>
-                <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.Text}" TextWrapping="Wrap" Width="300"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                <TextBlock Text="Meta Information:" Width="100"/>
-                <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.MetaInformation}" TextWrapping="Wrap" Width="300"/>
-            </StackPanel>
-        </StackPanel>
+        <DockPanel DockPanel.Dock="Right">
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
+                <StackPanel Orientation="Vertical" Margin="5">
+                    <TextBlock Text="Detail View:"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <TextBlock Text="Process ID:" Width="100"/>
+                        <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.ProcessId}" TextWrapping="Wrap" Width="300"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <TextBlock Text="Thread Number:" Width="100"/>
+                        <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.ThreadNumber}" TextWrapping="Wrap" Width="300"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <TextBlock Text="Start Time Stamp:" Width="100"/>
+                        <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.StartTimeStamp}" TextWrapping="Wrap" Width="300"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <TextBlock Text="End TimeStamp:" Width="100"/>
+                        <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.EndTimeStamp}" TextWrapping="Wrap" Width="300"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <TextBlock Text="Gap:" Width="100"/>
+                        <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.Gap}" TextWrapping="Wrap" Width="300"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <TextBlock Text="Duration:" Width="100"/>
+                        <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.Duration}" TextWrapping="Wrap" Width="300"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <TextBlock Text="State:" Width="100"/>
+                        <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.Type}" TextWrapping="Wrap" Width="300"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <TextBlock Text="Domain:" Width="100"/>
+                        <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.Domain}" TextWrapping="Wrap" Width="300"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <TextBlock Text="Application:" Width="100"/>
+                        <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.Application}" TextWrapping="Wrap" Width="300"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <TextBlock Text="Component:" Width="100"/>
+                        <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.Component}" TextWrapping="Wrap" Width="300"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <TextBlock Text="Module:" Width="100"/>
+                        <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.Module}" TextWrapping="Wrap" Width="300"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <TextBlock Text="Code:" Width="100"/>
+                        <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.Code}" TextWrapping="Wrap" Width="300"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <TextBlock Text="Text:" Width="100"/>
+                        <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.Text}" TextWrapping="Wrap" Width="300"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <TextBlock Text="Meta Information:" Width="100"/>
+                        <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.MetaInformation}" TextWrapping="Wrap" Width="300"/>
+                    </StackPanel>
+                    <TextBlock Text="Anzuzeigende Prozesse:" Margin="0,15,0,0"/>
+                    <ItemsControl ItemsSource="{Binding Processes}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel Orientation="Vertical"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox Margin="0,5,0,0" Width="400" Content="{Binding ProcessId}" IsChecked="True"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </ScrollViewer>
+        </DockPanel>
         <ScrollViewer x:Name="ScrollViewer" CanContentScroll="True" Cursor="Cross" 
                       HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
                       MouseEnter="ScrollViewerOnMouseEnter" MouseLeave="ScrollViewerOnMouseLeave"
