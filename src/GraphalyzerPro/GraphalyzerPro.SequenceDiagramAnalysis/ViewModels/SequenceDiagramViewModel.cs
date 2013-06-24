@@ -31,13 +31,17 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
     internal class SequenceDiagramViewModel : ReactiveObject, ISequenceDiagramViewModel
     {
         private readonly ReactiveCollection<IProcessViewModel> _processes;
+        private readonly ReactiveCollection<IProcessViewModel> _shownProcesses;
         private IDiagnoseOutputViewModel _selectedDiagnoseOutputViewModel;
         private long _totalDuration;
 
         public SequenceDiagramViewModel()
         {
             Processes = new ReactiveCollection<IProcessViewModel>();
+            ShownProcesses = new ReactiveCollection<IProcessViewModel>();
             TotalDuration = 0;
+            ProcessIsShownChangedCommand = new ReactiveCommand();
+            ProcessIsShownChangedCommand.Subscribe(x => ProcessIsShownChanged((IProcessViewModel)(x)));
             SelectDiagnoseOutputViewModel = new ReactiveCommand();
             SelectDiagnoseOutputViewModel.Throttle(TimeSpan.FromSeconds(1))
                                          .Subscribe(x => SelectedDiagnoseOutputViewModel = (IDiagnoseOutputViewModel) x);
@@ -63,6 +67,7 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
             {
                 process = new ProcessViewModel(diagnoseOutputEntry, TotalDuration);
                 Processes.Add(process);
+                ProcessIsShownChanged(process);
             }
             else
             {
@@ -82,6 +87,48 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
         {
             get { return _selectedDiagnoseOutputViewModel; }
             private set { this.RaiseAndSetIfChanged(value); }
+        }
+
+        public IReactiveCommand ProcessIsShownChangedCommand { get; private set; }
+
+        public ReactiveCollection<IProcessViewModel> ShownProcesses
+        {
+            get { return _shownProcesses; }
+            private set { this.RaiseAndSetIfChanged(value); }
+        }
+
+        public void ProcessIsShownChanged(IProcessViewModel pvm)
+        {
+            if(ShownProcesses.Contains(pvm))
+            {
+                ShownProcesses.Remove(pvm);
+            }
+            else
+            {
+                int processesIndex = Processes.IndexOf(pvm);
+                bool found;
+                while((!(found = ShownProcesses.Contains(Processes[processesIndex]))) && (processesIndex > 0))
+                {
+                    processesIndex--;
+                }
+                int shownProcessesIndex;
+                if(found)
+                {
+                    shownProcessesIndex = ShownProcesses.IndexOf(Processes[processesIndex]) + 1;
+                }
+                else
+                {
+                    shownProcessesIndex = 0;
+                }
+                if(shownProcessesIndex == ShownProcesses.Count)
+                {
+                    ShownProcesses.Add(pvm);
+                }
+                else
+                {
+                    ShownProcesses.Insert(shownProcessesIndex, pvm);
+                }
+            }
         }
     }
 }
