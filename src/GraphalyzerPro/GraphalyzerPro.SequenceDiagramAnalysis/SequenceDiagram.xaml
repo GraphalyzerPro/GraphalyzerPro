@@ -107,7 +107,7 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <CheckBox Margin="0,5,0,0" Width="400" Content="{Binding ProcessId}" IsChecked="True"/>
+                                <CheckBox Margin="0,5,0,0" Width="400" Content="{Binding ProcessId}" IsChecked="True" Command="{Binding Path=ViewModel.ProcessIsShownChangedCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" CommandParameter="{Binding .}"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
@@ -122,7 +122,7 @@
                 <behaviors:ScrollViewerAutoScrollBehavior />
             </i:Interaction.Behaviors>
             <Grid x:Name="MainGrid">
-                <ItemsControl x:Name="ItemsControl" ItemsSource="{Binding Processes}">
+                <ItemsControl x:Name="ItemsControl" ItemsSource="{Binding ShownProcesses, NotifyOnSourceUpdated=True}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <VirtualizingStackPanel Orientation="Horizontal"/>
