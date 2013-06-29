@@ -44,7 +44,13 @@
             </DataTemplate>
             <DataTemplate x:Key="ItemContentTemplate" DataType="viewModels:SessionViewModel">
                 <DockPanel>
-                    <ContentControl Content="{Binding Analysis.View}"/>
+                    <TabControl ItemsSource="{Binding Analysis}">
+                        <TabControl.ContentTemplate>
+                            <DataTemplate>
+                                <ContentControl Content="{Binding View}"/>
+                            </DataTemplate>
+                        </TabControl.ContentTemplate>
+                    </TabControl>
                 </DockPanel>
             </DataTemplate>
             <DataTemplate x:Key="ItemHeaderTemplate" DataType="{x:Type viewModels:ISessionViewModel}">

@@ -37,13 +37,8 @@ namespace GraphalyzerPro.ViewModels
 
         public IReceiver Receiver { get; private set; }
 
-        public IAnalysis Analysis { get; private set; }
+        public ReactiveCollection<IAnalysis> Analysis { get; private set; }
 
         public Guid SessionId { get; private set; }
-
-        public void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry diagnoseOutputEntry)
-        {
-            Analysis.ProcessNewDiagnoseOutputEntry(diagnoseOutputEntry);
-        }
     }
 }

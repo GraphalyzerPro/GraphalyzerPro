@@ -53,14 +53,14 @@ namespace GraphalyzerPro.Models
         {
             if (Application.Current.Dispatcher.CheckAccess())
             {
-                Sessions.Single(x => x.Id == sessionId).Analysis.ProcessNewDiagnoseOutputEntry(diagnoseOutputEntry);
+                Sessions.Single(x => x.Id == sessionId).DiagnoseOutputEntries.Add(diagnoseOutputEntry);
             }
             else
             {
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
                                                            new Action(
                                                                () => Sessions.Single(x => x.Id == sessionId)
-                                                                             .Analysis.ProcessNewDiagnoseOutputEntry(
+                                                                             .DiagnoseOutputEntries.Add(
                                                                                  diagnoseOutputEntry)));
             }
         }
