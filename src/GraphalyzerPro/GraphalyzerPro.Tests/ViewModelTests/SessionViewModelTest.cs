@@ -21,7 +21,6 @@
 
 using System;
 using FluentAssertions;
-using GraphalyzerPro.Common.Interfaces;
 using GraphalyzerPro.Models;
 using GraphalyzerPro.ViewModels;
 using Moq;
@@ -32,23 +31,6 @@ namespace GraphalyzerPro.Tests.ViewModelTests
     [TestFixture]
     public class SessionViewModelTest
     {
-        [Test]
-        public void ProcessNewDiagnoseOutputEntry_Normal_CallsProcessNewDiagnoseOutputEntryFromAnalysis()
-        {
-            var processNewDiagnoseOutputEntryWasCalled = false;
-            var sessionMock = new Mock<ISession>();
-            sessionMock.Setup(x => x.Analysis.ProcessNewDiagnoseOutputEntry(It.IsAny<IDiagnoseOutputEntry>()))
-                       .Callback(() => processNewDiagnoseOutputEntryWasCalled = true);
-
-            var diagnoseMock = new Mock<IDiagnoseOutputEntry>();
-
-            var sessionViewModel = new SessionViewModel(sessionMock.Object);
-
-            sessionViewModel.ProcessNewDiagnoseOutputEntry(diagnoseMock.Object);
-
-            processNewDiagnoseOutputEntryWasCalled.Should().BeTrue();
-        }
-
         [Test]
         public void SessionId_IsNotEmpty()
         {

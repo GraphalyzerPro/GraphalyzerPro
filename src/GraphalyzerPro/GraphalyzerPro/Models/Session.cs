@@ -21,20 +21,42 @@
 
 using System;
 using GraphalyzerPro.Common.Interfaces;
+using ReactiveUI;
 
 namespace GraphalyzerPro.Models
 {
-    public class Session : ISession
+    public class Session : ReactiveObject, ISession
     {
         public Session(IReceiver receiver, IAnalysis analysis)
         {
             Id = Guid.NewGuid();
             Receiver = receiver;
-            Analysis = analysis;
+
+            DiagnoseOutputEntries = new ReactiveCollection<IDiagnoseOutputEntry>();
+            Analysis = new ReactiveCollection<IAnalysis>();
+
+            Analysis.ItemsAdded.Subscribe(x =>
+                {
+                    foreach (var diagnoseOutputEntry in DiagnoseOutputEntries)
+                    {
+                        x.ProcessNewDiagnoseOutputEntry(diagnoseOutputEntry);
+                    }
+                });
+
+            Analysis.Add(analysis);
+
+            DiagnoseOutputEntries.ItemsAdded.Subscribe(x =>
+                {
+                    foreach (var analyse in Analysis)
+                    {
+                        analyse.ProcessNewDiagnoseOutputEntry(x);
+                    }
+                });
         }
 
         public Guid Id { get; private set; }
         public IReceiver Receiver { get; private set; }
-        public IAnalysis Analysis { get; private set; }
+        public ReactiveCollection<IAnalysis> Analysis { get; private set; }
+        public ReactiveCollection<IDiagnoseOutputEntry> DiagnoseOutputEntries { get; private set; }
     }
 }

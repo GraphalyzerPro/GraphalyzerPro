@@ -21,6 +21,7 @@
 
 using System;
 using GraphalyzerPro.Common.Interfaces;
+using ReactiveUI;
 
 namespace GraphalyzerPro.ViewModels
 {
@@ -30,14 +31,6 @@ namespace GraphalyzerPro.ViewModels
 
         IReceiver Receiver { get; }
 
-        IAnalysis Analysis { get; }
-
-        /// <summary>
-        ///     Processes a new <see cref="IDiagnoseOutputEntry" />.
-        /// </summary>
-        /// <param name="diagnoseOutputEntry">
-        ///     An <see cref="IDiagnoseOutputEntry" /> which should be processed by the <see cref="ISessionViewModel" />.
-        /// </param>
-        void ProcessNewDiagnoseOutputEntry(IDiagnoseOutputEntry diagnoseOutputEntry);
+        ReactiveCollection<IAnalysis> Analysis { get; }
     }
 }

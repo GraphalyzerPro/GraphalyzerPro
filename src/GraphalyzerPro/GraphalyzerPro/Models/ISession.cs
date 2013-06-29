@@ -21,6 +21,7 @@
 
 using System;
 using GraphalyzerPro.Common.Interfaces;
+using ReactiveUI;
 
 namespace GraphalyzerPro.Models
 {
@@ -30,6 +31,8 @@ namespace GraphalyzerPro.Models
 
         IReceiver Receiver { get; }
 
-        IAnalysis Analysis { get; }
+        ReactiveCollection<IAnalysis> Analysis { get; }
+
+        ReactiveCollection<IDiagnoseOutputEntry> DiagnoseOutputEntries { get; }
     }
 }
