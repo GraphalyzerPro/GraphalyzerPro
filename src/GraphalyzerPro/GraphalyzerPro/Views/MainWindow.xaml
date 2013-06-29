@@ -44,12 +44,24 @@
             </DataTemplate>
             <DataTemplate x:Key="ItemContentTemplate" DataType="viewModels:SessionViewModel">
                 <DockPanel>
-                    <TabControl ItemsSource="{Binding Analysis}">
+                    <TabControl ItemsSource="{Binding Analysis}" TabStripPlacement="Bottom">
                         <TabControl.ContentTemplate>
                             <DataTemplate>
                                 <ContentControl Content="{Binding View}"/>
                             </DataTemplate>
                         </TabControl.ContentTemplate>
+                        <TabControl.ItemTemplate>
+                            <DataTemplate>
+                                <DockPanel>
+                                    <TextBlock DockPanel.Dock="Left" Text="{Binding Name}" />
+                                    <Button DockPanel.Dock="Right" Content="X" Margin="5,0,0,0" BorderThickness="0" 
+                                            Command="{Binding Path=DataContext.CloseAnalysisCommand,
+                                            RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}}" 
+                                            CommandParameter="{Binding .}"
+                                            Style="{StaticResource TabItemHeaderButtonStyle}"/>
+                                </DockPanel>
+                            </DataTemplate>
+                        </TabControl.ItemTemplate>
                     </TabControl>
                 </DockPanel>
             </DataTemplate>
