@@ -117,7 +117,12 @@ namespace GraphalyzerPro.ViewModels
         private void CloseSession(ISessionViewModel sessionViewModel)
         {
             sessionViewModel.Receiver.Deactivate();
-            sessionViewModel.Analysis.Deactivate();
+
+            foreach (var analysis in sessionViewModel.Analysis)
+            {
+                analysis.Deactivate();
+            }
+
             _informationEngine.DeleteSession(sessionViewModel.SessionId);
         }
     }
