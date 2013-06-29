@@ -23,6 +23,7 @@ using System;
 using GraphalyzerPro.Common.Interfaces;
 using GraphalyzerPro.Models;
 using ReactiveUI;
+using ReactiveUI.Xaml;
 
 namespace GraphalyzerPro.ViewModels
 {
@@ -33,11 +34,16 @@ namespace GraphalyzerPro.ViewModels
             SessionId = session.Id;
             Receiver = session.Receiver;
             Analysis = session.Analysis;
+
+            CloseAnalysisCommand = new ReactiveCommand();
+            CloseAnalysisCommand.Subscribe(x => Analysis.Remove(x));
         }
 
         public IReceiver Receiver { get; private set; }
 
         public ReactiveCollection<IAnalysis> Analysis { get; private set; }
+
+        public ReactiveCommand CloseAnalysisCommand { get; private set; }
 
         public Guid SessionId { get; private set; }
     }
