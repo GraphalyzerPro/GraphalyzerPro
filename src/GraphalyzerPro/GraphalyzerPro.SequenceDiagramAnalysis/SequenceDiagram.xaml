@@ -121,7 +121,7 @@
                       MouseEnter="ScrollViewerOnMouseEnter" MouseLeave="ScrollViewerOnMouseLeave"
                       ScrollChanged="ScrollViewerOnScrollChanged">
             <i:Interaction.Behaviors>
-                <behaviors:ScrollViewerAutoScrollBehavior />
+                <behaviors:ScrollViewerAutoScrollBehavior x:Name="ScrollViewerBehavior"/>
             </i:Interaction.Behaviors>
             <Grid x:Name="MainGrid">
                 <ItemsControl x:Name="DiagnoseOutputItemsControl" ItemsSource="{Binding ShownProcesses, NotifyOnSourceUpdated=True}">
@@ -238,6 +238,8 @@
                             <MenuItem Header="Orientierungslinie erzeugen" Click="MainGridContextMenuOnCreateOrientationLine"/>
                             <MenuItem Name="OrientationLineItemsControlDeleteContextMenu" Header="Orientierungslinie löschen" Click="MainGridContextMenuOnDeleteOrientationLine"/>
                             <MenuItem Header="Alle Orientierungslinien löschen" Click="MainGridContextMenuOnDeleteAllOrientationLines"/>
+                            <Separator/>
+                            <MenuItem Name="AutoScrollContextMenu" Header="Auto-Scroll" IsCheckable="True" IsChecked="True" Checked="AutoScrollContextMenuOnChecked" Unchecked="AutoScrollContextMenuOnUnchecked"/>
                         </ContextMenu>
                     </ItemsControl.ContextMenu>
                     <ItemsControl.ItemsPanel>
