@@ -21,7 +21,11 @@
 
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Shapes;
+using GraphalyzerPro.SequenceDiagramAnalysis.Converter;
 using GraphalyzerPro.SequenceDiagramAnalysis.ViewModels;
 
 namespace GraphalyzerPro.SequenceDiagramAnalysis
@@ -45,11 +49,37 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis
             new PropertyMetadata(5000000.0)
             );
 
+        private bool _isControlPressed;
+        private Point _position;
+        private MultiBinding _orientationLineXBinding;
+        private MultiBinding _orientationLineYBinding;
+
         public SequenceDiagram()
         {
             InitializeComponent();
 
             ViewModel = new SequenceDiagramViewModel();
+            _isControlPressed = false;
+            _orientationLineXBinding = new MultiBinding();
+            Binding diagnoseOutputItemsControlActualWidthBinding = new Binding();
+            diagnoseOutputItemsControlActualWidthBinding.ElementName = "DiagnoseOutputItemsControl";
+            diagnoseOutputItemsControlActualWidthBinding.Path = new PropertyPath("ActualWidth");
+            _orientationLineXBinding.Bindings.Add(diagnoseOutputItemsControlActualWidthBinding);
+            Binding scrollViewerViewportWidthBinding = new Binding();
+            scrollViewerViewportWidthBinding.ElementName = "ScrollViewer";
+            scrollViewerViewportWidthBinding.Path = new PropertyPath("ViewportWidth");
+            _orientationLineXBinding.Bindings.Add(scrollViewerViewportWidthBinding);
+            _orientationLineXBinding.Converter = new MaxConverter();
+            _orientationLineYBinding = new MultiBinding();
+            Binding diagnoseOutputItemsControlActualHeightBinding = new Binding();
+            diagnoseOutputItemsControlActualHeightBinding.ElementName = "SequenceDiagramUserControl";
+            diagnoseOutputItemsControlActualHeightBinding.Path = new PropertyPath("ActualHeight");
+            _orientationLineYBinding.Bindings.Add(diagnoseOutputItemsControlActualHeightBinding);
+            Binding lineYHeightPropertionBinding = new Binding();
+            lineYHeightPropertionBinding.RelativeSource = new RelativeSource(RelativeSourceMode.Self);
+            lineYHeightPropertionBinding.Path = new PropertyPath("Tag");
+            _orientationLineYBinding.Bindings.Add(lineYHeightPropertionBinding);
+            _orientationLineYBinding.Converter = new YPropertionToHeightConverter();
         }
 
         public ISequenceDiagramViewModel ViewModel
@@ -150,6 +180,85 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis
             CrosshairTopLine.Visibility =
                 CrosshairBottomLine.Visibility =
                 CrosshairLeftLine.Visibility = CrosshairRightLine.Visibility = Visibility.Collapsed;
+        }
+
+        private void UserControlOnKeyDown(object sender, KeyEventArgs e)
+        {
+            if((e.KeyboardDevice.IsKeyDown(Key.LeftCtrl)) || (e.KeyboardDevice.IsKeyDown(Key.RightCtrl)))
+            {
+                _isControlPressed = true;
+                OrientationLineItemsControl.ContextMenu = null;
+            }
+        }
+
+        private void UserControlOnKeyUp(object sender, KeyEventArgs e)
+        {
+            if((e.KeyboardDevice.IsKeyUp(Key.LeftCtrl)) && (e.KeyboardDevice.IsKeyUp(Key.RightCtrl)))
+            {
+                _isControlPressed = false;
+                OrientationLineItemsControl.ContextMenu = OrientationLineItemsControlContextMenu;
+            }
+        }
+
+        private void OrientationLineItemsControlOnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            _position = e.GetPosition((IInputElement)(sender));
+            if((_isControlPressed) &&
+                ((!OrientationLineItemsControlContextMenu.IsVisible) ||
+                 (!OrientationLineItemsControlContextMenu.IsMouseOver)))
+            {
+                CreateOrientationLine();
+            }
+        }
+
+        private void OrientationLineItemsControlOnMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if(!_isControlPressed)
+            {
+                _position = e.GetPosition((IInputElement)(sender));
+                OrientationLineItemsControlDeleteContextMenu.IsEnabled = (MainGrid.InputHitTest(_position) is Line);
+            }
+            else if((!OrientationLineItemsControlContextMenu.IsVisible) ||
+                     (!OrientationLineItemsControlContextMenu.IsMouseOver))
+            {
+                _position = e.GetPosition((IInputElement)(sender));
+                DeleteOrientationLine();
+            }
+        }
+
+        private void CreateOrientationLine()
+        {
+            Line l = new Line();
+            l.Tag = _position.Y / SequenceDiagramUserControl.ActualHeight;
+            l.SetBinding(Line.Y1Property, _orientationLineYBinding);
+            l.SetBinding(Line.Y2Property, _orientationLineYBinding);
+            l.X1 = 0.0;
+            l.SetBinding(Line.X2Property, _orientationLineXBinding);
+            l.HorizontalAlignment = HorizontalAlignment.Stretch;
+            l.VerticalAlignment = VerticalAlignment.Top;
+            l.Stroke = Brushes.Blue;
+            l.StrokeThickness = 1.0;
+            OrientationLineItemsControl.Items.Add(l);
+        }
+
+        private void DeleteOrientationLine()
+        {
+            OrientationLineItemsControl.Items.Remove(MainGrid.InputHitTest(_position));
+        }
+
+        private void MainGridContextMenuOnCreateOrientationLine(object sender, RoutedEventArgs e)
+        {
+            CreateOrientationLine();
+        }
+
+        private void MainGridContextMenuOnDeleteOrientationLine(object sender, RoutedEventArgs e)
+        {
+            DeleteOrientationLine();
+        }
+
+        private void MainGridContextMenuOnDeleteAllOrientationLines(object sender, RoutedEventArgs e)
+        {
+            OrientationLineItemsControl.Items.Clear();
         }
     }
 }
