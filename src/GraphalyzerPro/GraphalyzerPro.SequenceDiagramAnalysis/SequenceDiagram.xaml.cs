@@ -260,5 +260,15 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis
         {
             OrientationLineItemsControl.Items.Clear();
         }
+
+        private void AutoScrollContextMenuOnChecked(object sender, RoutedEventArgs e)
+        {
+            ScrollViewerBehavior.Attach(ScrollViewer);
+        }
+
+        private void AutoScrollContextMenuOnUnchecked(object sender, RoutedEventArgs e)
+        {
+            ScrollViewerBehavior.Detach();
+        }
     }
 }
