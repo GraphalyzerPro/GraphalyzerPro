@@ -124,7 +124,20 @@
                 <behaviors:ScrollViewerAutoScrollBehavior x:Name="ScrollViewerBehavior"/>
             </i:Interaction.Behaviors>
             <Grid x:Name="MainGrid">
-                <ItemsControl x:Name="DiagnoseOutputItemsControl" ItemsSource="{Binding ShownProcesses, NotifyOnSourceUpdated=True}">
+                <ItemsControl x:Name="DiagnoseOutputItemsControl" ItemsSource="{Binding ShownProcesses, NotifyOnSourceUpdated=True}" Background="Transparent"
+                  MouseLeftButtonDown="DiagnoseOutputItemsControlOnMouseLeftButtonDown"
+                  MouseRightButtonDown="DiagnoseOutputItemsControlOnMouseRightButtonDown">
+                    <ItemsControl.ContextMenu>
+                        <ContextMenu Name="OrientationLinesContextMenu" 
+                                    KeyDown="UserControlOnKeyDown"
+                                    KeyUp="UserControlOnKeyUp">
+                            <MenuItem Header="Orientierungslinie erzeugen" Click="OrienationLinesContextMenuOnCreateOrientationLine"/>
+                            <MenuItem Name="OrientationLinesDeleteContextMenu" Header="Orientierungslinie löschen" Click="OrientationLinesContextMenuOnDeleteOrientationLine"/>
+                            <MenuItem Header="Alle Orientierungslinien löschen" Click="OrientationLinesContextMenuOnDeleteAllOrientationLines"/>
+                            <Separator/>
+                            <MenuItem Name="AutoScrollContextMenu" Header="Auto-Scroll" IsCheckable="True" IsChecked="True" Checked="AutoScrollContextMenuOnChecked" Unchecked="AutoScrollContextMenuOnUnchecked"/>
+                        </ContextMenu>
+                    </ItemsControl.ContextMenu>
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <VirtualizingStackPanel Orientation="Horizontal"/>
@@ -220,39 +233,6 @@
                                     </ItemsControl>
                                 </DockPanel>
                             </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-                <ItemsControl x:Name="OrientationLineItemsControl"
-                              HorizontalAlignment="Stretch"
-                              VerticalAlignment="Stretch"
-                              HorizontalContentAlignment="Stretch"
-                              VerticalContentAlignment="Top"
-                              Background="Transparent"
-                  PreviewMouseLeftButtonDown="OrientationLineItemsControlOnMouseLeftButtonDown"
-                  PreviewMouseRightButtonDown="OrientationLineItemsControlOnMouseRightButtonDown">
-                    <ItemsControl.ContextMenu>
-                        <ContextMenu Name="OrientationLineItemsControlContextMenu" 
-                                     KeyDown="UserControlOnKeyDown"
-                                     KeyUp="UserControlOnKeyUp">
-                            <MenuItem Header="Orientierungslinie erzeugen" Click="MainGridContextMenuOnCreateOrientationLine"/>
-                            <MenuItem Name="OrientationLineItemsControlDeleteContextMenu" Header="Orientierungslinie löschen" Click="MainGridContextMenuOnDeleteOrientationLine"/>
-                            <MenuItem Header="Alle Orientierungslinien löschen" Click="MainGridContextMenuOnDeleteAllOrientationLines"/>
-                            <Separator/>
-                            <MenuItem Name="AutoScrollContextMenu" Header="Auto-Scroll" IsCheckable="True" IsChecked="True" Checked="AutoScrollContextMenuOnChecked" Unchecked="AutoScrollContextMenuOnUnchecked"/>
-                        </ContextMenu>
-                    </ItemsControl.ContextMenu>
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <Grid/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Line HorizontalAlignment="Stretch"
-                                  VerticalAlignment="Top"
-                                  Stroke="Red"
-                                  StrokeThickness="1"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
