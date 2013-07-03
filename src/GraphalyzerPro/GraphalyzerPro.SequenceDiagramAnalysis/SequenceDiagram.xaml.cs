@@ -19,6 +19,8 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -51,14 +53,19 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis
 
         private bool _isControlPressed;
         private Point _position;
+
         private MultiBinding _orientationLineXBinding;
         private MultiBinding _orientationLineYBinding;
+        private List<Line> _orientationLines;
+        private Line _currentOrientationLine;
 
         public SequenceDiagram()
         {
             InitializeComponent();
 
             ViewModel = new SequenceDiagramViewModel();
+            _orientationLines = new List<Line>();
+            _currentOrientationLine = null;
             _isControlPressed = false;
             _orientationLineXBinding = new MultiBinding();
             Binding diagnoseOutputItemsControlActualWidthBinding = new Binding();
@@ -187,7 +194,7 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis
             if((e.KeyboardDevice.IsKeyDown(Key.LeftCtrl)) || (e.KeyboardDevice.IsKeyDown(Key.RightCtrl)))
             {
                 _isControlPressed = true;
-                OrientationLineItemsControl.ContextMenu = null;
+                DiagnoseOutputItemsControl.ContextMenu = null;
             }
         }
 
@@ -196,33 +203,36 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis
             if((e.KeyboardDevice.IsKeyUp(Key.LeftCtrl)) && (e.KeyboardDevice.IsKeyUp(Key.RightCtrl)))
             {
                 _isControlPressed = false;
-                OrientationLineItemsControl.ContextMenu = OrientationLineItemsControlContextMenu;
+               DiagnoseOutputItemsControl.ContextMenu = OrientationLinesContextMenu;
             }
         }
 
-        private void OrientationLineItemsControlOnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void DiagnoseOutputItemsControlOnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             _position = e.GetPosition((IInputElement)(sender));
             if((_isControlPressed) &&
-                ((!OrientationLineItemsControlContextMenu.IsVisible) ||
-                 (!OrientationLineItemsControlContextMenu.IsMouseOver)))
+                ((!OrientationLinesContextMenu.IsVisible) ||
+                 (!OrientationLinesContextMenu.IsMouseOver)))
             {
                 CreateOrientationLine();
             }
         }
 
-        private void OrientationLineItemsControlOnMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        private void OrientationLineOnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if(!_isControlPressed)
+            _currentOrientationLine = null;
+        }
+
+        private void OrientationLineOnMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            OrientationLinesDeleteContextMenu.IsEnabled = true;
+            _currentOrientationLine = (Line) (sender);
+            if((_isControlPressed) &&
+                ((!OrientationLinesContextMenu.IsVisible) ||
+                 (!OrientationLinesContextMenu.IsMouseOver)))
             {
-                _position = e.GetPosition((IInputElement)(sender));
-                OrientationLineItemsControlDeleteContextMenu.IsEnabled = (MainGrid.InputHitTest(_position) is Line);
-            }
-            else if((!OrientationLineItemsControlContextMenu.IsVisible) ||
-                     (!OrientationLineItemsControlContextMenu.IsMouseOver))
-            {
-                _position = e.GetPosition((IInputElement)(sender));
-                DeleteOrientationLine();
+                MainGrid.Children.Remove(_currentOrientationLine);
+                _orientationLines.Remove(_currentOrientationLine);
             }
         }
 
@@ -238,27 +248,34 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis
             l.VerticalAlignment = VerticalAlignment.Top;
             l.Stroke = Brushes.Blue;
             l.StrokeThickness = 1.0;
-            OrientationLineItemsControl.Items.Add(l);
+            l.ContextMenu = OrientationLinesContextMenu;
+            l.MouseLeftButtonDown += new MouseButtonEventHandler(OrientationLineOnMouseLeftButtonDown);
+            l.MouseRightButtonDown += new MouseButtonEventHandler(OrientationLineOnMouseRightButtonDown);
+            MainGrid.Children.Add(l);
+            _orientationLines.Add(l);
         }
 
-        private void DeleteOrientationLine()
-        {
-            OrientationLineItemsControl.Items.Remove(MainGrid.InputHitTest(_position));
-        }
-
-        private void MainGridContextMenuOnCreateOrientationLine(object sender, RoutedEventArgs e)
+        private void OrienationLinesContextMenuOnCreateOrientationLine(object sender, RoutedEventArgs e)
         {
             CreateOrientationLine();
         }
 
-        private void MainGridContextMenuOnDeleteOrientationLine(object sender, RoutedEventArgs e)
+        private void OrientationLinesContextMenuOnDeleteOrientationLine(object sender, RoutedEventArgs e)
         {
-            DeleteOrientationLine();
+            MainGrid.Children.Remove(_currentOrientationLine);
+            _orientationLines.Remove(_currentOrientationLine);
         }
 
-        private void MainGridContextMenuOnDeleteAllOrientationLines(object sender, RoutedEventArgs e)
+        private void OrientationLinesContextMenuOnDeleteAllOrientationLines(object sender, RoutedEventArgs e)
         {
-            OrientationLineItemsControl.Items.Clear();
+            _orientationLines.ForEach(x => MainGrid.Children.Remove(x));
+            _orientationLines.Clear();
+        }
+
+        private void DiagnoseOutputItemsControlOnMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            OrientationLinesDeleteContextMenu.IsEnabled = false;
+            _position = e.GetPosition((IInputElement)(sender));
         }
 
         private void AutoScrollContextMenuOnChecked(object sender, RoutedEventArgs e)
