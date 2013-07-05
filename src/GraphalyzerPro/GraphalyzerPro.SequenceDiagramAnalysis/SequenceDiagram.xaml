@@ -41,6 +41,23 @@
     </UserControl.Resources>
     <DockPanel>
         <DockPanel DockPanel.Dock="Right">
+            <DockPanel DockPanel.Dock="Bottom" Margin="5">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Zoom in µs pro Fensterhöhe: " Margin="0,0,0,5"></TextBlock>
+                        <TextBlock Text="{Binding Path=Value, ElementName=ZoomSlider}"></TextBlock>
+                    </StackPanel>
+                    <Slider Name="ZoomSlider"
+                            Margin="0,0,0,5"
+                            Value="5000000"
+                            Minimum="250000"
+                            Maximum="5000000"
+                            SmallChange="250000"
+                            LargeChange="1000000"
+                            TickPlacement="BottomRight"
+                            TickFrequency="250000"/>
+                </StackPanel>
+            </DockPanel>
             <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
                 <StackPanel Orientation="Vertical" Margin="5">
                     <TextBlock Text="Detail View:"/>
@@ -189,14 +206,14 @@
                                                                             <Border.Margin>
                                                                                 <MultiBinding Converter="{StaticResource GapToMarginConverter}">
                                                                                     <Binding Path="DataContext.GapAndExtraGap" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Grid}}"/>
-                                                                                    <Binding Path="DurationPerActualHeight" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"/>
+                                                                                    <Binding Path="Value" ElementName="ZoomSlider"/>
                                                                                     <Binding Path="ActualHeight" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"/>
                                                                                 </MultiBinding>
                                                                             </Border.Margin>
                                                                             <Border.Height>
                                                                                 <MultiBinding Converter="{StaticResource DurationToHeightConverter}">
                                                                                     <Binding Path="DataContext.TotalDuration" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Grid}}"/>
-                                                                                    <Binding Path="DurationPerActualHeight" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"/>
+                                                                                    <Binding Path="Value" ElementName="ZoomSlider"/>
                                                                                     <Binding Path="ActualHeight" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"/>
                                                                                 </MultiBinding>
                                                                             </Border.Height>
@@ -217,7 +234,7 @@
                                                                             <ItemsControl.Margin>
                                                                                 <MultiBinding Converter="{StaticResource GapToMarginConverter}" ConverterParameter="5">
                                                                                     <Binding Path="DataContext.GapExtraGapAndDuration" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Grid}}"/>
-                                                                                    <Binding Path="DurationPerActualHeight" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"/>
+                                                                                    <Binding Path="Value" ElementName="ZoomSlider"/>
                                                                                     <Binding Path="ActualHeight" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"/>
                                                                                 </MultiBinding>
                                                                             </ItemsControl.Margin>
