@@ -182,7 +182,15 @@
                                                         </Border>
                                                     </DockPanel>
                                                     <Grid Name="ThreadEntries">
-                                                        <Border BorderThickness="1" BorderBrush="DimGray" HorizontalAlignment="Left" Width="1" Height="{Binding ElementName=ThreadEntries, Path=ActualHeight}" Margin="15,0,0,0"/>
+                                                        <Border BorderThickness="1" BorderBrush="DimGray" HorizontalAlignment="Left" Width="1" Margin="15,0,0,0">
+                                                            <Border.Height>
+                                                                <MultiBinding Converter="{StaticResource DurationToHeightConverter}">
+                                                                    <Binding Path="DataContext.TotalDuration" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Grid}}"/>
+                                                                    <Binding Path="Value" ElementName="ZoomSlider"/>
+                                                                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"/>
+                                                                </MultiBinding>
+                                                            </Border.Height>
+                                                        </Border>
                                                         <ItemsControl ItemsSource="{Binding DiagnoseOutputViewModels}"
                                                                 VirtualizingStackPanel.IsVirtualizing="True"
                                                                 Margin="10,0,0,0">
