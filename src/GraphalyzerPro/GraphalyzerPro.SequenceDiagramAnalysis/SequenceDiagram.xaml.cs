@@ -44,13 +44,6 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis
             new PropertyMetadata(default(ISequenceDiagramViewModel))
             );
 
-        public static readonly DependencyProperty DurationPerActualHeightProperty = DependencyProperty.Register(
-            "DurationPerActualHeight",
-            typeof (double),
-            typeof (SequenceDiagram),
-            new PropertyMetadata(5000000.0)
-            );
-
         private bool _isControlPressed;
         private Point _position;
 
@@ -93,12 +86,6 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis
         {
             get { return (ISequenceDiagramViewModel) GetValue(ViewModelProperty); }
             set { SetValue(ViewModelProperty, value); }
-        }
-
-        public double DurationPerActualHeight
-        {
-            get { return (double) GetValue(DurationPerActualHeightProperty); }
-            set { SetValue(DurationPerActualHeightProperty, value); }
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
