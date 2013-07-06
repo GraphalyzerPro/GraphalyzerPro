@@ -34,15 +34,23 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.Converter
             if((values[0] != DependencyProperty.UnsetValue) && (values[1] != DependencyProperty.UnsetValue) &&
                 (values[2] != DependencyProperty.UnsetValue))
             {
-                double duration = (double)((long)(values[0]));
-                double totalDuration = (double)(values[1]);
+                double duration;
+                if (values[0] is long)
+                {
+                    duration = (double) ((long) (values[0]));
+                }
+                else
+                {
+                    duration = (double) (values[0]);
+                }
+                double totalDuration = (double) (values[1]);
                 if((totalDuration == 0.0) || (duration == 0.0))
                 {
                     result = 1.0;
                 }
                 else
                 {
-                    double totalHeight = (double)(values[2]);
+                    double totalHeight = (double) (values[2]);
                     result = duration / totalDuration * totalHeight;
                     if (result < 1.0)
                     {
@@ -53,6 +61,10 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.Converter
             else
             {
                 result = 1.0;
+            }
+            if (parameter != null)
+            {
+                result += (double)(parameter);
             }
             return result;
         }
