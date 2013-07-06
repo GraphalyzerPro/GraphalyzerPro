@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -71,15 +72,22 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis
             _orientationLineXBinding.Bindings.Add(scrollViewerViewportWidthBinding);
             _orientationLineXBinding.Converter = new MaxConverter();
             _orientationLineYBinding = new MultiBinding();
-            Binding diagnoseOutputItemsControlActualHeightBinding = new Binding();
-            diagnoseOutputItemsControlActualHeightBinding.ElementName = "SequenceDiagramUserControl";
-            diagnoseOutputItemsControlActualHeightBinding.Path = new PropertyPath("ActualHeight");
-            _orientationLineYBinding.Bindings.Add(diagnoseOutputItemsControlActualHeightBinding);
-            Binding lineYHeightPropertionBinding = new Binding();
-            lineYHeightPropertionBinding.RelativeSource = new RelativeSource(RelativeSourceMode.Self);
-            lineYHeightPropertionBinding.Path = new PropertyPath("Tag");
-            _orientationLineYBinding.Bindings.Add(lineYHeightPropertionBinding);
-            _orientationLineYBinding.Converter = new YPropertionToHeightConverter();
+            Binding lineDurationBinding = new Binding();
+            lineDurationBinding.RelativeSource = new RelativeSource(RelativeSourceMode.Self);
+            lineDurationBinding.Path = new PropertyPath("Tag");
+            _orientationLineYBinding.Bindings.Add(lineDurationBinding);
+            Binding lineZoomBinding = new Binding();
+            lineZoomBinding.ElementName = "ZoomSlider";
+            lineZoomBinding.Path = new PropertyPath("Value");
+            _orientationLineYBinding.Bindings.Add(lineZoomBinding);
+            Binding sequenceDiagramUserControlHeightBinding = new Binding();
+            sequenceDiagramUserControlHeightBinding.ElementName = "SequenceDiagramUserControl";
+            sequenceDiagramUserControlHeightBinding.Path = new PropertyPath("ActualHeight");
+            _orientationLineYBinding.Bindings.Add(sequenceDiagramUserControlHeightBinding);
+            _orientationLineYBinding.Converter = new DurationToHeightConverter();
+
+            MainGrid.ContextMenu = null;
+            DiagnoseOutputItemsControl.LayoutUpdated += new EventHandler(DiagnoseOutputItemsControlOnLayoutUpdated);
         }
 
         public ISequenceDiagramViewModel ViewModel
@@ -194,7 +202,7 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis
             }
         }
 
-        private void DiagnoseOutputItemsControlOnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void MainGridOnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             _position = e.GetPosition((IInputElement)(sender));
             if((_isControlPressed) &&
@@ -226,7 +234,7 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis
         private void CreateOrientationLine()
         {
             Line l = new Line();
-            l.Tag = _position.Y / SequenceDiagramUserControl.ActualHeight;
+            l.Tag = (_position.Y - ((double)(_orientationLineYBinding.ConverterParameter)))*ZoomSlider.Value/SequenceDiagramUserControl.ActualHeight;
             l.SetBinding(Line.Y1Property, _orientationLineYBinding);
             l.SetBinding(Line.Y2Property, _orientationLineYBinding);
             l.X1 = 0.0;
@@ -240,6 +248,30 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis
             l.MouseRightButtonDown += new MouseButtonEventHandler(OrientationLineOnMouseRightButtonDown);
             MainGrid.Children.Add(l);
             _orientationLines.Add(l);
+        }
+
+        private Grid SearchForThreadEntriesGridInVisualTree(DependencyObject targetElement)
+        {
+            var count = VisualTreeHelper.GetChildrenCount(targetElement);
+            Grid result = null;
+            for(int i = 0; (i < count)&&(result==null); i++)
+            {
+                var child = VisualTreeHelper.GetChild(targetElement, i);
+                if(child is Grid)
+                {
+                    Grid targetItem = (Grid)(child);
+
+                    if(targetItem.Name == "ThreadEntries")
+                    {
+                        result = targetItem;
+                    }
+                }
+                else
+                {
+                    result=SearchForThreadEntriesGridInVisualTree(child);
+                }
+            }
+            return result;
         }
 
         private void OrienationLinesContextMenuOnCreateOrientationLine(object sender, RoutedEventArgs e)
@@ -259,7 +291,7 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis
             _orientationLines.Clear();
         }
 
-        private void DiagnoseOutputItemsControlOnMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        private void MainGridOnMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             OrientationLinesDeleteContextMenu.IsEnabled = false;
             _position = e.GetPosition((IInputElement)(sender));
@@ -273,6 +305,21 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis
         private void AutoScrollContextMenuOnUnchecked(object sender, RoutedEventArgs e)
         {
             ScrollViewerBehavior.Detach();
+        }
+
+        private void DiagnoseOutputItemsControlOnLayoutUpdated(object sender, EventArgs e)
+        {
+            Grid g = SearchForThreadEntriesGridInVisualTree(DiagnoseOutputItemsControl);
+            if (g != null)
+            {
+                DiagnoseOutputItemsControl.LayoutUpdated -= new EventHandler(DiagnoseOutputItemsControlOnLayoutUpdated);
+                MainGrid.ContextMenu = OrientationLinesContextMenu;
+                _orientationLineYBinding.ConverterParameter = g.TranslatePoint(new Point(), DiagnoseOutputItemsControl).Y;
+                MainGrid.MouseLeftButtonDown +=
+                    new MouseButtonEventHandler(MainGridOnMouseLeftButtonDown);
+                MainGrid.MouseRightButtonDown +=
+                    new MouseButtonEventHandler(MainGridOnMouseRightButtonDown);
+            }
         }
     }
 }
