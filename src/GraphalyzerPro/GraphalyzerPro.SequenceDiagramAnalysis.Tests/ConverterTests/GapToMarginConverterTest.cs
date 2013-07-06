@@ -24,71 +24,73 @@ using System.Windows;
 using FluentAssertions;
 using GraphalyzerPro.SequenceDiagramAnalysis.Converter;
 using NUnit.Framework;
-using ReactiveUI;
 
 namespace GraphalyzerPro.SequenceDiagramAnalysis.Tests.ConverterTests
 {
     [TestFixture]
     public class GapToMarginConverterTest
     {
-        [SetUp]
-        public void Bootstrapper()
-        {
-            RxApp.GetFieldNameForPropertyNameFunc = delegate(string name)
-            {
-                var nameAsArray = name.ToCharArray();
-                nameAsArray[0] = char.ToLower(nameAsArray[0], CultureInfo.InvariantCulture);
-                return '_' + new string(nameAsArray);
-            };
-        }
-
         [Test]
         public void Convert_AllValuesOk()
         {
             var converter = new GapToMarginConverter();
-            ((Thickness)(converter.Convert(new object[] { (long)(1), (double)(10), (double)(20) }, typeof(double), null, CultureInfo.InvariantCulture))).Top.Should().Be(2.0);
+            ((Thickness)
+             (converter.Convert(new object[] {(long) (1), (double) (10), (double) (20)}, typeof (double), null,
+                                CultureInfo.InvariantCulture))).Top.Should().Be(2.0);
         }
 
         [Test]
         public void Convert_AllValuesOk_ParameterNull()
         {
             var converter = new GapToMarginConverter();
-            ((Thickness)(converter.Convert(new object[] { (long)(1), (double)(10), (double)(20) }, typeof(double), null, CultureInfo.InvariantCulture))).Left.Should().Be(0.0);
+            ((Thickness)
+             (converter.Convert(new object[] {(long) (1), (double) (10), (double) (20)}, typeof (double), null,
+                                CultureInfo.InvariantCulture))).Left.Should().Be(0.0);
         }
 
         [Test]
         public void Convert_AllValuesOk_ParameterSet()
         {
             var converter = new GapToMarginConverter();
-            ((Thickness)(converter.Convert(new object[] { (long)(1), (double)(10), (double)(20) }, typeof(double), (long)(5), CultureInfo.InvariantCulture))).Left.Should().Be(5.0);
+            ((Thickness)
+             (converter.Convert(new object[] {(long) (1), (double) (10), (double) (20)}, typeof (double), (long) (5),
+                                CultureInfo.InvariantCulture))).Left.Should().Be(5.0);
         }
 
         [Test]
         public void Convert_FirstValueDependencyPropertyUnset()
         {
             var converter = new GapToMarginConverter();
-            ((Thickness)(converter.Convert(new object[] { DependencyProperty.UnsetValue, (double)(10), (double)(20) }, typeof(double), null, CultureInfo.InvariantCulture))).Top.Should().Be(0.0);
+            ((Thickness)
+             (converter.Convert(new[] {DependencyProperty.UnsetValue, (double) (10), (double) (20)}, typeof (double),
+                                null, CultureInfo.InvariantCulture))).Top.Should().Be(0.0);
         }
 
         [Test]
         public void Convert_SecondValueDependencyPropertyUnset()
         {
             var converter = new GapToMarginConverter();
-            ((Thickness)(converter.Convert(new object[] { (long)(1), DependencyProperty.UnsetValue, (double)(20) }, typeof(double), null, CultureInfo.InvariantCulture))).Top.Should().Be(0.0);
+            ((Thickness)
+             (converter.Convert(new[] {(long) (1), DependencyProperty.UnsetValue, (double) (20)}, typeof (double), null,
+                                CultureInfo.InvariantCulture))).Top.Should().Be(0.0);
         }
 
         [Test]
         public void Convert_ThirdValueDependencyPropertyUnset()
         {
             var converter = new GapToMarginConverter();
-            ((Thickness)(converter.Convert(new object[] { (long)(1), (double)(10), DependencyProperty.UnsetValue }, typeof(double), null, CultureInfo.InvariantCulture))).Top.Should().Be(0.0);
+            ((Thickness)
+             (converter.Convert(new[] {(long) (1), (double) (10), DependencyProperty.UnsetValue}, typeof (double), null,
+                                CultureInfo.InvariantCulture))).Top.Should().Be(0.0);
         }
 
         [Test]
         public void Convert_TotalDurationIsNull()
         {
             var converter = new GapToMarginConverter();
-            ((Thickness)(converter.Convert(new object[] { (long)(1), (double)(0), (double)(20) }, typeof(double), null, CultureInfo.InvariantCulture))).Top.Should().Be(0.0);
+            ((Thickness)
+             (converter.Convert(new object[] {(long) (1), (double) (0), (double) (20)}, typeof (double), null,
+                                CultureInfo.InvariantCulture))).Top.Should().Be(0.0);
         }
     }
 }
