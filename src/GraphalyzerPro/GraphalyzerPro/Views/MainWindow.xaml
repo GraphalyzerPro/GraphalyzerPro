@@ -26,7 +26,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:viewModels="clr-namespace:GraphalyzerPro.ViewModels" xmlns:views="clr-namespace:GraphalyzerPro.Views"
         DataContext="{Binding Path=MainViewModel, Source={StaticResource ViewModelLocator}}"
-        Title="{Binding Title}" Height="768" Width="1024">
+        Title="{Binding Title}" Height="768" Width="1024"
+        Loaded="MainWindow_OnLoaded">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
