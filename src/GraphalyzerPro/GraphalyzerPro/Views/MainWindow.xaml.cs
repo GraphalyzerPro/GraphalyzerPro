@@ -20,17 +20,31 @@
  */
 
 using System.Windows;
+using System.Windows.Documents;
+using System.Windows.Media;
 
 namespace GraphalyzerPro.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    ///     Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            var adornerdecorator = VisualTreeHelper.GetChild(VisualTreeHelper.GetChild(this, 0), 0);
+
+            var adorneLayer = VisualTreeHelper.GetChild(adornerdecorator, 1) as AdornerLayer;
+
+            if (adorneLayer != null)
+            {
+                adorneLayer.Visibility = Visibility.Collapsed;
+            }
         }
     }
 }

@@ -19,69 +19,23 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System.Globalization;
 using FluentAssertions;
 using GraphalyzerPro.Common;
 using GraphalyzerPro.Common.Interfaces;
 using GraphalyzerPro.SequenceDiagramAnalysis.ViewModels;
 using Moq;
 using NUnit.Framework;
-using ReactiveUI;
 
 namespace GraphalyzerPro.SequenceDiagramAnalysis.Tests.ViewModelTests
 {
     [TestFixture]
     public class SequenceDiagramViewModelTest
     {
-        [SetUp]
-        public void Bootstrapper()
-        {
-            RxApp.GetFieldNameForPropertyNameFunc = delegate(string name)
-            {
-                var nameAsArray = name.ToCharArray();
-                nameAsArray[0] = char.ToLower(nameAsArray[0], CultureInfo.InvariantCulture);
-                return '_' + new string(nameAsArray);
-            };
-        }
-
         [Test]
         public void Constructor_Normal_ProcessesNotNull()
         {
             var sequenceDiagramViewModel = new SequenceDiagramViewModel();
             sequenceDiagramViewModel.Processes.Should().NotBeNull();
-        }
-
-        [Test]
-        public void ProcessNewDiagnoseOutputEntry_NewEntryWithNonExistingProcessId_AddsNewProcess()
-        {
-            var mock = new Mock<IDiagnoseOutputEntry>();
-            mock.Setup(x => x.ProcessId).Returns(1234);
-            mock.Setup(x => x.ThreadNumber).Returns(1);
-            mock.Setup(x => x.Type).Returns(DiagnoseType.SingleOutput);
-            mock.Setup(x => x.Duration).Returns(2);
-            mock.Setup(x => x.Gap).Returns(3);
-
-            var sequenceDiagramViewModel = new SequenceDiagramViewModel();
-            sequenceDiagramViewModel.ProcessNewDiagnoseOutputEntry(mock.Object);
-            sequenceDiagramViewModel.Processes.Should().Contain(x => x.ProcessId == 1234);
-        }
-
-        [Test]
-        public void ProcessNewDiagnoseOutputEntry_NewEntryWithExistingProcessId_AddsNewEntryAndNoNewProcess()
-        {
-            var mock = new Mock<IDiagnoseOutputEntry>();
-            mock.Setup(x => x.ProcessId).Returns(1234);
-            mock.Setup(x => x.ThreadNumber).Returns(1);
-            mock.Setup(x => x.Type).Returns(DiagnoseType.SingleOutput);
-            mock.Setup(x => x.Duration).Returns(2);
-            mock.Setup(x => x.Gap).Returns(3);
-
-            var sequenceDiagramViewModel = new SequenceDiagramViewModel();
-            sequenceDiagramViewModel.ProcessNewDiagnoseOutputEntry(mock.Object);
-            sequenceDiagramViewModel.ProcessNewDiagnoseOutputEntry(mock.Object);
-
-            sequenceDiagramViewModel.Processes.Count.Should().Be(1);
-            sequenceDiagramViewModel.Processes.Should().Contain(x => x.ProcessId == 1234);
         }
 
         [Test]
@@ -104,6 +58,39 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.Tests.ViewModelTests
             processViewModel.ProcessNewDiagnoseOutputEntry(mock2.Object);
 
             processViewModel.TotalDuration.Should().Be(22);
+        }
+
+        [Test]
+        public void ProcessNewDiagnoseOutputEntry_NewEntryWithExistingProcessId_AddsNewEntryAndNoNewProcess()
+        {
+            var mock = new Mock<IDiagnoseOutputEntry>();
+            mock.Setup(x => x.ProcessId).Returns(1234);
+            mock.Setup(x => x.ThreadNumber).Returns(1);
+            mock.Setup(x => x.Type).Returns(DiagnoseType.SingleOutput);
+            mock.Setup(x => x.Duration).Returns(2);
+            mock.Setup(x => x.Gap).Returns(3);
+
+            var sequenceDiagramViewModel = new SequenceDiagramViewModel();
+            sequenceDiagramViewModel.ProcessNewDiagnoseOutputEntry(mock.Object);
+            sequenceDiagramViewModel.ProcessNewDiagnoseOutputEntry(mock.Object);
+
+            sequenceDiagramViewModel.Processes.Count.Should().Be(1);
+            sequenceDiagramViewModel.Processes.Should().Contain(x => x.ProcessId == 1234);
+        }
+
+        [Test]
+        public void ProcessNewDiagnoseOutputEntry_NewEntryWithNonExistingProcessId_AddsNewProcess()
+        {
+            var mock = new Mock<IDiagnoseOutputEntry>();
+            mock.Setup(x => x.ProcessId).Returns(1234);
+            mock.Setup(x => x.ThreadNumber).Returns(1);
+            mock.Setup(x => x.Type).Returns(DiagnoseType.SingleOutput);
+            mock.Setup(x => x.Duration).Returns(2);
+            mock.Setup(x => x.Gap).Returns(3);
+
+            var sequenceDiagramViewModel = new SequenceDiagramViewModel();
+            sequenceDiagramViewModel.ProcessNewDiagnoseOutputEntry(mock.Object);
+            sequenceDiagramViewModel.Processes.Should().Contain(x => x.ProcessId == 1234);
         }
     }
 }

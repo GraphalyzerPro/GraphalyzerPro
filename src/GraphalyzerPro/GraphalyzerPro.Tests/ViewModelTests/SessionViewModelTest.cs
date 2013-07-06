@@ -21,10 +21,12 @@
 
 using System;
 using FluentAssertions;
+using GraphalyzerPro.Common.Interfaces;
 using GraphalyzerPro.Models;
 using GraphalyzerPro.ViewModels;
 using Moq;
 using NUnit.Framework;
+using ReactiveUI;
 
 namespace GraphalyzerPro.Tests.ViewModelTests
 {
@@ -36,6 +38,7 @@ namespace GraphalyzerPro.Tests.ViewModelTests
         {
             var mock = new Mock<ISession>();
             mock.Setup(x => x.Id).Returns(Guid.NewGuid());
+            mock.Setup(x => x.Analysis).Returns(new ReactiveCollection<IAnalysis>());
 
             var sessionViewModel = new SessionViewModel(mock.Object);
 

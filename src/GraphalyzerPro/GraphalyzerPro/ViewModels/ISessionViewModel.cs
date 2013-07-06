@@ -35,5 +35,9 @@ namespace GraphalyzerPro.ViewModels
         ReactiveCollection<IAnalysis> Analysis { get; }
 
         ReactiveCommand CloseAnalysisCommand { get; }
+
+        ReactiveCommand AddNewAnalysisCommand { get; }
+
+        IAnalysis SelectedAnalysis { get; }
     }
 }

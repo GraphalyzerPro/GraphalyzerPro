@@ -37,9 +37,14 @@ namespace GraphalyzerPro.ViewModels
         private ReactiveCollection<IReceiver> _allReceiver;
         private IAnalysis _selectedAnalysis;
         private IReceiver _selectedReceiver;
+        private bool _isReceiverSelectionEnabled;
+        private string _title;
 
         public NewSessionDialogViewModel()
         {
+            IsReceiverSelectionEnabled = true;
+            Title = "Neu Session erstellen";
+
             ApplyCommand =
                 new ReactiveCommand(
                     this.ObservableForProperty(x => x.SelectedReceiver, x => x != null)
@@ -75,13 +80,25 @@ namespace GraphalyzerPro.ViewModels
         public IReceiver SelectedReceiver
         {
             get { return _selectedReceiver; }
-            private set { this.RaiseAndSetIfChanged(value); }
+            set { this.RaiseAndSetIfChanged(AllReceiver.First(x => x.Name == value.Name)); }
         }
 
         public IAnalysis SelectedAnalysis
         {
             get { return _selectedAnalysis; }
             private set { this.RaiseAndSetIfChanged(value); }
+        }
+
+        public bool IsReceiverSelectionEnabled
+        {
+            get { return _isReceiverSelectionEnabled; }
+            set { this.RaiseAndSetIfChanged(value); }
+        }
+
+        public string Title
+        {
+            get { return _title; }
+            set { this.RaiseAndSetIfChanged(value); }
         }
 
         private void CreateInstanceOfInterfaceImplementations<T>(IEnumerable<string> allAnalysisAssemblyFileNames)
