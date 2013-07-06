@@ -19,31 +19,18 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System.Globalization;
 using FluentAssertions;
 using GraphalyzerPro.Common;
 using GraphalyzerPro.Common.Interfaces;
 using GraphalyzerPro.SequenceDiagramAnalysis.ViewModels;
 using Moq;
 using NUnit.Framework;
-using ReactiveUI;
 
 namespace GraphalyzerPro.SequenceDiagramAnalysis.Tests.ViewModelTests
 {
     [TestFixture]
     public class ProcessViewModelTest
     {
-        [SetUp]
-        public void Bootstrapper()
-        {
-            RxApp.GetFieldNameForPropertyNameFunc = delegate(string name)
-            {
-                var nameAsArray = name.ToCharArray();
-                nameAsArray[0] = char.ToLower(nameAsArray[0], CultureInfo.InvariantCulture);
-                return '_' + new string(nameAsArray);
-            };
-        }
-
         [Test]
         public void Constructor_Normal_ThreadsNotNull()
         {
@@ -56,17 +43,21 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.Tests.ViewModelTests
         }
 
         [Test]
-        public void ProcessNewDiagnoseOutputEntry_NewEntryWithNonExistingThreadNumber_AddsNewThread()
+        public void ProcessNewDiagnoseOutputEntry_NewEntriesDifferentDurations_TotalDurationIsMaximumDuration()
         {
-            var mock = new Mock<IDiagnoseOutputEntry>();
-            mock.Setup(x => x.ThreadNumber).Returns(1234);
-            mock.Setup(x => x.Type).Returns(DiagnoseType.SingleOutput);
-            mock.Setup(x => x.Duration).Returns(1);
-            mock.Setup(x => x.Gap).Returns(2);
+            var mock1 = new Mock<IDiagnoseOutputEntry>();
+            mock1.Setup(x => x.ThreadNumber).Returns(1);
+            mock1.Setup(x => x.Gap).Returns(2);
+            mock1.Setup(x => x.Duration).Returns(3);
+            var mock2 = new Mock<IDiagnoseOutputEntry>();
+            mock2.Setup(x => x.ThreadNumber).Returns(4);
+            mock2.Setup(x => x.Gap).Returns(5);
+            mock2.Setup(x => x.Duration).Returns(6);
 
-            var processViewModel = new ProcessViewModel(mock.Object, 0);
+            var processViewModel = new ProcessViewModel(mock1.Object, 0);
+            processViewModel.ProcessNewDiagnoseOutputEntry(mock2.Object);
 
-            processViewModel.Threads.Should().Contain(x => x.ThreadNumber == 1234);
+            processViewModel.TotalDuration.Should().Be(16);
         }
 
         [Test]
@@ -86,21 +77,17 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.Tests.ViewModelTests
         }
 
         [Test]
-        public void ProcessNewDiagnoseOutputEntry_NewEntriesDifferentDurations_TotalDurationIsMaximumDuration()
+        public void ProcessNewDiagnoseOutputEntry_NewEntryWithNonExistingThreadNumber_AddsNewThread()
         {
-            var mock1 = new Mock<IDiagnoseOutputEntry>();
-            mock1.Setup(x => x.ThreadNumber).Returns(1);
-            mock1.Setup(x => x.Gap).Returns(2);
-            mock1.Setup(x => x.Duration).Returns(3);
-            var mock2 = new Mock<IDiagnoseOutputEntry>();
-            mock2.Setup(x => x.ThreadNumber).Returns(4);
-            mock2.Setup(x => x.Gap).Returns(5);
-            mock2.Setup(x => x.Duration).Returns(6);
+            var mock = new Mock<IDiagnoseOutputEntry>();
+            mock.Setup(x => x.ThreadNumber).Returns(1234);
+            mock.Setup(x => x.Type).Returns(DiagnoseType.SingleOutput);
+            mock.Setup(x => x.Duration).Returns(1);
+            mock.Setup(x => x.Gap).Returns(2);
 
-            var processViewModel = new ProcessViewModel(mock1.Object, 0);
-            processViewModel.ProcessNewDiagnoseOutputEntry(mock2.Object);
+            var processViewModel = new ProcessViewModel(mock.Object, 0);
 
-            processViewModel.TotalDuration.Should().Be(16);
+            processViewModel.Threads.Should().Contain(x => x.ThreadNumber == 1234);
         }
     }
 }

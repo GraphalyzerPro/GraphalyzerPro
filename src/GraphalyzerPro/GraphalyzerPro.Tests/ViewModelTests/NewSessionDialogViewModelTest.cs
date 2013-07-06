@@ -68,6 +68,8 @@ namespace GraphalyzerPro.Tests.ViewModelTests
             var analysisMock = new Mock<IAnalysis>();
 
             var newSessionDialogViewModel = new NewSessionDialogViewModel();
+            newSessionDialogViewModel.AllReceiver.Add(receiverMock.Object);
+            newSessionDialogViewModel.AllAnalyses.Add(analysisMock.Object);
 
             SetProperty(newSessionDialogViewModel, receiverMock.Object, "SelectedReceiver");
             SetProperty(newSessionDialogViewModel, analysisMock.Object, "SelectedAnalysis");
@@ -81,6 +83,7 @@ namespace GraphalyzerPro.Tests.ViewModelTests
             var receiverMock = new Mock<IReceiver>();
 
             var newSessionDialogViewModel = new NewSessionDialogViewModel();
+            newSessionDialogViewModel.AllReceiver.Add(receiverMock.Object);
 
             SetProperty(newSessionDialogViewModel, receiverMock.Object, "SelectedReceiver");
 

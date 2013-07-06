@@ -19,31 +19,18 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-using System.Globalization;
 using FluentAssertions;
 using GraphalyzerPro.Common;
 using GraphalyzerPro.Common.Interfaces;
 using GraphalyzerPro.SequenceDiagramAnalysis.ViewModels;
 using Moq;
 using NUnit.Framework;
-using ReactiveUI;
 
 namespace GraphalyzerPro.SequenceDiagramAnalysis.Tests.ViewModelTests
 {
     [TestFixture]
     public class DiagnoseOutputViewModelTest
     {
-        [SetUp]
-        public void Bootstrapper()
-        {
-            RxApp.GetFieldNameForPropertyNameFunc = delegate(string name)
-            {
-                var nameAsArray = name.ToCharArray();
-                nameAsArray[0] = char.ToLower(nameAsArray[0], CultureInfo.InvariantCulture);
-                return '_' + new string(nameAsArray);
-            };
-        }
-
         [Test]
         public void Constructor_Normal_DiagnoseOutputViewModelsNotNull()
         {
@@ -53,34 +40,6 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.Tests.ViewModelTests
             mock.Setup(x => x.Gap).Returns(2);
             var diagnoseOutputViewModel = new DiagnoseOutputViewModel(mock.Object, 0);
             diagnoseOutputViewModel.DiagnoseOutputViewModels.Should().NotBeNull();
-        }
-
-        [Test]
-        public void ProcessNewDiagnoseOutputEntry_NewEntryWithLastAddedEntryIsBracketOpen_AddsDurationAndGapToTotalDiagnoseOutputViewModelDuration()
-        {
-            var mock = new Mock<IDiagnoseOutputEntry>();
-            mock.Setup(x => x.Type).Returns(DiagnoseType.StartBracketOutput);
-            mock.Setup(x => x.Duration).Returns(1);
-            mock.Setup(x => x.Gap).Returns(2);
-
-            var diagnoseViewModel = new DiagnoseOutputViewModel(mock.Object, 0);
-            diagnoseViewModel.ProcessNewDiagnoseOutputEntry(mock.Object, 0);
-
-            diagnoseViewModel.TotalDuration.Should().Be(4);
-        }
-
-        [Test]
-        public void ProcessNewDiagnoseOutputEntry_NewEntryWithLastAddedEntryIsNotBracketOpen_AddsDurationAndGapToTotalDiagnoseOutputViewModelDuration()
-        {
-            var mock = new Mock<IDiagnoseOutputEntry>();
-            mock.Setup(x => x.Type).Returns(DiagnoseType.SingleOutput);
-            mock.Setup(x => x.Duration).Returns(1);
-            mock.Setup(x => x.Gap).Returns(2);
-
-            var diagnoseViewModel = new DiagnoseOutputViewModel(mock.Object, 0);
-            diagnoseViewModel.ProcessNewDiagnoseOutputEntry(mock.Object, 0);
-
-            diagnoseViewModel.TotalDuration.Should().Be(4);
         }
 
         [Test]
@@ -94,6 +53,38 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.Tests.ViewModelTests
             var diagnoseViewModel = new DiagnoseOutputViewModel(mock.Object, 0);
 
             diagnoseViewModel.IsBracketOpen.Should().Be(true);
+        }
+
+        [Test]
+        public void
+            ProcessNewDiagnoseOutputEntry_NewEntryWithLastAddedEntryIsBracketOpen_AddsDurationAndGapToTotalDiagnoseOutputViewModelDuration
+            ()
+        {
+            var mock = new Mock<IDiagnoseOutputEntry>();
+            mock.Setup(x => x.Type).Returns(DiagnoseType.StartBracketOutput);
+            mock.Setup(x => x.Duration).Returns(1);
+            mock.Setup(x => x.Gap).Returns(2);
+
+            var diagnoseViewModel = new DiagnoseOutputViewModel(mock.Object, 0);
+            diagnoseViewModel.ProcessNewDiagnoseOutputEntry(mock.Object, 0);
+
+            diagnoseViewModel.TotalDuration.Should().Be(4);
+        }
+
+        [Test]
+        public void
+            ProcessNewDiagnoseOutputEntry_NewEntryWithLastAddedEntryIsNotBracketOpen_AddsDurationAndGapToTotalDiagnoseOutputViewModelDuration
+            ()
+        {
+            var mock = new Mock<IDiagnoseOutputEntry>();
+            mock.Setup(x => x.Type).Returns(DiagnoseType.SingleOutput);
+            mock.Setup(x => x.Duration).Returns(1);
+            mock.Setup(x => x.Gap).Returns(2);
+
+            var diagnoseViewModel = new DiagnoseOutputViewModel(mock.Object, 0);
+            diagnoseViewModel.ProcessNewDiagnoseOutputEntry(mock.Object, 0);
+
+            diagnoseViewModel.TotalDuration.Should().Be(4);
         }
 
         [Test]

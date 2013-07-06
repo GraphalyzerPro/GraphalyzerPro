@@ -25,8 +25,10 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:viewModels="clr-namespace:GraphalyzerPro.ViewModels" xmlns:views="clr-namespace:GraphalyzerPro.Views"
+        xmlns:interfaces="clr-namespace:GraphalyzerPro.Common.Interfaces;assembly=GraphalyzerPro.Common"
         DataContext="{Binding Path=MainViewModel, Source={StaticResource ViewModelLocator}}"
-        Title="{Binding Title}" Height="768" Width="1024">
+        Title="{Binding Title}" Height="768" Width="1024"
+        Loaded="MainWindow_OnLoaded">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -42,29 +44,41 @@
                             Style="{StaticResource TabItemHeaderButtonStyle}"/>
                 </DockPanel>
             </DataTemplate>
-            <DataTemplate x:Key="ItemContentTemplate" DataType="viewModels:SessionViewModel">
+            <DataTemplate x:Key="NewAnalysisTabButtonHeaderTemplate">
                 <DockPanel>
-                    <TabControl ItemsSource="{Binding Analysis}" TabStripPlacement="Bottom">
-                        <TabControl.ContentTemplate>
-                            <DataTemplate>
-                                <ContentControl Content="{Binding View}"/>
-                            </DataTemplate>
-                        </TabControl.ContentTemplate>
-                        <TabControl.ItemTemplate>
-                            <DataTemplate>
-                                <DockPanel>
-                                    <TextBlock DockPanel.Dock="Left" Text="{Binding Name}" />
-                                    <Button DockPanel.Dock="Right" Content="X" Margin="5,0,0,0" BorderThickness="0" 
+                    <Button Content="+" Command="{Binding Path=DataContext.AddNewAnalysisCommand,
+                                            RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}}"
+                            Style="{StaticResource TabItemHeaderButtonStyle}"/>
+                </DockPanel>
+            </DataTemplate>
+            <DataTemplate x:Key="SessionContentDataTemplate" DataType="{x:Type interfaces:IAnalysis}">
+                <ContentControl Content="{Binding View}"/>
+            </DataTemplate>
+            <DataTemplate x:Key="SessionItemDataTemplate" DataType="{x:Type interfaces:IAnalysis}">
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Left" Text="{Binding Name}" />
+                    <Button DockPanel.Dock="Right" Content="X" Margin="5,0,0,0" BorderThickness="0" 
                                             Command="{Binding Path=DataContext.CloseAnalysisCommand,
                                             RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}}" 
                                             CommandParameter="{Binding .}"
                                             Style="{StaticResource TabItemHeaderButtonStyle}"/>
-                                </DockPanel>
-                            </DataTemplate>
-                        </TabControl.ItemTemplate>
-                    </TabControl>
                 </DockPanel>
             </DataTemplate>
+            <views:SessionTabControlDataTemplateSelector x:Key="SessionHeaderTemplateSelector"
+                           NewButtonTemplate="{StaticResource NewAnalysisTabButtonHeaderTemplate}"
+                           ItemTemplate="{StaticResource SessionItemDataTemplate}"/>
+            <views:SessionTabControlDataTemplateSelector x:Key="SessionContentTemplateSelector"
+                            NewButtonTemplate="{StaticResource NewTabButtonContentTemplate}"
+                            ItemTemplate="{StaticResource SessionContentDataTemplate}"/>
+            <DataTemplate x:Key="ItemContentTemplate" DataType="{x:Type viewModels:SessionViewModel}">
+                <DockPanel>
+                    <TabControl ItemsSource="{Binding Analysis}" TabStripPlacement="Bottom"
+                                SelectedItem="{Binding SelectedAnalysis}"
+                                ItemTemplateSelector="{StaticResource SessionHeaderTemplateSelector}"
+                                ContentTemplateSelector="{StaticResource SessionContentTemplateSelector}"/>
+                </DockPanel>
+            </DataTemplate>
+            
             <DataTemplate x:Key="ItemHeaderTemplate" DataType="{x:Type viewModels:ISessionViewModel}">
                 <DockPanel>
                     <TextBlock DockPanel.Dock="Left" Text="{Binding SessionId}" />
