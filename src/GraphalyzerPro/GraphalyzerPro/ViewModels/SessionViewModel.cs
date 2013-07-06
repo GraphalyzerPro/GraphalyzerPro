@@ -20,8 +20,12 @@
  */
 
 using System;
+using System.ComponentModel;
+using System.Windows;
+using System.Windows.Data;
 using GraphalyzerPro.Common.Interfaces;
 using GraphalyzerPro.Models;
+using GraphalyzerPro.Views;
 using ReactiveUI;
 using ReactiveUI.Xaml;
 
@@ -29,14 +33,22 @@ namespace GraphalyzerPro.ViewModels
 {
     public class SessionViewModel : ReactiveObject, ISessionViewModel
     {
+        private IAnalysis _selectedAnalysis;
+
         public SessionViewModel(ISession session)
         {
             SessionId = session.Id;
             Receiver = session.Receiver;
             Analysis = session.Analysis;
 
+            ((IEditableCollectionView) (CollectionViewSource.GetDefaultView(Analysis)))
+                .NewItemPlaceholderPosition = NewItemPlaceholderPosition.AtEnd;
+
             CloseAnalysisCommand = new ReactiveCommand();
             CloseAnalysisCommand.Subscribe(x => Analysis.Remove(x));
+
+            AddNewAnalysisCommand = new ReactiveCommand();
+            AddNewAnalysisCommand.Subscribe(_ => AddNewAnalysis());
         }
 
         public IReceiver Receiver { get; private set; }
@@ -45,6 +57,37 @@ namespace GraphalyzerPro.ViewModels
 
         public ReactiveCommand CloseAnalysisCommand { get; private set; }
 
+        public ReactiveCommand AddNewAnalysisCommand { get; private set; }
+
+        public IAnalysis SelectedAnalysis
+        {
+            get { return _selectedAnalysis; }
+            set { this.RaiseAndSetIfChanged(value); }
+        }
+
         public Guid SessionId { get; private set; }
+
+        private void AddNewAnalysis()
+        {
+            var dialog = new NewSessionDialog
+                {
+                    Owner = Application.Current.MainWindow,
+                    ViewModel =
+                        {
+                            IsReceiverSelectionEnabled = false,
+                            SelectedReceiver = Receiver,
+                            Title = "Neue Analyse hinzufügen"
+                        }
+                };
+
+            if (dialog.ShowDialog() == true)
+            {
+                var newAnalysis = dialog.ViewModel.SelectedAnalysis;
+
+                Analysis.Add(newAnalysis);
+
+                SelectedAnalysis = newAnalysis;
+            }
+        }
     }
 }

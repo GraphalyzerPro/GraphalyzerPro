@@ -24,7 +24,7 @@
         x:Name="NewSessionDialogWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Neu Session erstellen" Height="300" Width="350"
+        Title="{Binding Title}" Height="300" Width="350"
         WindowStartupLocation="CenterOwner"
         ShowInTaskbar="False"
         DataContext="{Binding ElementName=NewSessionDialogWindow, Path=ViewModel}">
@@ -43,7 +43,9 @@
         <StackPanel>
             <DockPanel Margin="0,10,0,10">
                 <Label MinWidth="130">Empfänger auswählen: </Label>
-                <ComboBox Grid.Column="0" ItemsSource="{Binding AllReceiver}" SelectedItem="{Binding SelectedReceiver}">
+                <ComboBox Grid.Column="0" ItemsSource="{Binding AllReceiver}" 
+                          SelectedItem="{Binding SelectedReceiver}"
+                          IsEnabled="{Binding IsReceiverSelectionEnabled}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <Label Content="{Binding Name}" />

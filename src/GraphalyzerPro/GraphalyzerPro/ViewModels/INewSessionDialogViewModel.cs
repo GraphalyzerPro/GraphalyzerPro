@@ -33,8 +33,12 @@ namespace GraphalyzerPro.ViewModels
 
         ReactiveCollection<IAnalysis> AllAnalyses { get; }
 
-        IReceiver SelectedReceiver { get; }
+        IReceiver SelectedReceiver { get; set; }
 
         IAnalysis SelectedAnalysis { get; }
+
+        bool IsReceiverSelectionEnabled { get; set; }
+
+        string Title { get; set; }
     }
 }
