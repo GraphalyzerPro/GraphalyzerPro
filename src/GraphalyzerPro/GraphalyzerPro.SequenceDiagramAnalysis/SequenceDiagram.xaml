@@ -140,21 +140,19 @@
             <i:Interaction.Behaviors>
                 <behaviors:ScrollViewerAutoScrollBehavior x:Name="ScrollViewerBehavior"/>
             </i:Interaction.Behaviors>
-            <Grid x:Name="MainGrid">
-                <ItemsControl x:Name="DiagnoseOutputItemsControl" ItemsSource="{Binding ShownProcesses, NotifyOnSourceUpdated=True}" Background="Transparent"
-                  MouseLeftButtonDown="DiagnoseOutputItemsControlOnMouseLeftButtonDown"
-                  MouseRightButtonDown="DiagnoseOutputItemsControlOnMouseRightButtonDown">
-                    <ItemsControl.ContextMenu>
-                        <ContextMenu Name="OrientationLinesContextMenu" 
+            <Grid x:Name="MainGrid" Background="Transparent">
+                <Grid.ContextMenu>
+                    <ContextMenu Name="OrientationLinesContextMenu" 
                                     KeyDown="UserControlOnKeyDown"
                                     KeyUp="UserControlOnKeyUp">
-                            <MenuItem Header="Orientierungslinie erzeugen" Click="OrienationLinesContextMenuOnCreateOrientationLine"/>
-                            <MenuItem Name="OrientationLinesDeleteContextMenu" Header="Orientierungslinie löschen" Click="OrientationLinesContextMenuOnDeleteOrientationLine"/>
-                            <MenuItem Header="Alle Orientierungslinien löschen" Click="OrientationLinesContextMenuOnDeleteAllOrientationLines"/>
-                            <Separator/>
-                            <MenuItem Name="AutoScrollContextMenu" Header="Auto-Scroll" IsCheckable="True" IsChecked="True" Checked="AutoScrollContextMenuOnChecked" Unchecked="AutoScrollContextMenuOnUnchecked"/>
-                        </ContextMenu>
-                    </ItemsControl.ContextMenu>
+                        <MenuItem Header="Orientierungslinie erzeugen" Click="OrienationLinesContextMenuOnCreateOrientationLine"/>
+                        <MenuItem Name="OrientationLinesDeleteContextMenu" Header="Orientierungslinie löschen" Click="OrientationLinesContextMenuOnDeleteOrientationLine"/>
+                        <MenuItem Header="Alle Orientierungslinien löschen" Click="OrientationLinesContextMenuOnDeleteAllOrientationLines"/>
+                        <Separator/>
+                        <MenuItem Name="AutoScrollContextMenu" Header="Auto-Scroll" IsCheckable="True" IsChecked="True" Checked="AutoScrollContextMenuOnChecked" Unchecked="AutoScrollContextMenuOnUnchecked"/>
+                    </ContextMenu>
+                </Grid.ContextMenu>
+                <ItemsControl  x:Name="DiagnoseOutputItemsControl" ItemsSource="{Binding ShownProcesses, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Top">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <VirtualizingStackPanel Orientation="Horizontal"/>
@@ -182,15 +180,7 @@
                                                         </Border>
                                                     </DockPanel>
                                                     <Grid Name="ThreadEntries">
-                                                        <Border BorderThickness="1" BorderBrush="DimGray" HorizontalAlignment="Left" Width="1" Margin="15,0,0,0">
-                                                            <Border.Height>
-                                                                <MultiBinding Converter="{StaticResource DurationToHeightConverter}">
-                                                                    <Binding Path="DataContext.TotalDuration" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Grid}}"/>
-                                                                    <Binding Path="Value" ElementName="ZoomSlider"/>
-                                                                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"/>
-                                                                </MultiBinding>
-                                                            </Border.Height>
-                                                        </Border>
+                                                        <Border BorderThickness="1" BorderBrush="DimGray" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="1" Margin="15,0,0,0"/>
                                                         <ItemsControl ItemsSource="{Binding DiagnoseOutputViewModels}"
                                                                 VirtualizingStackPanel.IsVirtualizing="True"
                                                                 Margin="10,0,0,0">
@@ -215,14 +205,14 @@
                                                                                 <MultiBinding Converter="{StaticResource GapToMarginConverter}">
                                                                                     <Binding Path="DataContext.GapAndExtraGap" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Grid}}"/>
                                                                                     <Binding Path="Value" ElementName="ZoomSlider"/>
-                                                                                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"/>
+                                                                                    <Binding Path="ActualHeight" ElementName="SequenceDiagramUserControl"/>
                                                                                 </MultiBinding>
                                                                             </Border.Margin>
                                                                             <Border.Height>
                                                                                 <MultiBinding Converter="{StaticResource DurationToHeightConverter}">
                                                                                     <Binding Path="DataContext.TotalDuration" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Grid}}"/>
                                                                                     <Binding Path="Value" ElementName="ZoomSlider"/>
-                                                                                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"/>
+                                                                                    <Binding Path="ActualHeight" ElementName="SequenceDiagramUserControl"/>
                                                                                 </MultiBinding>
                                                                             </Border.Height>
                                                                             <Border.Style>
@@ -243,7 +233,7 @@
                                                                                 <MultiBinding Converter="{StaticResource GapToMarginConverter}" ConverterParameter="5">
                                                                                     <Binding Path="DataContext.GapExtraGapAndDuration" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Grid}}"/>
                                                                                     <Binding Path="Value" ElementName="ZoomSlider"/>
-                                                                                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"/>
+                                                                                    <Binding Path="ActualHeight" ElementName="SequenceDiagramUserControl"/>
                                                                                 </MultiBinding>
                                                                             </ItemsControl.Margin>
                                                                         </ItemsControl>
