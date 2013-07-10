@@ -74,7 +74,7 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
         public void UpdateTotalDuration(long totalDuration)
         {
             TotalDuration = totalDuration;
-            foreach(ThreadViewModel t in Threads)
+            foreach (ThreadViewModel t in Threads)
             {
                 t.UpdateTotalDuration(totalDuration);
             }

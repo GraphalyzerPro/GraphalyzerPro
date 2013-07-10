@@ -177,5 +177,15 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
                 TotalDuration = _totalDurationWithoutLastOpenBracketDiagnoseOutputViewModel;
             }
         }
+
+        public void AddExtraGapToTotalDuration(long extraGap)
+        {
+            var output = DiagnoseOutputViewModels.SingleOrDefault(x => x.IsBracketOpen);
+            if(output != null)
+            {
+                output.AddExtraGapToTotalDuration(extraGap);
+            }
+            TotalDuration += extraGap;
+        }
     }
 }

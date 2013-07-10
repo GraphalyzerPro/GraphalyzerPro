@@ -114,5 +114,7 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
         long GapExtraGapAndTotalDuration { get; }
 
         long ExtraGap { get; }
+
+        void AddExtraGapToTotalDuration(long extraGap);
     }
 }
