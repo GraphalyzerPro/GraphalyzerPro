@@ -44,20 +44,32 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.Converter
                 (values[2] != DependencyProperty.UnsetValue))
             {
                 double totalDuration = (double) (values[1]);
-                if(totalDuration == 0.0)
+                if (totalDuration == 0.0)
                 {
                     result = new Thickness(marginLeft, 0.0, 0.0, 0.0);
                 }
                 else
                 {
-                    double gap = (double)((long)(values[0]));
-                    double totalHeight = (double)(values[2]);
-                    result = new Thickness(marginLeft, gap / totalDuration * totalHeight, 0.0, 0.0);
+                    double gap = (double) ((long)(values[0]));
+                    double totalHeight = (double) (values[2]);
+                    double duration = 1.0;
+                    if ((values.Length > 3) && (values[3] != DependencyProperty.UnsetValue))
+                    {
+                        duration = ((double) ((long) (values[3])))/totalDuration*totalHeight;
+                    }
+                    if (duration < 1.0)
+                    {
+                        result = new Thickness(marginLeft, (gap/totalDuration*totalHeight) + duration - 1.0, 0.0, 0.0);
+                    }
+                    else
+                    {
+                        result = new Thickness(marginLeft, (gap/totalDuration*totalHeight), 0.0, 0.0);
+                    }
                 }
             }
             else
             {
-                result = new Thickness(marginLeft,0.0,0.0,0.0);
+                result = new Thickness(marginLeft, 0.0, 0.0, 0.0);
             }
             return result;
         }

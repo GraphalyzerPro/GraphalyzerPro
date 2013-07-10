@@ -92,7 +92,15 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
 
         public void UpdateTotalDuration(long totalDuration)
         {
-            TotalDuration = totalDuration;
+            if (totalDuration != TotalDuration)
+            {
+                var output = DiagnoseOutputViewModels.SingleOrDefault(x => x.IsBracketOpen);
+                if (output != null)
+                {
+                    output.AddExtraGapToTotalDuration(totalDuration - TotalDuration);
+                }
+                TotalDuration = totalDuration;
+            }
         }
     }
 }
