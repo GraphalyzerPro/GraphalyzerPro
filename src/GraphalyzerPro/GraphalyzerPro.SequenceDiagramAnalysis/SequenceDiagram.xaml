@@ -206,6 +206,7 @@
                                                                                     <Binding Path="DataContext.GapAndExtraGap" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Grid}}"/>
                                                                                     <Binding Path="Value" ElementName="ZoomSlider"/>
                                                                                     <Binding Path="ActualHeight" ElementName="SequenceDiagramUserControl"/>
+                                                                                    <Binding Path="DataContext.TotalDuration" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Grid}}"/>
                                                                                 </MultiBinding>
                                                                             </Border.Margin>
                                                                             <Border.Height>
