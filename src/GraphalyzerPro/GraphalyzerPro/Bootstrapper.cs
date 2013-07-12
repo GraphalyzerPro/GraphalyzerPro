@@ -20,6 +20,8 @@
  */
 
 using System.Globalization;
+using System.Threading;
+using System.Windows;
 using ReactiveUI;
 
 namespace GraphalyzerPro
@@ -29,11 +31,18 @@ namespace GraphalyzerPro
         internal static void InitializeRxBackingFieldNameConventions()
         {
             RxApp.GetFieldNameForPropertyNameFunc = delegate(string name)
-            {
-                var nameAsArray = name.ToCharArray();
-                nameAsArray[0] = char.ToLower(nameAsArray[0], CultureInfo.InvariantCulture);
-                return '_' + new string(nameAsArray);
-            };
+                {
+                    var nameAsArray = name.ToCharArray();
+                    nameAsArray[0] = char.ToLower(nameAsArray[0], CultureInfo.InvariantCulture);
+                    return '_' + new string(nameAsArray);
+                };
+        }
+
+        internal static void ShowSplashScreen()
+        {
+            var splashScreen = new SplashScreen("Icons\\GraphalyzerPro.png");
+            splashScreen.Show(true, true);
+            Thread.Sleep(500);
         }
     }
 }

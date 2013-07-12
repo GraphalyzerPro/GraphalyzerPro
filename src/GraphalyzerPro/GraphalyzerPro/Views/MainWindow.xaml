@@ -28,7 +28,8 @@
         xmlns:interfaces="clr-namespace:GraphalyzerPro.Common.Interfaces;assembly=GraphalyzerPro.Common"
         DataContext="{Binding Path=MainViewModel, Source={StaticResource ViewModelLocator}}"
         Title="{Binding Title}" Height="768" Width="1024"
-        Loaded="MainWindow_OnLoaded">
+        Loaded="MainWindow_OnLoaded"
+        WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
