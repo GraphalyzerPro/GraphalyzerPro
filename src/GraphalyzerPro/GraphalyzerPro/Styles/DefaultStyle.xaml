@@ -11,4 +11,9 @@
         <Setter Property="Background" Value="Transparent"/>
     </Style>
 
+    <BitmapImage x:Key="NewTabIcon" UriSource="../Icons/icon_newtab_32x32.png" />
+    <BitmapImage x:Key="CloseTabIcon" UriSource="../Icons/icon_close_32x32.png" />
+    <BitmapImage x:Key="NewSessionIcon" UriSource="../Icons/icon_newsession_32x32.png" />
+    
+    
 </ResourceDictionary>

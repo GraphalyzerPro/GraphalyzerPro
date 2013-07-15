@@ -28,7 +28,9 @@
         xmlns:interfaces="clr-namespace:GraphalyzerPro.Common.Interfaces;assembly=GraphalyzerPro.Common"
         DataContext="{Binding Path=MainViewModel, Source={StaticResource ViewModelLocator}}"
         Title="{Binding Title}" Height="768" Width="1024"
-        Loaded="MainWindow_OnLoaded">
+        Loaded="MainWindow_OnLoaded"
+        WindowStartupLocation="CenterScreen"
+        Icon="../Icons/icon_prog_3_256x256.ico">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -39,16 +41,20 @@
             </DataTemplate>
             <DataTemplate x:Key="NewTabButtonHeaderTemplate">
                 <DockPanel>
-                    <Button Content="+" Command="{Binding Path=DataContext.StartNewSessionCommand,
+                    <Button Command="{Binding Path=DataContext.StartNewSessionCommand,
                                             RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}}"
-                            Style="{StaticResource TabItemHeaderButtonStyle}"/>
+                            Style="{StaticResource TabItemHeaderButtonStyle}">
+                        <Image Source="{StaticResource NewTabIcon}" />
+                    </Button>
                 </DockPanel>
             </DataTemplate>
             <DataTemplate x:Key="NewAnalysisTabButtonHeaderTemplate">
                 <DockPanel>
-                    <Button Content="+" Command="{Binding Path=DataContext.AddNewAnalysisCommand,
+                    <Button Command="{Binding Path=DataContext.AddNewAnalysisCommand,
                                             RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}}"
-                            Style="{StaticResource TabItemHeaderButtonStyle}"/>
+                            Style="{StaticResource TabItemHeaderButtonStyle}">
+                        <Image Source="{StaticResource NewTabIcon}" />
+                    </Button>
                 </DockPanel>
             </DataTemplate>
             <DataTemplate x:Key="SessionContentDataTemplate" DataType="{x:Type interfaces:IAnalysis}">
@@ -57,11 +63,13 @@
             <DataTemplate x:Key="SessionItemDataTemplate" DataType="{x:Type interfaces:IAnalysis}">
                 <DockPanel>
                     <TextBlock DockPanel.Dock="Left" Text="{Binding Name}" />
-                    <Button DockPanel.Dock="Right" Content="X" Margin="5,0,0,0" BorderThickness="0" 
+                    <Button DockPanel.Dock="Right" Margin="5,0,0,0" BorderThickness="0" 
                                             Command="{Binding Path=DataContext.CloseAnalysisCommand,
                                             RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}}" 
                                             CommandParameter="{Binding .}"
-                                            Style="{StaticResource TabItemHeaderButtonStyle}"/>
+                                            Style="{StaticResource TabItemHeaderButtonStyle}">
+                        <Image Source="{StaticResource CloseTabIcon}" />
+                    </Button>
                 </DockPanel>
             </DataTemplate>
             <views:SessionTabControlDataTemplateSelector x:Key="SessionHeaderTemplateSelector"
@@ -82,11 +90,13 @@
             <DataTemplate x:Key="ItemHeaderTemplate" DataType="{x:Type viewModels:ISessionViewModel}">
                 <DockPanel>
                     <TextBlock DockPanel.Dock="Left" Text="{Binding SessionId}" />
-                    <Button DockPanel.Dock="Right" Content="X" Margin="5,0,0,0" BorderThickness="0" 
+                    <Button DockPanel.Dock="Right" Margin="5,0,0,0" BorderThickness="0" 
                                 Command="{Binding Path=DataContext.CloseSessionCommand,
                                             RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}}" 
                                 CommandParameter="{Binding .}"
-                            Style="{StaticResource TabItemHeaderButtonStyle}"/>
+                            Style="{StaticResource TabItemHeaderButtonStyle}">
+                        <Image Source="{StaticResource CloseTabIcon}" />
+                    </Button>
                 </DockPanel>
             </DataTemplate>
             <views:SessionTabControlDataTemplateSelector x:Key="HeaderTemplateSelector"
@@ -100,7 +110,11 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Sessions">
-                <MenuItem Header="Neue Session starten" Command="{Binding StartNewSessionCommand}" />
+                <MenuItem Header="Neue Session starten" Command="{Binding StartNewSessionCommand}">
+                    <MenuItem.Icon>
+                        <Image Source="{StaticResource NewSessionIcon}"/>
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
         </Menu>
         <TabControl ItemsSource="{Binding SessionViewModels}"

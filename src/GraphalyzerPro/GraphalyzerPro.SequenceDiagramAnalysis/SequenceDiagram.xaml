@@ -38,14 +38,19 @@
     <UserControl.Resources>
         <converter:GapToMarginConverter x:Key="GapToMarginConverter"/>
         <converter:DurationToHeightConverter x:Key="DurationToHeightConverter"/>
+        
+        <BitmapImage x:Key="DetailViewIcon" UriSource="Icons/icon_detail_32x32.png" />
+        <BitmapImage x:Key="ProcesIcon" UriSource="Icons/icon_process_32x32.png" />
+        <BitmapImage x:Key="ZoomIcon" UriSource="Icons/icon_zoom_32x32.png" />
     </UserControl.Resources>
     <DockPanel>
         <DockPanel DockPanel.Dock="Right">
             <DockPanel DockPanel.Dock="Bottom" Margin="5">
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Zoom in µs pro Fensterhöhe: " Margin="0,0,0,5"></TextBlock>
-                        <TextBlock Text="{Binding Path=Value, ElementName=ZoomSlider}"></TextBlock>
+                        <Image Source="{StaticResource ZoomIcon}"/>
+                        <TextBlock Text="Zoom in µs pro Fensterhöhe: " Margin="10,5,0,5"/>
+                        <TextBlock Text="{Binding Path=Value, ElementName=ZoomSlider}" Margin="5,5,0,0"/>
                     </StackPanel>
                     <Slider Name="ZoomSlider"
                             Margin="0,0,0,5"
@@ -60,7 +65,10 @@
             </DockPanel>
             <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
                 <StackPanel Orientation="Vertical" Margin="5">
-                    <TextBlock Text="Detail View:"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{StaticResource DetailViewIcon}"/>
+                        <TextBlock Text="Detail View:" FontWeight="Bold" FontSize="15" Margin="5,5,0,0"/>
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                         <TextBlock Text="Process ID:" Width="100"/>
                         <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.ProcessId}" TextWrapping="Wrap" Width="300"/>
@@ -117,7 +125,10 @@
                         <TextBlock Text="Meta Information:" Width="100"/>
                         <TextBlock Text="{Binding SelectedDiagnoseOutputViewModel.MetaInformation}" TextWrapping="Wrap" Width="300"/>
                     </StackPanel>
-                    <TextBlock Text="Anzuzeigende Prozesse:" Margin="0,15,0,0"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
+                        <Image Source="{StaticResource ProcesIcon}"/>
+                        <TextBlock Text="Anzuzeigende Prozesse:" Margin="5,5,0,0"/>
+                    </StackPanel>
                     <ItemsControl ItemsSource="{Binding Processes}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
