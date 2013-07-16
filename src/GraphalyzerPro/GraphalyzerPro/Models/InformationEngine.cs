@@ -57,7 +57,7 @@ namespace GraphalyzerPro.Models
             }
             else
             {
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle,
                                                            new Action(
                                                                () => Sessions.Single(x => x.Id == sessionId)
                                                                              .DiagnoseOutputEntries.Add(
