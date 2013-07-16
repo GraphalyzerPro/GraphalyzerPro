@@ -21,6 +21,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using GraphalyzerPro.Common.Interfaces;
@@ -40,6 +41,11 @@ namespace GraphalyzerPro.ViewModels
             SessionId = session.Id;
             Receiver = session.Receiver;
             Analysis = session.Analysis;
+
+            if (Analysis.Any())
+            {
+                SelectedAnalysis = Analysis.First();
+            }
 
             ((IEditableCollectionView) (CollectionViewSource.GetDefaultView(Analysis)))
                 .NewItemPlaceholderPosition = NewItemPlaceholderPosition.AtEnd;
