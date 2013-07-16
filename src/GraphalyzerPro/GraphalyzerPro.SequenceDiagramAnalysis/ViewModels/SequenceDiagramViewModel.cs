@@ -20,8 +20,10 @@
  */
 
 using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Threading;
 using GraphalyzerPro.Common.Interfaces;
 using ReactiveUI;
 using ReactiveUI.Xaml;
@@ -34,17 +36,19 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
         private readonly ReactiveCollection<IProcessViewModel> _shownProcesses;
         private IDiagnoseOutputViewModel _selectedDiagnoseOutputViewModel;
         private long _totalDuration;
+        private double _progress;
 
         public SequenceDiagramViewModel()
         {
             Processes = new ReactiveCollection<IProcessViewModel>();
             ShownProcesses = new ReactiveCollection<IProcessViewModel>();
             TotalDuration = 0;
+            Progress = 0.0;
             ProcessIsShownChangedCommand = new ReactiveCommand();
             ProcessIsShownChangedCommand.Subscribe(x => ProcessIsShownChanged((IProcessViewModel)(x)));
             SelectDiagnoseOutputViewModel = new ReactiveCommand();
             SelectDiagnoseOutputViewModel.Throttle(TimeSpan.FromSeconds(1))
-                                         .Subscribe(x => SelectedDiagnoseOutputViewModel = (IDiagnoseOutputViewModel) x);
+                                         .Subscribe(x => SelectedDiagnoseOutputViewModel = (IDiagnoseOutputViewModel)x);
         }
 
         public ReactiveCollection<IProcessViewModel> Processes
@@ -56,6 +60,12 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
         public long TotalDuration
         {
             get { return _totalDuration; }
+            private set { this.RaiseAndSetIfChanged(value); }
+        }
+
+        public double Progress
+        {
+            get { return _progress; }
             private set { this.RaiseAndSetIfChanged(value); }
         }
 
@@ -79,6 +89,7 @@ namespace GraphalyzerPro.SequenceDiagramAnalysis.ViewModels
             {
                 p.UpdateTotalDuration(TotalDuration);
             }
+            Progress = (Progress + 1.0) % 100.0;
         }
 
         public ReactiveCommand SelectDiagnoseOutputViewModel { get; private set; }
