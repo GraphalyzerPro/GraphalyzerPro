@@ -1,0 +1,74 @@
+###########################################
+
+./document/ - Content of this folder
+
+###########################################
+
+
+
+amos_end.pdf
+-------------------------------------------
+The final presentation file for demo day.
+
+
+
+
+Asked_Questions_toStakeholder.pdf
+-------------------------------------------
+A document where we kept questions to our stakeholders, that arose during our weekly meetings.
+
+
+
+
+Definition_of_Done.pdf
+-------------------------------------------
+A definition of done, set by the developers as a quality guideline.
+
+
+
+
+Definition_of_Ready.pdf
+-------------------------------------------
+A definition of ready, set by the POs as a quality guideline.
+
+
+
+
+Developers_Guideline.pdf
+-------------------------------------------
+Basic guidelines for developers of this project.
+
+
+
+
+Handbuch.pdf
+-------------------------------------------
+This is a short readme documentation file, describing features and technical interfaces.
+
+
+
+
+index.txt
+-------------------------------------------
+This file.
+
+
+
+
+sprint_xx_planning.pdf
+-------------------------------------------
+Planning documents of Sprint #xx.
+
+
+
+
+Team_5_Kontakt.pdf
+-------------------------------------------
+Contact information about every team member.
+
+
+
+
+Team_5_Meeting-Protocols.pdf
+-------------------------------------------
+During every meeting, one of our POs wrote a protocol to remember all important outcomes of this meeting.
